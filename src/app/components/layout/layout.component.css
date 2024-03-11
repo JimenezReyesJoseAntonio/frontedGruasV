@@ -1,0 +1,63 @@
+
+  
+  .custom-sidebar .sidebar-content {
+    /* Inherit styles from sidebar */
+  }
+  
+  .custom-sidebar h3 {
+    margin-bottom: 1rem; /* Add some space below the heading */
+    color: #fff; /* Light heading color */
+  }
+  
+  .custom-sidebar .menu {
+    list-style: none; /* Remove default list styling */
+    padding: 0; /* Remove default list padding */
+    margin: 0; /* Remove default list margin */
+  }
+  
+  .custom-sidebar .menu li {
+    margin-bottom: 0.5rem; /* Add some spacing between list items */
+  }
+  
+  .custom-sidebar .menu a {
+    color: inherit; /* Inherit text color from sidebar */
+    text-decoration: none; /* Remove default link underline */
+    display: flex; /* Allow for icon alignment */
+    align-items: center; /* Align icon and label vertically */
+  }
+  
+  .custom-sidebar .menu a .pi {
+    margin-right: 1rem; /* Add spacing between icon and label */
+    font-size: 1.2em; /* Adjust icon size as needed */
+  }
+  
+  .custom-sidebar .p-button {
+    border: none; /* Remove default button border */
+    background-color: transparent; /* Transparent background */
+    color: inherit; /* Inherit text color from sidebar */
+    padding: 0.5rem 1rem; /* Adjust button padding as desired */
+    text-align: left; /* Align text to the left for sidebar layout */
+    cursor: pointer; /* Indicate clickable behavior */
+  }
+  
+  .custom-sidebar .p-button:hover {
+    background-color: rgba(54, 212, 212, 0.1); /* Subtle hover effect */
+  }
+  
+  .main-content {
+    /* Adjust main content styles as needed */
+  }
+  
+  /* Optional: Adjust header styles */
+  .header {
+    background-color: #1a57e7; /* Light background for header */
+    padding: 1rem 2rem;
+    display: flex; /* Arrange menu button and title side-by-side */
+    align-items: center; /* Align elements vertically */
+  }
+  
+  .menu-button {
+    margin-right: 1rem; /* Add spacing between button and title */
+  }
+  
+  
