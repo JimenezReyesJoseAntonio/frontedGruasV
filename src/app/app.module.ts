@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms'; // Importa FormsModule aquí
 import { CardModule } from 'primeng/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
+import { TableModule } from 'primeng/table';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,7 +19,8 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { LoginComponent } from './components/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
-import { OperadorComponent } from './components/operador/operador.component';
+import { OperadorComponent } from './components/operador/operador.component';//lo borre share module
+import { OperadorModule } from './components/operador/operador.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,7 @@ import { OperadorComponent } from './components/operador/operador.component';
     SidenavComponent,
     LayoutComponent,
     LoginComponent,
-    OperadorComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -40,7 +43,10 @@ import { OperadorComponent } from './components/operador/operador.component';
     HttpClientModule,
     CardModule,
     ReactiveFormsModule,
-    ToastModule
+    ToastModule,
+    ToolbarModule,
+    TableModule,
+    OperadorModule
 
   ],
   providers: [

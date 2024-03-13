@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    productoURL: 'http://localhost:8080/producto/',
+    operadorURL: 'http://localhost:8080/operador/',
     authURL: 'http://localhost:8080/auth/'
 
   };

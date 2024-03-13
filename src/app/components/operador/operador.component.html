@@ -1,5 +1,125 @@
+<div>
+    <p-toolbar styleClass="mb-1">
+        <ng-template pTemplate="left">
+            <div class="my-2">
+                <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                    (click)="showDialog()"></button>
+                <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"></button>
+                <button pButton pRipple label="Update" icon="pi pi-replay" class="p-button-primary"></button>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+        </ng-template>
+    </p-toolbar>
+</div>
+
+<p-dialog [(visible)]="productDialog" [style]="{ width: '470px' }" header="Datos del operador" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-grid p-fluid">
+            <!-- Primera columna -->
+            <div class="p-col-6">
+                <div class="field">
+                    <label for="name">Name</label>
+                    <input type="text" pInputText id="name" required autofocus />
+                </div>
+                <div class="field">
+                    <label for="paterno">Apellido paterno</label>
+                    <input type="text" pInputText id="paterno" required />
+                </div>
+                <div class="field">
+                    <label for="materno">Apellido materno</label>
+                    <input type="text" pInputText id="materno" required />
+                </div>
+                <div class="field">
+                    <label for="telefono">Numero de telefono</label>
+                    <input type="text" pInputText id="telefono" required />
+                </div>
+                <div class="field">
+                    <label for="rfc">Rfc</label>
+                    <input type="text" pInputText id="rfc" required />
+                </div>
+                <div class="field">
+                    <label for="curp">Curp</label>
+                    <input type="text" pInputText id="curp" required />
+                </div>
+            </div>
+            <!-- Segunda columna -->
+            <div class="p-col-6">
+                <div class="field">
+                    <label for="nss">NSS</label>
+                    <input type="text" pInputText id="nss" required />
+                </div>
+                <div class="field">
+                    <label for="direc">Dirección</label>
+                    <textarea id="direc" pInputTextarea required rows="3" cols="20"></textarea>
+                </div>
+                <div class="field">
+                    <label for="cpostal">Codigo postal</label>
+                    <p-inputNumber id="cpostal"></p-inputNumber>
+                </div>
+                <div class="field">
+                    <label for="puesto">Puesto</label>
+                    <input type="text" pInputText id="puesto" required />
+                </div>
+                <div class="field">
+                    <label for="licencia">Licencia</label>
+                    <input type="text" pInputText id="licencia" required />
+                </div>
+                <div class="field">
+                    <label for="resi">Residencia</label>
+                    <input type="text" pInputText id="resi" required />
+                </div>
+                
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"></button>
+    </ng-template>
+</p-dialog>
+
 
 <div class="card">
-    <p-toast></p-toast>
-    <button type="button" pButton pRipple (click)="show()" label="Show" class="p-button-success"></button>
+    <p-table [value]="operadores" [tableStyle]="{ 'min-width': '60rem' }">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                Operadores
+                <p-button icon="pi pi-refresh"></p-button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido paterno</th>
+                <th>Apellido materno</th>
+                <th>Numero de telefono</th>
+                <th>Status</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body">
+            <tr *ngFor="let operador of operadores">
+                <td>
+                    <p-tableCheckbox [value]="operador"></p-tableCheckbox>
+                </td>
+                <td>{{ operador.id }}</td>
+                <td>{{ operador.nombre }}</td>
+                <td>{{ operador.apellidoPaterno }}</td>
+                <td>{{ operador.apellidoMaterno }}</td>
+                <td>{{ operador.numTelefono }}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{ products ? products.length : 0 }} products.
+            </div>
+        </ng-template>
+    </p-table>
 </div>
