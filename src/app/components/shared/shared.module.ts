@@ -7,6 +7,9 @@ import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
+import { ToastModule } from 'primeng/toast';
 
 
 @NgModule({
@@ -24,7 +27,10 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     DialogModule,
     InputNumberModule,
     InputTextModule,
-    InputTextareaModule
+    InputTextareaModule,
+    FormsModule,
+    ToastModule,
+    ReactiveFormsModule
   ]
 })
 export class SharedModule { }

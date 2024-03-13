@@ -50,6 +50,7 @@
   
   /* Optional: Adjust header styles */
   .header {
+    
     background-color: #1a57e7; /* Light background for header */
     padding: 1rem 2rem;
     display: flex; /* Arrange menu button and title side-by-side */
