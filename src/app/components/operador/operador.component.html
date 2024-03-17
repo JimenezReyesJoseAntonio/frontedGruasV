@@ -2,16 +2,15 @@
     <p-toolbar styleClass="mb-1">
         <ng-template pTemplate="left">
             <div class="my-2">
-                <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
                     (click)="showDialog()"></button>
-                <p-toast></p-toast>
-                <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger"></button>
-                <button pButton pRipple label="Update" icon="pi pi-replay" class="p-button-primary"></button>
+                <p-toast position="top-center"></p-toast>
+               
             </div>
         </ng-template>
 
         <ng-template pTemplate="right">
-            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+            <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"></button>
         </ng-template>
     </p-toolbar>
 </div>
@@ -92,36 +91,39 @@
 
 
 <div class="card">
-    <p-table [value]="operadores" [tableStyle]="{ 'min-width': '60rem' }">
+    <p-table [value]="operadores" [tableStyle]="{ 'min-width': '60rem' }" >
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 Operadores
-                <p-button icon="pi pi-refresh"></p-button>
+                <p-button icon="pi pi-refresh" (click)="updatetable()"></p-button>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 3rem">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                </th>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Apellido paterno</th>
+                <th>Apellido paterno</th> 
                 <th>Apellido materno</th>
                 <th>Numero de telefono</th>
                 <th>Status</th>
+                <th>Editar/Eliminar</th>
+
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-operador>
             <tr>
-                <td>
-                    <p-tableCheckbox [value]="operador"></p-tableCheckbox>
-                </td>
                 <td>{{ operador.id }}</td>
                 <td>{{ operador.nombre }}</td>
                 <td>{{ operador.apellidoPaterno }}</td>
                 <td>{{ operador.apellidoMaterno }}</td>
                 <td>{{ operador.numTelefono }}</td>
+                <td></td>
+                <td>
+                    <div class="flex">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" ></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteOperador(operador)"></button>
+                    </div>
+                </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">
@@ -130,4 +132,16 @@
             </div>
         </ng-template>
     </p-table>
+
+    <p-dialog [(visible)]="deleteOperadorDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <div class="flex align-items-center justify-content-center">
+            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+            <span *ngIf="operador">Esta seguro que quiere eliminar a <b>{{operador.nombre +operador.apellidoPaterno+ ' '+ operador.apellidoMaterno}}</b>?</span>
+
+        </div>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteOperadorDialog = false"></button>
+            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDeleteOperador()"></button>
+        </ng-template>
+    </p-dialog>
 </div>

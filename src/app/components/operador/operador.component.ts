@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Operador } from '../../models/operador';
 import { OperadorService } from '../../services/operador.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -16,14 +16,16 @@ export class OperadorComponent implements OnInit{
   operadores: Operador[] = [];
   listaVacia: string | undefined;
   operadorForm!: FormGroup;
-
   
 
+  operador: Operador | null = null;
+
   productDialog: boolean = false;
+  deleteOperadorDialog: boolean = false; 
 
   constructor(private messageService: MessageService,
     private operadorService: OperadorService,
-    private fb:FormBuilder
+    private fb:FormBuilder,
 
     ) {
       this.operadorForm =this.fb.group({
@@ -51,9 +53,6 @@ export class OperadorComponent implements OnInit{
 
   }
 
-  show() {
-      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
-  }
 
   cargarOperadores(): void {
     console.log('carga operadores' + this.operadores.length)
@@ -72,10 +71,8 @@ export class OperadorComponent implements OnInit{
   }
 
   registrarOperador(): void {
-    console.log('jajaja');
     console.log(this.operadorForm .valid);
     if (this.operadorForm .valid) {
-      console.log('entre');
       console.log(this.operadorForm.value);
       this.operadorService.save(this.operadorForm.value).subscribe(
         () => {
@@ -109,5 +106,41 @@ export class OperadorComponent implements OnInit{
   showDialog() {
     this.productDialog = true;
   }
+
+  updatetable(){
+    this.cargarOperadores();
+  }
+
+ 
+
+deleteOperador(operador:Operador){
+  this.operador = operador;
+  this.deleteOperadorDialog = true;
+}
+
+deleteSelectedOperador() {
+  this.deleteOperadorDialog = true;
+}
+
+
+confirmDeleteOperador():void{
+  console.log(this.operador.nombre);
+  if (this.operador) {
+    this.operadorService.delete(this.operador.id).subscribe(
+      () => {
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador eliminado exitosamente' });
+        this.operador = null;
+        this.cargarOperadores(); // Recargar la lista de operadores después de eliminar
+        this.deleteOperadorDialog = false;
+      },
+      error => {
+        console.error('Error:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
+      }
+    );
+  }
+
+}
+
 
 }

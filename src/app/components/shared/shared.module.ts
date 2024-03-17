@@ -8,6 +8,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { ToastModule } from 'primeng/toast';
 
@@ -30,6 +31,7 @@ import { ToastModule } from 'primeng/toast';
     InputTextareaModule,
     FormsModule,
     ToastModule,
+    ConfirmDialogModule,
     ReactiveFormsModule
   ]
 })
