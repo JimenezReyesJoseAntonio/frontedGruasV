@@ -19,8 +19,10 @@ export class OperadorComponent implements OnInit{
   
 
   operador: Operador | null = null;
+  editingOperador: Operador | null = null;
 
   productDialog: boolean = false;
+  updateDialog: boolean = false;
   deleteOperadorDialog: boolean = false; 
 
   constructor(private messageService: MessageService,
@@ -142,5 +144,30 @@ confirmDeleteOperador():void{
 
 }
 
+editOperador(operador: Operador) {
+  this.editingOperador = { ...operador }; // Clonar el operador para evitar modificar el original directamente
+  this.updateDialog = true; // Mostrar el diálogo de edición
+}
+
+editOperadorConfirm(){
+  if (this.operadorForm.valid && this.editingOperador) {
+    this.operadorService.update(this.editingOperador.id,this.editingOperador).subscribe(
+      () => {
+        // Operador actualizado exitosamente
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Operador actualizado exitosamente' });
+        this.updateDialog = false; // Cerrar el diálogo de edición
+        this.cargarOperadores();
+        this.editingOperador = null; // Limpiar el operador en edición
+      },
+      error => {
+        // Error al actualizar el operador
+        console.error('Error:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
+      }
+    );
+  } else {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Campos vacíos o inválidos' });
+  }
+}
 
 }

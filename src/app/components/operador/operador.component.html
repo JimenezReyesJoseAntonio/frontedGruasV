@@ -1,147 +1,249 @@
 <div>
-    <p-toolbar styleClass="mb-1">
-        <ng-template pTemplate="left">
-            <div class="my-2">
-                <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
-                    (click)="showDialog()"></button>
-                <p-toast position="top-center"></p-toast>
-               
-            </div>
-        </ng-template>
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toolbar styleClass="mb-1">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
+                            (click)="showDialog()"></button>
+                        <p-toast position="top-center"></p-toast>
 
-        <ng-template pTemplate="right">
-            <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"></button>
-        </ng-template>
-    </p-toolbar>
-</div>
+                    </div>
+                </ng-template>
 
-<p-dialog [(visible)]="productDialog" [style]="{ width: '470px' }" header="Datos del operador" [modal]="true"
-    class="p-fluid">
-    <ng-template pTemplate="content">
-        <div class="p-grid p-fluid">
-            <form [formGroup]="operadorForm" >
-
-                <!-- Primera columna -->
-                <div class="p-col-6">
-                    <div class="field">
-                        <label for="name">Nombre</label>
-                        <input type="text" pInputText id="name" formControlName="nombre" required autofocus />
-                    </div>
-                    <div class="field">
-                        <label for="paterno">Apellido paterno</label>
-                        <input type="text" pInputText id="paterno" formControlName="apellidoPaterno" required />
-                    </div>
-                    <div class="field">
-                        <label for="materno">Apellido materno</label>
-                        <input type="text" pInputText id="materno" formControlName="apellidoMaterno" required />
-                    </div>
-                    <div class="field">
-                        <label for="telefono">Numero de telefono</label>
-                        <input type="text" pInputText id="telefono" formControlName="numTelefono" required />
-                    </div>
-                    <div class="field">
-                        <label for="rfc">Rfc</label>
-                        <input type="text" pInputText id="rfc" formControlName="rfc" required />
-                    </div>
-                    <div class="field">
-                        <label for="curp">Curp</label>
-                        <input type="text" pInputText id="curp" formControlName="curp" required />
-                    </div>
-                </div>
-                <!-- Segunda columna -->
-                <div class="p-col-6">
-                    <div class="field">
-                        <label for="nss">NSS</label>
-                        <input type="text" pInputText id="nss" formControlName="nss" required />
-                    </div>
-                    <div class="field">
-                        <label for="direc">Dirección</label>
-                        <textarea id="direc" formControlName="direccion" pInputTextarea required rows="3"
-                            cols="20"></textarea>
-                    </div>
-                    <div class="field">
-                        <label for="cpostal">Codigo postal</label>
-                        <p-inputNumber id="cpostal" formControlName="codigoPostal"></p-inputNumber>
-                    </div>
-                    <div class="field">
-                        <label for="puesto">Puesto</label>
-                        <input type="text" pInputText id="puesto" formControlName="puesto" required />
-                    </div>
-                    <div class="field">
-                        <label for="licencia">Licencia</label>
-                        <input type="text" pInputText id="licencia" formControlName="licencia" required />
-                    </div>
-                    <div class="field">
-                        <label for="resi">Residencia</label>
-                        <input type="text" pInputText id="resi" formControlName="residencia" required />
-                    </div>
-                </div>
-            </form>
-        </div>
-    </ng-template>
+                <ng-template pTemplate="right">
+                    <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"></button>
+                </ng-template>
+            </p-toolbar>
 
 
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"
-            (click)="registrarOperador()"></button>
-    </ng-template>
-
-</p-dialog>
-
-
-<div class="card">
-    <p-table [value]="operadores" [tableStyle]="{ 'min-width': '60rem' }" >
-        <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
-                Operadores
-                <p-button icon="pi pi-refresh" (click)="updatetable()"></p-button>
-            </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido paterno</th> 
-                <th>Apellido materno</th>
-                <th>Numero de telefono</th>
-                <th>Status</th>
-                <th>Editar/Eliminar</th>
-
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-operador>
-            <tr>
-                <td>{{ operador.id }}</td>
-                <td>{{ operador.nombre }}</td>
-                <td>{{ operador.apellidoPaterno }}</td>
-                <td>{{ operador.apellidoMaterno }}</td>
-                <td>{{ operador.numTelefono }}</td>
-                <td></td>
-                <td>
-                    <div class="flex">
-                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" ></button>
-                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteOperador(operador)"></button>
+            <p-table [value]="operadores" [tableStyle]="{ 'min-width': '60rem' }">
+                <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                        Operadores
+                        <p-button icon="pi pi-refresh" (click)="updatetable()"></p-button>
                     </div>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">
-                hola
-            </div>
-        </ng-template>
-    </p-table>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido paterno</th>
+                        <th>Apellido materno</th>
+                        <th>Numero de telefono</th>
+                        <th>Status</th>
+                        <th>Editar/Eliminar</th>
 
-    <p-dialog [(visible)]="deleteOperadorDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
-        <div class="flex align-items-center justify-content-center">
-            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-            <span *ngIf="operador">Esta seguro que quiere eliminar a <b>{{operador.nombre +operador.apellidoPaterno+ ' '+ operador.apellidoMaterno}}</b>?</span>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-operador>
+                    <tr>
+                        <td>{{ operador.id }}</td>
+                        <td>{{ operador.nombre }}</td>
+                        <td>{{ operador.apellidoPaterno }}</td>
+                        <td>{{ operador.apellidoMaterno }}</td>
+                        <td>{{ operador.numTelefono }}</td>
+                        <td></td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="editOperador(operador)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deleteOperador(operador)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="flex align-items-center justify-content-between">
+                        hola
+                    </div>
+                </ng-template>
+            </p-table>
 
         </div>
-        <ng-template pTemplate="footer">
-            <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteOperadorDialog = false"></button>
-            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDeleteOperador()"></button>
-        </ng-template>
-    </p-dialog>
+
+        <p-dialog [(visible)]="productDialog" [style]="{ width: '470px' }" header="Datos del operador" [modal]="true"
+            class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="p-grid p-fluid">
+                    <form [formGroup]="operadorForm">
+
+                        <!-- Primera columna -->
+                        <div class="p-col-6">
+                            <div class="field">
+                                <label for="name">Nombre</label>
+                                <input type="text" pInputText id="name" formControlName="nombre" required autofocus />
+                            </div>
+                            <div class="field">
+                                <label for="paterno">Apellido paterno</label>
+                                <input type="text" pInputText id="paterno" formControlName="apellidoPaterno" required />
+                            </div>
+                            <div class="field">
+                                <label for="materno">Apellido materno</label>
+                                <input type="text" pInputText id="materno" formControlName="apellidoMaterno" required />
+                            </div>
+                            <div class="field">
+                                <label for="telefono">Numero de telefono</label>
+                                <input type="text" pInputText id="telefono" formControlName="numTelefono" required />
+                            </div>
+                            <div class="field">
+                                <label for="rfc">Rfc</label>
+                                <input type="text" pInputText id="rfc" formControlName="rfc" required />
+                            </div>
+                            <div class="field">
+                                <label for="curp">Curp</label>
+                                <input type="text" pInputText id="curp" formControlName="curp" required />
+                            </div>
+                        </div>
+                        <!-- Segunda columna -->
+                        <div class="p-col-6">
+                            <div class="field">
+                                <label for="nss">NSS</label>
+                                <input type="text" pInputText id="nss" formControlName="nss" required />
+                            </div>
+                            <div class="field">
+                                <label for="direc">Dirección</label>
+                                <textarea id="direc" formControlName="direccion" pInputTextarea required rows="3"
+                                    cols="20"></textarea>
+                            </div>
+                            <div class="field">
+                                <label for="cpostal">Codigo postal</label>
+                                <p-inputNumber id="cpostal" formControlName="codigoPostal"></p-inputNumber>
+                            </div>
+                            <div class="field">
+                                <label for="puesto">Puesto</label>
+                                <input type="text" pInputText id="puesto" formControlName="puesto" required />
+                            </div>
+                            <div class="field">
+                                <label for="licencia">Licencia</label>
+                                <input type="text" pInputText id="licencia" formControlName="licencia" required />
+                            </div>
+                            <div class="field">
+                                <label for="resi">Residencia</label>
+                                <input type="text" pInputText id="resi" formControlName="residencia" required />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </ng-template>
+
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"
+                    (click)="registrarOperador()"></button>
+            </ng-template>
+
+        </p-dialog>
+
+
+
+
+        <p-dialog [(visible)]="deleteOperadorDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="operador">Esta seguro que quiere eliminar a <b>{{operador.nombre +operador.apellidoPaterno+
+                        '
+                        '+
+                        operador.apellidoMaterno}}</b>?</span>
+
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteOperadorDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+                    (click)="confirmDeleteOperador()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+
+        <p-dialog [(visible)]="updateDialog" [style]="{ width: '470px' }" header="Editar operador" [modal]="true"
+            class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="p-grid p-fluid">
+                    <form [formGroup]="operadorForm">
+
+                        <!-- Primera columna -->
+                        <div class="p-col-6">
+                            <div class="field">
+                                <label for="name">Nombre</label>
+                                <input type="text" pInputText id="name" formControlName="nombre"
+                                    [(ngModel)]="editingOperador.nombre" required autofocus />
+                            </div>
+                            <div class="field">
+                                <label for="paterno">Apellido paterno</label>
+                                <input type="text" pInputText id="paterno" formControlName="apellidoPaterno"
+                                    [(ngModel)]="editingOperador.apellidoPaterno" required />
+                            </div>
+                            <div class="field">
+                                <label for="materno">Apellido materno</label>
+                                <input type="text" pInputText id="materno" formControlName="apellidoMaterno"
+                                    [(ngModel)]="editingOperador.apellidoMaterno" required />
+                            </div>
+                            <div class="field">
+                                <label for="telefono">Numero de telefono</label>
+                                <input type="text" pInputText id="telefono" formControlName="numTelefono"
+                                    [(ngModel)]="editingOperador.numTelefono" required />
+                            </div>
+                            <div class="field">
+                                <label for="rfc">Rfc</label>
+                                <input type="text" pInputText id="rfc" formControlName="rfc"
+                                    [(ngModel)]="editingOperador.rfc" required />
+                            </div>
+                            <div class="field">
+                                <label for="curp">Curp</label>
+                                <input type="text" pInputText id="curp" formControlName="curp"
+                                    [(ngModel)]="editingOperador.curp" required />
+                            </div>
+                        </div>
+                        <!-- Segunda columna -->
+                        <div class="p-col-6">
+                            <div class="field">
+                                <label for="nss">NSS</label>
+                                <input type="text" pInputText id="nss" formControlName="nss"
+                                    [(ngModel)]="editingOperador.nss" required />
+                            </div>
+                            <div class="field">
+                                <label for="direc">Dirección</label>
+                                <textarea id="direc" formControlName="direccion" pInputTextarea
+                                    [(ngModel)]="editingOperador.direccion" required rows="3" cols="20"></textarea>
+                            </div>
+                            <div class="field">
+                                <label for="cpostal">Codigo postal</label>
+                                <p-inputNumber id="cpostal" formControlName="codigoPostal"
+                                    [(ngModel)]="editingOperador.codigoPostal"></p-inputNumber>
+                            </div>
+                            <div class="field">
+                                <label for="puesto">Puesto</label>
+                                <input type="text" pInputText id="puesto" formControlName="puesto"
+                                    [(ngModel)]="editingOperador.puesto" required />
+                            </div>
+                            <div class="field">
+                                <label for="licencia">Licencia</label>
+                                <input type="text" pInputText id="licencia" formControlName="licencia"
+                                    [(ngModel)]="editingOperador.licencia" required />
+                            </div>
+                            <div class="field">
+                                <label for="resi">Residencia</label>
+                                <input type="text" pInputText id="resi" formControlName="residencia"
+                                    [(ngModel)]="editingOperador.residencia" required />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                    (click)="updateDialog = false"></button>
+                <button pButton pRipple label="Actualizar" icon="pi pi-check" class="p-button-text"
+                    (click)="editOperadorConfirm()"></button>
+            </ng-template>
+        </p-dialog>
+
+    </div>
 </div>
