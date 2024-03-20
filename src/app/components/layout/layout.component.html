@@ -4,13 +4,13 @@
         <h3>Menu</h3>
         <ul class="menu">
           <li>
-            <a pButton icon="pi pi-home" label="Dashboard"></a>
+            <a pButton icon="pi pi-home" routerLink="/principal/dashboard" label="Dashboard"  (click)="closeSidebar()"></a>
           </li>
           <li>
             <a pButton icon="pi pi-book" label="Servicios"></a>
           </li>
           <li>
-            <a pButton icon="pi pi-users" routerLink="/dashboard/operador" label="Operadores" (click)="closeSidebar()" (click)="closeSidebar()"></a>
+            <a pButton icon="pi pi-users" routerLink="/principal/operador" label="Operadores" (click)="closeSidebar()"></a>
           </li>
           <li>
             <a pButton icon="pi pi-car" label="Gruas"></a>

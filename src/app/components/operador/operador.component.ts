@@ -77,8 +77,8 @@ export class OperadorComponent implements OnInit{
   }
 
   registrarOperador(): void {
-    console.log(this.operadorForm .valid);
-    if (this.operadorForm .valid) {
+    console.log(this.operadorForm.valid);
+    if (this.operadorForm.valid) {
       console.log(this.operadorForm.value);
       this.operadorService.save(this.operadorForm.value).subscribe(
         () => {
@@ -110,6 +110,7 @@ export class OperadorComponent implements OnInit{
 }
 
   showDialog() {
+    this.operadorForm.reset();
     this.productDialog = true;
   }
 
@@ -159,6 +160,7 @@ editOperadorConfirm(){
       () => {
         // Operador actualizado exitosamente
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador actualizado exitosamente' });
+        this.operadorForm.reset();
         this.updateDialog = false; // Cerrar el diálogo de edición
         this.cargarOperadores();
         this.editingOperador = null; // Limpiar el operador en edición

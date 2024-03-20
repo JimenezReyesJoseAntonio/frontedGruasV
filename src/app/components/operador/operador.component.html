@@ -43,7 +43,9 @@
                         <td>{{ operador.apellidoPaterno }}</td>
                         <td>{{ operador.apellidoMaterno }}</td>
                         <td>{{ operador.numTelefono }}</td>
-                        <td>{{operador.estatus}}</td>
+                        <td>
+                            <p-tag [value]="operador.estatus"></p-tag>
+                        </td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
@@ -86,7 +88,7 @@
                             </div>
                             <div class="field">
                                 <label for="telefono">Numero de telefono</label>
-                                <input type="text" pInputText id="telefono" formControlName="numTelefono" required />
+                                <input type="text" pInputText  pKeyFilter="int" id="telefono" formControlName="numTelefono" required maxlength="12" minlength="12"/>
                             </div>
                             <div class="field">
                                 <label for="rfc">Rfc</label>
@@ -110,7 +112,7 @@
                             </div>
                             <div class="field">
                                 <label for="cpostal">Codigo postal</label>
-                                <p-inputNumber id="cpostal" formControlName="codigoPostal"></p-inputNumber>
+                                <p-inputNumber id="cpostal" formControlName="codigoPostal" [maxlength]="5" [minlength]="5" [useGrouping]="false" ></p-inputNumber>
                             </div>
                             <div class="field">
                                 <label for="puesto">Puesto</label>
@@ -188,8 +190,8 @@
                             </div>
                             <div class="field">
                                 <label for="telefono">Numero de telefono</label>
-                                <input type="text" pInputText id="telefono" formControlName="numTelefono"
-                                    [(ngModel)]="editingOperador.numTelefono" required />
+                                <input type="text" pInputText  id="telefono" formControlName="numTelefono"
+                                    [(ngModel)]="editingOperador.numTelefono" required pKeyFilter="int"  minlength="12"  maxlength="12"/>
                             </div>
                             <div class="field">
                                 <label for="rfc">Rfc</label>
@@ -217,7 +219,7 @@
                             <div class="field">
                                 <label for="cpostal">Codigo postal</label>
                                 <p-inputNumber id="cpostal" formControlName="codigoPostal"
-                                    [(ngModel)]="editingOperador.codigoPostal"></p-inputNumber>
+                                    [(ngModel)]="editingOperador.codigoPostal" [minlength]="5" [maxlength]="5" [useGrouping]="false"></p-inputNumber>
                             </div>
                             <div class="field">
                                 <label for="puesto">Puesto</label>

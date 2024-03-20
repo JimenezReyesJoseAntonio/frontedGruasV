@@ -4,6 +4,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { LoginComponent } from './components/login/login.component';
 import { OperadorComponent } from './components/operador/operador.component';
 import { authGuard } from './guards/auth.guard';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 
 const routes: Routes = [
@@ -18,12 +19,16 @@ const routes: Routes = [
   
   {
    canActivate:[authGuard],
-   path: 'dashboard',
+   path: 'principal',
    component: LayoutComponent,
   children:[
     {
       path:'operador',
       component:OperadorComponent
+    },
+    {
+      path:'dashboard',
+      component:DashboardComponent
     }
 
   ]

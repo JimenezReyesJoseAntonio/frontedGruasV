@@ -22,6 +22,7 @@ import { HttpClientModule, HttpClient, provideHttpClient, withFetch, HTTP_INTERC
 import { OperadorComponent } from './components/operador/operador.component';//lo borre share module
 import { OperadorModule } from './components/operador/operador.module';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { TokenInterceptorService } from './interceptors/token-interceptor.servic
     SidenavComponent,
     LayoutComponent,
     LoginComponent,
+    DashboardComponent,
     
   ],
   imports: [
