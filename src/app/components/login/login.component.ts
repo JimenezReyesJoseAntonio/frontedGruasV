@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: data.response.message});
           } else {
             this.tokenService.setToken(data.token);
-            this.router.navigate(['/']);
+            this.router.navigate(['/dashboard']);
           }
         },
         err => {

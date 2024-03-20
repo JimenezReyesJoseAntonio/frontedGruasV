@@ -14,3 +14,8 @@
     width: 100%; /* Asegura que la tarjeta se ajuste al ancho máximo */
   }
   
+
+  .butonEntrar{
+    margin-top: 30px;
+    margin-left: 200px;
+  }

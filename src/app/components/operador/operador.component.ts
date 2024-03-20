@@ -67,8 +67,12 @@ export class OperadorComponent implements OnInit{
         this.listaVacia = undefined;
       },
       err => {
-        this.listaVacia = err.error.message;
-      }
+        if (err && err.error && err.error.message) {
+          this.listaVacia = err.error.message;
+        } else {
+          this.listaVacia = 'Error al cargar operadores';
+        }     
+       }
     );
   }
 
@@ -79,7 +83,7 @@ export class OperadorComponent implements OnInit{
       this.operadorService.save(this.operadorForm.value).subscribe(
         () => {
           // Operador registrado exitosamente
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Operador registrado exitosamente' });
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador registrado exitosamente' });
           // Limpiar los campos del formulario u otras acciones necesarias
           this.productDialog = false;
   
@@ -154,7 +158,7 @@ editOperadorConfirm(){
     this.operadorService.update(this.editingOperador.id,this.editingOperador).subscribe(
       () => {
         // Operador actualizado exitosamente
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Operador actualizado exitosamente' });
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador actualizado exitosamente' });
         this.updateDialog = false; // Cerrar el diálogo de edición
         this.cargarOperadores();
         this.editingOperador = null; // Limpiar el operador en edición

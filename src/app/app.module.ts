@@ -18,9 +18,10 @@ import { AppComponent } from './app.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { LoginComponent } from './components/login/login.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient, provideHttpClient, withFetch, HTTP_INTERCEPTORS  } from '@angular/common/http';
 import { OperadorComponent } from './components/operador/operador.component';//lo borre share module
 import { OperadorModule } from './components/operador/operador.module';
+import { TokenInterceptorService } from './interceptors/token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { OperadorModule } from './components/operador/operador.module';
     
   ],
   imports: [
+    
     BrowserModule,
     BrowserAnimationsModule,
     ButtonModule,
@@ -40,7 +42,6 @@ import { OperadorModule } from './components/operador/operador.module';
     CheckboxModule,
     InputTextModule,
     FormsModule,
-    HttpClientModule,
     CardModule,
     ReactiveFormsModule,
     ToastModule,
@@ -50,7 +51,10 @@ import { OperadorModule } from './components/operador/operador.module';
 
   ],
   providers: [
-    provideClientHydration()
+
+    provideHttpClient(withFetch()),
+    provideClientHydration(),
+    
   ],
   bootstrap: [AppComponent]
 })

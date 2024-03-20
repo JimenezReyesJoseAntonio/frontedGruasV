@@ -31,7 +31,7 @@
                         <th>Apellido paterno</th>
                         <th>Apellido materno</th>
                         <th>Numero de telefono</th>
-                        <th>Status</th>
+                        <th>Estatus</th>
                         <th>Editar/Eliminar</th>
 
                     </tr>
@@ -43,7 +43,7 @@
                         <td>{{ operador.apellidoPaterno }}</td>
                         <td>{{ operador.apellidoMaterno }}</td>
                         <td>{{ operador.numTelefono }}</td>
-                        <td></td>
+                        <td>{{operador.estatus}}</td>
                         <td>
                             <div class="flex">
                                 <button pButton pRipple icon="pi pi-pencil"
@@ -57,7 +57,7 @@
                 </ng-template>
                 <ng-template pTemplate="summary">
                     <div class="flex align-items-center justify-content-between">
-                        hola
+                        Cantidad de operadores <b></b>
                     </div>
                 </ng-template>
             </p-table>
@@ -131,9 +131,9 @@
 
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text"
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
                     (click)="hideDialog()"></button>
-                <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text"
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
                     (click)="registrarOperador()"></button>
             </ng-template>
 
@@ -142,9 +142,11 @@
 
 
 
-        <p-dialog [(visible)]="deleteOperadorDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteOperadorDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <div class="iconDelete">
+                    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                </div>
                 <span *ngIf="operador">Esta seguro que quiere eliminar a <b>{{operador.nombre +operador.apellidoPaterno+
                         '
                         '+

@@ -1,4 +1,3 @@
-
 <div class="container" style="height: 100vh; display: flex; justify-content: center; align-items: center;">
   <div class="row justify-content-center">
     <div class="col-md-6">
@@ -10,21 +9,25 @@
               <img src="../../../assets/GVlogo.jpg" alt="Gruas Vesco logo" class="login-logo">
             </div>
             <p-header>
-              <h2>Login</h2>
+              <h2>Iniciar sesión</h2>
             </p-header>
             <div class="p-fluid">
               <div class="p-field">
                 <label for="nombreUsuario">Nombre de Usuario</label>
-                <input id="nombreUsuario" type="text" pInputText placeholder="Nombre usuario" formControlName="nombreUsuario" class="p-inputtext-sm">
+                <input id="nombreUsuario" type="text" pInputText formControlName="nombreUsuario" class="p-inputtext-sm">
               </div>
               <div class="p-field">
                 <label for="password">Contraseña</label>
-                <p-password id="password" placeholder="Password" formControlName="password" class="p-password-sm"></p-password>
+                <p-password id="password" formControlName="password" class="p-password-sm"
+                  [feedback]="false"></p-password>
+
               </div>
             </div>
             <p-footer class="text-center">
+              <div class="butonEntrar">
+                <p-button label="Acceder" type="submit" icon="pi pi-sign-in" size="large"></p-button>
+              </div>
 
-              <button pButton type="submit" label="Submit" class="p-button p-button-sm p-button-primary"></button>
             </p-footer>
           </form>
         </p-card>
@@ -33,4 +36,3 @@
   </div>
 </div>
 <p-toast></p-toast>
-

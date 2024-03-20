@@ -3,15 +3,23 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './components/layout/layout.component';
 import { LoginComponent } from './components/login/login.component';
 import { OperadorComponent } from './components/operador/operador.component';
+import { authGuard } from './guards/auth.guard';
 
 
 const routes: Routes = [
+  {
+    path: '',
+    component: LoginComponent,
+  },
   {
     path:'login',
     component:LoginComponent
   },
   
-  { path: '', component: LayoutComponent,
+  {
+   canActivate:[authGuard],
+   path: 'dashboard',
+   component: LayoutComponent,
   children:[
     {
       path:'operador',
