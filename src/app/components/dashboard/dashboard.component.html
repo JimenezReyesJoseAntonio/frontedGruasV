@@ -1,8 +1,7 @@
 
 <div class="card flex justify-content-center">
     <p-card header="Bienvenido">
-        <p class="m-0">
-            
-        </p>
+        <h1 class="display-4" *ngIf="!nombreUsuario">Hello, world!</h1>
+        <h1 class="display-4" *ngIf="nombreUsuario">Hello, {{nombreUsuario}}</h1>
     </p-card>
 </div>

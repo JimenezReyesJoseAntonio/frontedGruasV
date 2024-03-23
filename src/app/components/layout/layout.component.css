@@ -1,5 +1,6 @@
-
-  
+  html body {
+    margin: 0;
+  }
   .custom-sidebar .sidebar-content {
     /* Inherit styles from sidebar */
   }
@@ -46,12 +47,13 @@
   
   .main-content {
     /* Adjust main content styles as needed */
-  }
+    padding: 0; /* Remove default list padding */
+ margin: 0 !important;  }
   
   /* Optional: Adjust header styles */
   .header {
     
-    background-color: #1a57e7; /* Light background for header */
+    background-color: #004598; /* Light background for header */
     padding: 1rem 2rem;
     display: flex; /* Arrange menu button and title side-by-side */
     align-items: center; /* Align elements vertically */
@@ -61,4 +63,13 @@
     margin-right: 1rem; /* Add spacing between button and title */
   }
   
-  
+  .layout-wrapper{
+    
+  }
+
+  .title{
+    color: white;
+    font-size: larger;
+  }
+
+ 

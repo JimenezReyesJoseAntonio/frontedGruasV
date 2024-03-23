@@ -1,21 +1,22 @@
 <div>
     <div class="col-12">
         <div class="card px-6 py-6">
-            <p-toolbar styleClass="mb-1">
-                <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
-                            (click)="showDialog()"></button>
-                        <p-toast position="top-center"></p-toast>
+            <div class="toolb">
+                <p-toolbar styleClass="mb-1">
+                    <ng-template pTemplate="left">
+                        <div class="my-2">
+                            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
+                                (click)="showDialog()"></button>
+                            <p-toast position="top-center"></p-toast>
 
-                    </div>
-                </ng-template>
+                        </div>
+                    </ng-template>
 
-                <ng-template pTemplate="right">
-                    <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"></button>
-                </ng-template>
-            </p-toolbar>
-
+                    <ng-template pTemplate="right">
+                        <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"></button>
+                    </ng-template>
+                </p-toolbar>
+            </div>
 
             <p-table [value]="operadores" [tableStyle]="{ 'min-width': '60rem' }">
                 <ng-template pTemplate="caption">
@@ -88,7 +89,8 @@
                             </div>
                             <div class="field">
                                 <label for="telefono">Numero de telefono</label>
-                                <input type="text" pInputText  pKeyFilter="int" id="telefono" formControlName="numTelefono" required maxlength="12" minlength="12"/>
+                                <input type="text" pInputText pKeyFilter="int" id="telefono"
+                                    formControlName="numTelefono" required maxlength="12" minlength="12" />
                             </div>
                             <div class="field">
                                 <label for="rfc">Rfc</label>
@@ -112,7 +114,8 @@
                             </div>
                             <div class="field">
                                 <label for="cpostal">Codigo postal</label>
-                                <p-inputNumber id="cpostal" formControlName="codigoPostal" [maxlength]="5" [minlength]="5" [useGrouping]="false" ></p-inputNumber>
+                                <p-inputNumber id="cpostal" formControlName="codigoPostal" [maxlength]="5"
+                                    [minlength]="5" [useGrouping]="false"></p-inputNumber>
                             </div>
                             <div class="field">
                                 <label for="puesto">Puesto</label>
@@ -190,8 +193,9 @@
                             </div>
                             <div class="field">
                                 <label for="telefono">Numero de telefono</label>
-                                <input type="text" pInputText  id="telefono" formControlName="numTelefono"
-                                    [(ngModel)]="editingOperador.numTelefono" required pKeyFilter="int"  minlength="12"  maxlength="12"/>
+                                <input type="text" pInputText id="telefono" formControlName="numTelefono"
+                                    [(ngModel)]="editingOperador.numTelefono" required pKeyFilter="int" minlength="12"
+                                    maxlength="12" />
                             </div>
                             <div class="field">
                                 <label for="rfc">Rfc</label>
@@ -219,7 +223,8 @@
                             <div class="field">
                                 <label for="cpostal">Codigo postal</label>
                                 <p-inputNumber id="cpostal" formControlName="codigoPostal"
-                                    [(ngModel)]="editingOperador.codigoPostal" [minlength]="5" [maxlength]="5" [useGrouping]="false"></p-inputNumber>
+                                    [(ngModel)]="editingOperador.codigoPostal" [minlength]="5" [maxlength]="5"
+                                    [useGrouping]="false"></p-inputNumber>
                             </div>
                             <div class="field">
                                 <label for="puesto">Puesto</label>

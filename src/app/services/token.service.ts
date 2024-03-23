@@ -26,6 +26,32 @@ export class TokenService {
 
   }
   
+  getNombreUsuario(): string {
+    if (!this.isLogged()) {
+      console.log('no hay nombree');
+
+      return null;
+    }
+    const token = this.getToken();
+    const payload = token.split('.')[1];
+    const values = atob(payload);
+    const valuesJson = JSON.parse(values);
+    const nombreUsuario = valuesJson.nombreUsuario;
+    return nombreUsuario;
+  }
+
+  isAdmin(): boolean {
+    if (!this.isLogged()) {
+      return false;
+    }
+    const token = this.getToken();
+    const payload = token.split('.')[1];
+    const values = atob(payload);
+    const valuesJson = JSON.parse(values);
+    const roles = valuesJson.roles;
+    return roles.includes('admin');
+  }
+
 
   logOut(): void {
     if (typeof localStorage !== 'undefined') {

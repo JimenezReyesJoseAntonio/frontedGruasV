@@ -1,34 +1,34 @@
 <div class="layout-wrapper">
-    <p-sidebar [(visible)]="sidebarVisible" position="left" [showCloseIcon]="true" class="custom-sidebar">
-      <div class="sidebar-content">
-        <h3>Menu</h3>
-        <ul class="menu">
-          <li>
-            <a pButton icon="pi pi-home" routerLink="/principal/dashboard" label="Dashboard"  (click)="closeSidebar()"></a>
-          </li>
-          <li>
-            <a pButton icon="pi pi-book" label="Servicios"></a>
-          </li>
-          <li>
-            <a pButton icon="pi pi-users" routerLink="/principal/operador" label="Operadores" (click)="closeSidebar()"></a>
-          </li>
-          <li>
-            <a pButton icon="pi pi-car" label="Gruas"></a>
-          </li>
-          <li>
-            <a pButton icon="pi pi-power-off "  label="Logout" (click)="logout()"></a>
-          </li>
-        </ul>
-      </div>
-    </p-sidebar>
-    <div class="main-content">
-      <div class="header">
-        <button type="button" pButton icon="pi pi-bars" (click)="toggleSidebar()" class="menu-button"></button>
-        <span class="title" (click)="toggleSidebar()">Gruas Vesco</span>
-      </div>
-      <div class="container">
-        <router-outlet></router-outlet>
-      </div>
+  <p-sidebar [(visible)]="sidebarVisible" position="left" [showCloseIcon]="true" class="custom-sidebar">
+    <div class="sidebar-content">
+      <h3>Menu</h3>
+      <ul class="menu">
+        <li>
+          <a pButton icon="pi pi-home" routerLink="/principal/dashboard" label="Dashboard" (click)="closeSidebar()"></a>
+        </li>
+        <li>
+          <a pButton icon="pi pi-book" label="Servicios"></a>
+        </li>
+        <li>
+          <a pButton icon="pi pi-users" routerLink="/principal/operador" label="Operadores"
+            (click)="closeSidebar()"></a>
+        </li>
+        <li>
+          <a pButton icon="pi pi-car" label="Gruas"></a>
+        </li>
+        <li>
+          <a pButton icon="pi pi-power-off " label="Logout" (click)="logout()"></a>
+        </li>
+      </ul>
+    </div>
+  </p-sidebar>
+  <div class="main-content">
+    <div class="header">
+      <button type="button" pButton icon="pi pi-bars" (click)="toggleSidebar()" class="menu-button"></button>
+      <img src="../../../assets/GVlogoS.png" alt="logo" height="90px" width="150px">
+    </div>
+    <div class="container">
+      <router-outlet></router-outlet>
     </div>
   </div>
-  
+</div>
