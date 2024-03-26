@@ -43,6 +43,7 @@ export class OperadorComponent implements OnInit{
         puesto:[null,[Validators.required]],
         licencia:[null,[Validators.required]],
         residencia:[null,[Validators.required]],
+        estatus:[null,[Validators.required]]
 
 
         });
@@ -52,6 +53,7 @@ export class OperadorComponent implements OnInit{
   ngOnInit(): void {
 
     this.cargarOperadores();
+
 
   }
 
@@ -151,7 +153,8 @@ confirmDeleteOperador():void{
 
 editOperador(operador: Operador) {
   this.editingOperador = { ...operador }; // Clonar el operador para evitar modificar el original directamente
-  this.updateDialog = true; // Mostrar el diálogo de edición
+  console.log(typeof this.editingOperador.estatus)
+      this.updateDialog = true; // Mostrar el diálogo de edición
 }
 
 editOperadorConfirm(){

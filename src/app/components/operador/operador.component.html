@@ -45,7 +45,7 @@
                         <td>{{ operador.apellidoMaterno }}</td>
                         <td>{{ operador.numTelefono }}</td>
                         <td>
-                            <p-tag [value]="operador.estatus"></p-tag>
+                            <p-tag [value]="operador.estatus?.descripcion"></p-tag>
                         </td>
                         <td>
                             <div class="flex">
@@ -128,6 +128,11 @@
                             <div class="field">
                                 <label for="resi">Residencia</label>
                                 <input type="text" pInputText id="resi" formControlName="residencia" required />
+                            </div>
+                            <div>
+                                <label for="estatus">Estatus</label>
+                                <p-inputNumber id="estatus" formControlName="estatus" [maxlength]="1"
+                                    [minlength]="1" ></p-inputNumber>
                             </div>
                         </div>
                     </form>
@@ -240,6 +245,13 @@
                                 <label for="resi">Residencia</label>
                                 <input type="text" pInputText id="resi" formControlName="residencia"
                                     [(ngModel)]="editingOperador.residencia" required />
+                            </div>
+                            <div>
+                                <div>
+                                    <label for="estatus">Estatus</label>
+                                    <p-inputNumber id="estatus" formControlName="estatus" [maxlength]="1"
+                                        [minlength]="1" [(ngModel)]="editingOperador.estatus.id" ></p-inputNumber>
+                                </div>
                             </div>
                         </div>
                     </form>
