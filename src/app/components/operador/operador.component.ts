@@ -3,6 +3,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Operador } from '../../models/operador';
 import { OperadorService } from '../../services/operador.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { EstatusDto } from '../../models/estatus.dto';
+import { EstatusService } from '../../services/estatus.service';
 
 
 @Component({
@@ -17,6 +19,11 @@ export class OperadorComponent implements OnInit{
   listaVacia: string | undefined;
   operadorForm!: FormGroup;
   
+  //estatus del operador
+  estatus: EstatusDto[] = [];
+  estatusDropdown: any[] = []; // Declaración de la variable estatusDropdown
+  selectedEstatusId: number | null = null;
+
 
   operador: Operador | null = null;
   editingOperador: Operador | null = null;
@@ -28,6 +35,7 @@ export class OperadorComponent implements OnInit{
   constructor(private messageService: MessageService,
     private operadorService: OperadorService,
     private fb:FormBuilder,
+    private estatusService: EstatusService
 
     ) {
       this.operadorForm =this.fb.group({
@@ -53,6 +61,7 @@ export class OperadorComponent implements OnInit{
   ngOnInit(): void {
 
     this.cargarOperadores();
+    this.cargarEstatus();
 
 
   }
@@ -78,11 +87,37 @@ export class OperadorComponent implements OnInit{
     );
   }
 
+  cargarEstatus(): void {
+
+    this.estatusService.lista().subscribe(
+      data => {
+        // Limpiar el arreglo de operadores antes de cargar los nuevos datos
+        this.estatus = data;
+        this.estatusDropdown = this.formatoDropdown(data); // Convertir el formato
+
+        console.log(data);
+        console.log('carga estatus' + this.estatus.length)
+
+      },
+      err => {
+        if (err && err.error && err.error.message) {
+          this.listaVacia = err.error.message;
+        } else {
+          this.listaVacia = 'Error al cargar estatus';
+        }     
+       }
+    );
+  }
+
   registrarOperador(): void {
     console.log(this.operadorForm.valid);
+    console.log(this.operadorForm);
+
     if (this.operadorForm.valid) {
       console.log(this.operadorForm.value);
-      this.operadorService.save(this.operadorForm.value).subscribe(
+      
+       const formData = this.operadorForm.value;
+      this.operadorService.save(formData).subscribe(
         () => {
           // Operador registrado exitosamente
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador registrado exitosamente' });
@@ -178,5 +213,26 @@ editOperadorConfirm(){
     this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Campos vacíos o inválidos' });
   }
 }
+
+//formato de los estatus para usarlo en el d
+formatoDropdown(estatus: EstatusDto[]): any[] {
+  return estatus.map(item => ({ label: item.descripcion, value: item.id }));
+}
+
+// cambia el color del tag
+getSeverity(status: string) {
+  switch (status) {
+      case 'Libre':
+          return 'success';
+      case 'Ocupapdo':
+          return 'warning';
+      case 'Permiso':
+          return 'danger';
+      default:
+          return ''; // Handle other cases, such as returning an empty string
+  }
+}
+
+
 
 }

@@ -11,7 +11,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { TagModule } from 'primeng/tag';
-
+import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
 
 
@@ -36,6 +36,7 @@ import { ToastModule } from 'primeng/toast';
     ConfirmDialogModule,
     KeyFilterModule,
     TagModule,
+    DropdownModule,
     ReactiveFormsModule
   ]
 })
