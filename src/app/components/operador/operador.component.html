@@ -18,11 +18,11 @@
                 </p-toolbar>
             </div>
 
-            <p-table [value]="operadores" [tableStyle]="{ 'min-width': '60rem' }">
+            <p-table *ngIf="!listaVacia" [value]="operadores" [tableStyle]="{ 'min-width': '60rem' }"   [paginator]="true"
+            [rows]="5">
                 <ng-template pTemplate="caption">
                     <div class="flex align-items-center justify-content-between">
                         Operadores
-                        <p-button icon="pi pi-refresh" (click)="updatetable()"></p-button>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
@@ -45,7 +45,8 @@
                         <td>{{ operador.apellidoMaterno }}</td>
                         <td>{{ operador.numTelefono }}</td>
                         <td>
-                            <p-tag [value]="operador.estatus?.descripcion" [severity]="getSeverity(operador.estatus?.descripcion)"></p-tag>
+                            <p-tag [value]="operador.estatus?.descripcion"
+                                [severity]="getSeverity(operador.estatus?.descripcion)"></p-tag>
                         </td>
                         <td>
                             <div class="flex">
@@ -64,6 +65,12 @@
                     </div>
                 </ng-template>
             </p-table>
+
+            <div class="vacia" *ngIf="listaVacia">
+                <div class="p-3 mb-2 bg-dark text-white text-center">
+                    <h2>{{listaVacia}}</h2>
+                </div>
+            </div>
 
         </div>
 

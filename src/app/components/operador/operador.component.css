@@ -5,3 +5,8 @@
 .toolb{
     margin-bottom: 30px;
 }
+
+.vacia{
+    display: flex;
+    justify-content: center;
+}

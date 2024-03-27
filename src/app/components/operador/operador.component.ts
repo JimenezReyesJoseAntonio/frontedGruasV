@@ -14,11 +14,11 @@ import { EstatusService } from '../../services/estatus.service';
   providers: [MessageService]
 
 })
-export class OperadorComponent implements OnInit{
+export class OperadorComponent implements OnInit {
   operadores: Operador[] = [];
   listaVacia: string | undefined;
   operadorForm!: FormGroup;
-  
+
   //estatus del operador
   estatus: EstatusDto[] = [];
   estatusDropdown: any[] = []; // Declaración de la variable estatusDropdown
@@ -30,32 +30,32 @@ export class OperadorComponent implements OnInit{
 
   productDialog: boolean = false;
   updateDialog: boolean = false;
-  deleteOperadorDialog: boolean = false; 
+  deleteOperadorDialog: boolean = false;
 
   constructor(private messageService: MessageService,
     private operadorService: OperadorService,
-    private fb:FormBuilder,
+    private fb: FormBuilder,
     private estatusService: EstatusService
 
-    ) {
-      this.operadorForm =this.fb.group({
-        nombre:[null,[Validators.required]],
-        apellidoPaterno:[null,[Validators.required]],
-        apellidoMaterno:[null,[Validators.required]],
-        numTelefono:[null,[Validators.required]],
-        rfc:[null,[Validators.required]],
-        curp:[null,[Validators.required]],
-        nss:[null,[Validators.required]],
-        direccion:[null,[Validators.required]],
-        codigoPostal:[null,[Validators.required]],
-        puesto:[null,[Validators.required]],
-        licencia:[null,[Validators.required]],
-        residencia:[null,[Validators.required]],
-        estatus:[null,[Validators.required]]
+  ) {
+    this.operadorForm = this.fb.group({
+      nombre: [null, [Validators.required]],
+      apellidoPaterno: [null, [Validators.required]],
+      apellidoMaterno: [null, [Validators.required]],
+      numTelefono: [null, [Validators.required]],
+      rfc: [null, [Validators.required]],
+      curp: [null, [Validators.required]],
+      nss: [null, [Validators.required]],
+      direccion: [null, [Validators.required]],
+      codigoPostal: [null, [Validators.required]],
+      puesto: [null, [Validators.required]],
+      licencia: [null, [Validators.required]],
+      residencia: [null, [Validators.required]],
+      estatus: [null, [Validators.required]]
 
 
-        });
-    }
+    });
+  }
 
 
   ngOnInit(): void {
@@ -82,8 +82,8 @@ export class OperadorComponent implements OnInit{
           this.listaVacia = err.error.message;
         } else {
           this.listaVacia = 'Error al cargar operadores';
-        }     
-       }
+        }
+      }
     );
   }
 
@@ -104,8 +104,8 @@ export class OperadorComponent implements OnInit{
           this.listaVacia = err.error.message;
         } else {
           this.listaVacia = 'Error al cargar estatus';
-        }     
-       }
+        }
+      }
     );
   }
 
@@ -115,15 +115,16 @@ export class OperadorComponent implements OnInit{
 
     if (this.operadorForm.valid) {
       console.log(this.operadorForm.value);
-      
-       const formData = this.operadorForm.value;
+
+      const formData = this.operadorForm.value;
       this.operadorService.save(formData).subscribe(
         () => {
           // Operador registrado exitosamente
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador registrado exitosamente' });
           // Limpiar los campos del formulario u otras acciones necesarias
+          this.cargarOperadores(); // Recargar la lista de operadores después de agregar uno nuevo
           this.productDialog = false;
-  
+
         },
         error => {
           // Error al registrar el operador
@@ -138,100 +139,94 @@ export class OperadorComponent implements OnInit{
 
     }
 
-    
+
 
   }
-  
+
   hideDialog() {
     this.productDialog = false;
-}
+  }
 
   showDialog() {
     this.operadorForm.reset();
     this.productDialog = true;
   }
 
-  updatetable(){
-    this.cargarOperadores();
+  deleteOperador(operador: Operador) {
+    this.operador = operador;
+    this.deleteOperadorDialog = true;
   }
 
- 
-
-deleteOperador(operador:Operador){
-  this.operador = operador;
-  this.deleteOperadorDialog = true;
-}
-
-deleteSelectedOperador() {
-  this.deleteOperadorDialog = true;
-}
-
-
-confirmDeleteOperador():void{
-  console.log(this.operador.nombre);
-  if (this.operador) {
-    this.operadorService.delete(this.operador.id).subscribe(
-      () => {
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador eliminado exitosamente' });
-        this.operador = null;
-        this.cargarOperadores(); // Recargar la lista de operadores después de eliminar
-        this.deleteOperadorDialog = false;
-      },
-      error => {
-        console.error('Error:', error);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
-      }
-    );
+  deleteSelectedOperador() {
+    this.deleteOperadorDialog = true;
   }
 
-}
 
-editOperador(operador: Operador) {
-  this.editingOperador = { ...operador }; // Clonar el operador para evitar modificar el original directamente
-  console.log(typeof this.editingOperador.estatus)
-      this.updateDialog = true; // Mostrar el diálogo de edición
-}
+  confirmDeleteOperador(): void {
+    console.log(this.operador.nombre);
+    if (this.operador) {
+      this.operadorService.delete(this.operador.id).subscribe(
+        () => {
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador eliminado exitosamente' });
+          this.operador = null;
+          this.cargarOperadores(); // Recargar la lista de operadores después de eliminar
+          this.deleteOperadorDialog = false;
+        },
+        error => {
+          console.error('Error:', error);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
+        }
+      );
+    }
 
-editOperadorConfirm(){
-  if (this.operadorForm.valid && this.editingOperador) {
-    this.operadorService.update(this.editingOperador.id,this.editingOperador).subscribe(
-      () => {
-        // Operador actualizado exitosamente
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador actualizado exitosamente' });
-        this.operadorForm.reset();
-        this.updateDialog = false; // Cerrar el diálogo de edición
-        this.cargarOperadores();
-        this.editingOperador = null; // Limpiar el operador en edición
-      },
-      error => {
-        // Error al actualizar el operador
-        console.error('Error:', error);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
-      }
-    );
-  } else {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Campos vacíos o inválidos' });
   }
-}
 
-//formato de los estatus para usarlo en el d
-formatoDropdown(estatus: EstatusDto[]): any[] {
-  return estatus.map(item => ({ label: item.descripcion, value: item.id }));
-}
+  editOperador(operador: Operador) {
+    this.editingOperador = { ...operador }; // Clonar el operador para evitar modificar el original directamente
+    console.log(typeof this.editingOperador.estatus)
+    this.updateDialog = true; // Mostrar el diálogo de edición
+  }
 
-// cambia el color del tag
-getSeverity(status: string) {
-  switch (status) {
+  editOperadorConfirm() {
+    if (this.operadorForm.valid && this.editingOperador) {
+      this.operadorService.update(this.editingOperador.id, this.editingOperador).subscribe(
+        () => {
+          // Operador actualizado exitosamente
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador actualizado exitosamente' });
+          this.operadorForm.reset();
+          this.updateDialog = false; // Cerrar el diálogo de edición
+          this.cargarOperadores();
+          this.editingOperador = null; // Limpiar el operador en edición
+        },
+        error => {
+          // Error al actualizar el operador
+          console.error('Error:', error);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
+        }
+      );
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Campos vacíos o inválidos' });
+    }
+  }
+
+  //formato de los estatus para usarlo en el d
+  formatoDropdown(estatus: EstatusDto[]): any[] {
+    return estatus.map(item => ({ label: item.descripcion, value: item.id }));
+  }
+
+  // cambia el color del tag
+  getSeverity(status: string) {
+    switch (status) {
       case 'Libre':
-          return 'success';
+        return 'success';
       case 'Ocupapdo':
-          return 'warning';
+        return 'warning';
       case 'Permiso':
-          return 'danger';
+        return 'danger';
       default:
-          return ''; // Handle other cases, such as returning an empty string
+        return ''; // Handle other cases, such as returning an empty string
+    }
   }
-}
 
 
 
