@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { OperadorComponent } from './components/operador/operador.component';
 import { authGuard } from './guards/auth.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { GruaComponent } from './components/grua/grua.component';
 
 
 const routes: Routes = [
@@ -27,13 +28,16 @@ const routes: Routes = [
       component:OperadorComponent
     },
     {
+      path:'grua',
+      component:GruaComponent
+    },
+    {
       path:'dashboard',
       component:DashboardComponent
     }
 
   ]
-}, // Define la ruta para LayoutComponent
-  // Otras rutas pueden agregarse aquí según sea necesssssario
+}, 
 ];
 
 @NgModule({

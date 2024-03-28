@@ -23,6 +23,8 @@ import { OperadorComponent } from './components/operador/operador.component';//l
 import { OperadorModule } from './components/operador/operador.module';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { GruaComponent } from './components/grua/grua.component';
+import { GruaModule } from './components/grua/grua.module';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     ToastModule,
     ToolbarModule,
     TableModule,
-    OperadorModule
+    OperadorModule,
+    GruaModule
 
   ],
   providers: [
