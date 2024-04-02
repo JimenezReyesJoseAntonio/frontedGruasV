@@ -1,1 +1,245 @@
-<p>grua works!</p>
+<div>
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <div class="toolb">
+                <p-toolbar styleClass="mb-1">
+                    <ng-template pTemplate="left">
+                        <div class="my-2">
+                            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
+                                (click)="showDialog()"></button>
+                            <p-toast position="top-center"></p-toast>
+
+                        </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="right">
+                        <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"></button>
+                    </ng-template>
+                </p-toolbar>
+            </div>
+
+            <p-table *ngIf="!listaVacia" [value]="gruas" [tableStyle]="{ 'min-width': '60rem' }"   [paginator]="true"
+            [rows]="5">
+                <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                        Gruas
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>NoEco</th>
+                        <th>Placa</th>
+                        <th>Serie</th>
+                        <th>KM Salida</th>
+                        <th>KM Entrada</th>
+                        <th>Estatus</th>
+                        <th>Editar/Eliminar</th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-grua>
+                    <tr>
+                        <td>{{ grua.noEco }}</td>
+                        <td>{{grua.placa }}</td>
+                        <td>{{ grua.serie }}</td>
+                        <td>{{ grua.kmSalida}}</td>
+                        <td>{{ grua.kmEntrada }}</td>
+                        <td>
+                            <p-tag [value]="grua.estatus?.descripcion"
+                                [severity]="getSeverity(grua.estatus?.descripcion)"></p-tag>
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="editOperador(grua)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                    (click)="deleteOperador(grua)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="flex align-items-center justify-content-between">
+                         <b></b>
+                    </div>
+                </ng-template>
+            </p-table>
+
+            <div class="vacia" *ngIf="listaVacia">
+                <div class="p-3 mb-2 bg-dark text-white text-center">
+                    <h2>{{listaVacia}}</h2>
+                </div>
+            </div>
+
+        </div>
+
+        <p-dialog [(visible)]="productDialog" [style]="{ width: '470px' }" header="Datos de la grua" [modal]="true"
+            class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="p-grid p-fluid">
+                    <form [formGroup]="gruaForm">
+
+                        <!-- Primera columna -->
+                        <div class="p-col-6">
+                            <div class="field">
+                                <label for="placa">Placa</label>
+                                <input type="text" pInputText id="placa" formControlName="placa" required autofocus />
+                            </div>
+                            <div class="field">
+                                <label for="serie">Serie</label>
+                                <input type="text" pInputText id="serie" formControlName="serie" required />
+                            </div>
+                            <div class="field">
+                                <label for="permiso">No Permiso</label>
+                                <input type="text" pInputText id="permiso" formControlName="noPermiso" required />
+                            </div>
+                            <div class="field">
+                                <label for="aseguradora">Aseguradora</label>
+                                <input type="text" pInputText id="aseguradora"
+                                    formControlName="aseguradora" required  />
+                            </div>
+                            <div class="field">
+                                <label for="poliza">No Poliza</label>
+                                <input type="text" pInputText id="poliza" formControlName="noPoliza" required />
+                            </div>
+                            
+                        </div>
+                        <!-- Segunda columna -->
+                        <div class="p-col-6">
+                            
+                            <div class="field">
+                                <label for="año">Año</label>
+                                <p-inputNumber id="año" formControlName="ano" [maxlength]="4"
+                                    [minlength]="4" [useGrouping]="false"></p-inputNumber>
+                            </div>
+                            <div class="field">
+                                <label for="salida">Km Salida</label>
+                                <p-inputNumber id="salida" formControlName="kmSalida" [maxlength]="6"
+                                    [minlength]="6" [useGrouping]="false"></p-inputNumber>
+                            </div>
+                            <div class="field">
+                                <label for="entrada">Km Entrada</label>
+                                <p-inputNumber id="entrada" formControlName="kmEntrada" [maxlength]="6"
+                                    [minlength]="6" [useGrouping]="false"></p-inputNumber>
+                            </div>
+                            <div>
+
+                                <label for="estatus">Estatus</label>
+                                <p-dropdown optionValue="value" [options]="estatusDropdown" placeholder="Seleccione"
+                                    formControlName="estatus">
+
+
+                                </p-dropdown>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </ng-template>
+
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+                    (click)="registrarOperador()"></button>
+            </ng-template>
+
+        </p-dialog>
+
+
+
+
+        <p-dialog [(visible)]="deleteOperadorDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <div class="iconDelete">
+                    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                </div>
+                <span *ngIf="grua">Esta seguro que quiere eliminar a <b>{{grua.placa}}</b>?</span>
+
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteOperadorDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+                    (click)="confirmDeleteOperador()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+
+        <p-dialog [(visible)]="updateDialog" [style]="{ width: '470px' }" header="Editar operador" [modal]="true"
+            class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="p-grid p-fluid">
+                    <form [formGroup]="gruaForm">
+
+                        <!-- Primera columna -->
+                        <div class="p-col-6">
+                            <div class="field">
+                                <label for="placa">Placa</label>
+                                <input type="text" pInputText id="placa" formControlName="placa" [(ngModel)]="editingOperador.placa" required autofocus />
+                            </div>
+                            <div class="field">
+                                <label for="serie">Serie</label>
+                                <input type="text" pInputText id="serie" formControlName="serie" [(ngModel)]="editingOperador.serie" required />
+                            </div>
+                            <div class="field">
+                                <label for="permiso">No Permiso</label>
+                                <input type="text" pInputText id="permiso" formControlName="noPermiso" [(ngModel)]="editingOperador.noPermiso" required />
+                            </div>
+                            <div class="field">
+                                <label for="aseguradora">Aseguradora</label>
+                                <input type="text" pInputText id="aseguradora"
+                                    formControlName="aseguradora"   [(ngModel)]="editingOperador.aseguradora" required  />
+                            </div>
+                            <div class="field">
+                                <label for="poliza">No Poliza</label>
+                                <input type="text" pInputText id="poliza" formControlName="noPoliza" required [(ngModel)]="editingOperador.noPoliza" />
+                            </div>
+                            
+                        </div>
+                        <!-- Segunda columna -->
+                        <div class="p-col-6">
+                            
+                            <div class="field">
+                                <label for="año">Año</label>
+                                <p-inputNumber id="año" formControlName="ano" [maxlength]="4"
+                                    [minlength]="4" [useGrouping]="false"  [(ngModel)]="editingOperador.ano"></p-inputNumber>
+                            </div>
+                            <div class="field">
+                                <label for="salida">Km Salida</label>
+                                <p-inputNumber id="salida" formControlName="kmSalida" [maxlength]="6"
+                                    [minlength]="6" [useGrouping]="false" [(ngModel)]="editingOperador.kmSalida"></p-inputNumber>
+                            </div>
+                            <div class="field">
+                                <label for="entrada">Km Entrada</label>
+                                <p-inputNumber id="entrada" formControlName="kmEntrada" [maxlength]="6"
+                                    [minlength]="6" [useGrouping]="false" [(ngModel)]="editingOperador.kmEntrada"></p-inputNumber>
+                            </div>
+                            <div>
+
+                                <label for="estatus">Estatus</label>
+                                <p-dropdown optionValue="value" [options]="estatusDropdown" placeholder="Seleccione"
+                                    formControlName="estatus" [(ngModel)]="editingOperador.estatus">
+
+
+                                </p-dropdown>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                    (click)="updateDialog = false"></button>
+                <button pButton pRipple label="Actualizar" icon="pi pi-check" class="p-button-text"
+                    (click)="editOperadorConfirm()"></button>
+            </ng-template>
+        </p-dialog>
+
+    </div>
+</div>
