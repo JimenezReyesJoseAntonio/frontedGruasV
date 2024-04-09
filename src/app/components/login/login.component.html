@@ -12,14 +12,19 @@
               <h2>Iniciar sesión</h2>
             </p-header>
             <div class="p-fluid">
+              <label for="nombreUsuario">Nombre de Usuario</label>
               <div class="p-field">
-                <label for="nombreUsuario">Nombre de Usuario</label>
-                <input id="nombreUsuario" type="text" pInputText formControlName="nombreUsuario" class="p-inputtext-sm">
+                <p-iconField iconPosition="left">
+                  <p-inputIcon styleClass="pi pi-user" />
+                  <input  id="nombreUsuario" type="text" pInputText formControlName="nombreUsuario" class="p-inputtext-sm"/>
+              </p-iconField>
               </div>
+              <label for="password">Contraseña</label>
               <div class="p-field">
-                <label for="password">Contraseña</label>
-                <p-password id="password" formControlName="password" class="p-password-sm"
-                  [feedback]="false"></p-password>
+                  <p-iconField iconPosition="left">
+                    <p-inputIcon styleClass="pi pi-key" />
+                    <input  id="password" type="password" pInputText formControlName="password" class="p-password-sm"/>
+                </p-iconField>
 
               </div>
             </div>

@@ -12,11 +12,15 @@
   .login-card-container {
     max-width: 400px; /* Establece el ancho máximo de la tarjeta */
     width: 100%; /* Asegura que la tarjeta se ajuste al ancho máximo */
-    box-shadow: 5px 5px 12px #CFDCED;
-  }
+    box-shadow: 5px 5px 12px #6298b1;
+    }
   
 
   .butonEntrar{
     margin-top: 30px;
     margin-left: 200px;
+  }
+
+  .container{
+    background-color: #FAFBFD;
   }

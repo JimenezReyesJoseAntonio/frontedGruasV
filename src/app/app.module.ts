@@ -25,6 +25,8 @@ import { TokenInterceptorService } from './interceptors/token-interceptor.servic
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { GruaComponent } from './components/grua/grua.component';
 import { GruaModule } from './components/grua/grua.module';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { GruaModule } from './components/grua/grua.module';
     LayoutComponent,
     LoginComponent,
     DashboardComponent,
+    
     
   ],
   imports: [
@@ -52,7 +55,9 @@ import { GruaModule } from './components/grua/grua.module';
     ToolbarModule,
     TableModule,
     OperadorModule,
-    GruaModule
+    GruaModule,
+    IconFieldModule,
+    InputIconModule
 
   ],
   providers: [
