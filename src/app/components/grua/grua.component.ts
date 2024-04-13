@@ -89,7 +89,10 @@ export class GruaComponent implements OnInit {
       data => {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.estatus = data;
-        this.estatusDropdown = this.formatoDropdown(data); // Convertir el formato
+
+        this.estatus = this.estatus.filter(est => est.eliminado === 0);
+
+        this.estatusDropdown = this.formatoDropdown(this.estatus); // Convertir el formato
 
         console.log(data);
         console.log('carga estatus' + this.estatus.length)

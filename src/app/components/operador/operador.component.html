@@ -18,8 +18,8 @@
                 </p-toolbar>
             </div>
 
-            <p-table *ngIf="!listaVacia" [value]="operadores" [tableStyle]="{ 'min-width': '60rem' }"   [paginator]="true"
-            [rows]="5">
+            <p-table *ngIf="!listaVacia" [value]="operadores" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true"
+                [rows]="5">
                 <ng-template pTemplate="caption">
                     <div class="flex align-items-center justify-content-between">
                         Operadores
@@ -61,7 +61,7 @@
                 </ng-template>
                 <ng-template pTemplate="summary">
                     <div class="flex align-items-center justify-content-between">
-                        Cantidad de operadores <b></b>
+                        Cantidad de operadores: <b>{{ operadores.length }}</b>
                     </div>
                 </ng-template>
             </p-table>
@@ -84,28 +84,40 @@
                         <div class="p-col-6">
                             <div class="field">
                                 <label for="name">Nombre</label>
-                                <input type="text" pInputText id="name" formControlName="nombre" required autofocus />
+                                <input type="text" pInputText id="name" formControlName="nombre" required autofocus  pattern="^[A-Za-z\s]+$" maxlength="15"/>
+                                <small *ngIf="submitted && !operador.nombre " style="color: red;">Nombre es
+                                    requerido.</small>
                             </div>
                             <div class="field">
                                 <label for="paterno">Apellido paterno</label>
-                                <input type="text" pInputText id="paterno" formControlName="apellidoPaterno" required />
+                                <input type="text" pInputText id="paterno" formControlName="apellidoPaterno" required pKeyFilter="alpha"/>
+                                <small *ngIf="submitted && !operador.apellidoPaterno " style="color: red;">Apellido
+                                    paterno es requerido.</small>
                             </div>
                             <div class="field">
                                 <label for="materno">Apellido materno</label>
-                                <input type="text" pInputText id="materno" formControlName="apellidoMaterno" required />
+                                <input type="text" pInputText id="materno" formControlName="apellidoMaterno" required pKeyFilter="alpha" />
+                                <small *ngIf="submitted && !operador.apellidoMaterno " style="color: red;">Apellido
+                                    materno es requerido.</small>
+
                             </div>
                             <div class="field">
-                                <label for="telefono">Numero de telefono</label>
+                                <label for="telefono">Número de teléfono</label>
                                 <input type="text" pInputText pKeyFilter="int" id="telefono"
-                                    formControlName="numTelefono" required maxlength="12" minlength="12" />
+                                    formControlName="numTelefono" required maxlength="10" minlength="10" />
+                                <small *ngIf="submitted && !operador.numTelefono " style="color: red;">Número de
+                                    teléfono es requerido.</small>
                             </div>
                             <div class="field">
-                                <label for="rfc">Rfc</label>
-                                <input type="text" pInputText id="rfc" formControlName="rfc" required />
+                                <label for="rfc">RFC</label>
+                                <input type="text" pInputText id="rfc" formControlName="rfc" required pKeyFilter="alphanum" maxlength="13" pattern="^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$"/>
+                                <small *ngIf="submitted && !operador.rfc " style="color: red;">RFC es requerido.</small>
                             </div>
                             <div class="field">
-                                <label for="curp">Curp</label>
-                                <input type="text" pInputText id="curp" formControlName="curp" required />
+                                <label for="curp">CURP</label>
+                                <input type="text" pInputText id="curp" formControlName="curp" required pKeyFilter="alphanum" />
+                                <small *ngIf="submitted && !operador.curp " style="color: red;">CURP es
+                                    requerido.</small>
                             </div>
                         </div>
                         <!-- Segunda columna -->
@@ -113,38 +125,49 @@
                             <div class="field">
                                 <label for="nss">NSS</label>
                                 <input type="text" pInputText id="nss" formControlName="nss" required />
+                                <small *ngIf="submitted && !operador.nss " style="color: red;">NSS es requerido.</small>
+
                             </div>
                             <div class="field">
                                 <label for="direc">Dirección</label>
                                 <textarea id="direc" formControlName="direccion" pInputTextarea required rows="3"
                                     cols="20"></textarea>
+                                <small *ngIf="submitted && !operador.direccion " style="color: red;">Dirección es
+                                    requerido.</small>
                             </div>
                             <div class="field">
-                                <label for="cpostal">Codigo postal</label>
+                                <label for="cpostal">Código postal</label>
                                 <p-inputNumber id="cpostal" formControlName="codigoPostal" [maxlength]="5"
                                     [minlength]="5" [useGrouping]="false"></p-inputNumber>
+                                <small *ngIf="submitted && !operador.codigoPostal " style="color: red;">Código postal es
+                                    requerido.</small>
                             </div>
                             <div class="field">
                                 <label for="puesto">Puesto</label>
-                                <input type="text" pInputText id="puesto" formControlName="puesto" required />
+                                <input type="text" pInputText id="puesto" formControlName="puesto" required pKeyFilter="alpha" />
+                                <small *ngIf="submitted && !operador.puesto " style="color: red;">Puesto es
+                                    requerido.</small>
                             </div>
                             <div class="field">
                                 <label for="licencia">Licencia</label>
-                                <input type="text" pInputText id="licencia" formControlName="licencia" required />
+                                <input type="text" pInputText id="licencia" formControlName="licencia" required pKeyFilter="alphanum"/>
                             </div>
+                            <small *ngIf="submitted && !operador.licencia " style="color: red;">Licencia es
+                                requerido.</small>
                             <div class="field">
                                 <label for="resi">Residencia</label>
-                                <input type="text" pInputText id="resi" formControlName="residencia" required />
+                                <input type="text" pInputText id="resi" formControlName="residencia" required pKeyFilter="alpha" />
+                                <small *ngIf="submitted && !operador.residencia " style="color: red;">Residencia es
+                                    requerido.</small>
                             </div>
                             <div>
 
                                 <label for="estatus">Estatus</label>
                                 <p-dropdown optionValue="value" [options]="estatusDropdown" placeholder="Seleccione"
                                     formControlName="estatus">
-
-
                                 </p-dropdown>
-
+                                <small *ngIf="submitted && !operador.estatus " style="color: red;">Estatus es
+                                    requerido.</small>
                             </div>
                         </div>
                     </form>
@@ -169,7 +192,7 @@
                 <div class="iconDelete">
                     <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 </div>
-                <span *ngIf="operador">Esta seguro que quiere eliminar a <b>{{operador.nombre +operador.apellidoPaterno+
+                <span *ngIf="operador">Esta seguro que quiere eliminar a <b>{{operador.nombre + ' ' +operador.apellidoPaterno+
                         '
                         '+
                         operador.apellidoMaterno}}</b>?</span>
@@ -196,33 +219,44 @@
                             <div class="field">
                                 <label for="name">Nombre</label>
                                 <input type="text" pInputText id="name" formControlName="nombre"
-                                    [(ngModel)]="editingOperador.nombre" required autofocus />
+                                    [(ngModel)]="editingOperador.nombre" required autofocus pattern="^[A-Za-z\s]+$" maxlength="15"/>
+                                    <small *ngIf="submitted && !editingOperador.nombre " style="color: red;">Nombre es
+                                        requerido.</small>
                             </div>
                             <div class="field">
                                 <label for="paterno">Apellido paterno</label>
                                 <input type="text" pInputText id="paterno" formControlName="apellidoPaterno"
-                                    [(ngModel)]="editingOperador.apellidoPaterno" required />
+                                    [(ngModel)]="editingOperador.apellidoPaterno" required pKeyFilter="alpha"/>
+                                    <small *ngIf="submitted && !editingOperador.apellidoPaterno " style="color: red;">Apellido
+                                        paterno es requerido.</small>
                             </div>
                             <div class="field">
                                 <label for="materno">Apellido materno</label>
                                 <input type="text" pInputText id="materno" formControlName="apellidoMaterno"
-                                    [(ngModel)]="editingOperador.apellidoMaterno" required />
+                                    [(ngModel)]="editingOperador.apellidoMaterno" required pKeyFilter="alpha"/>
+                                    <small *ngIf="submitted && !editingOperador.apellidoMaterno " style="color: red;">Apellido
+                                        materno es requerido.</small>    
                             </div>
                             <div class="field">
-                                <label for="telefono">Numero de telefono</label>
+                                <label for="telefono">Número de teléfono</label>
                                 <input type="text" pInputText id="telefono" formControlName="numTelefono"
-                                    [(ngModel)]="editingOperador.numTelefono" required pKeyFilter="int" minlength="12"
-                                    maxlength="12" />
+                                    [(ngModel)]="editingOperador.numTelefono" required pKeyFilter="int" minlength="10"
+                                    maxlength="10" />
+                                    <small *ngIf="submitted && !editingOperador.numTelefono " style="color: red;">Número de
+                                        teléfono es requerido.</small>
                             </div>
                             <div class="field">
-                                <label for="rfc">Rfc</label>
+                                <label for="rfc">RFC</label>
                                 <input type="text" pInputText id="rfc" formControlName="rfc"
-                                    [(ngModel)]="editingOperador.rfc" required />
+                                    [(ngModel)]="editingOperador.rfc" required pKeyFilter="alphanum" pattern="^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$" />
+                                    <small *ngIf="submitted && !editingOperador.rfc " style="color: red;">RFC es requerido.</small>
                             </div>
                             <div class="field">
-                                <label for="curp">Curp</label>
+                                <label for="curp">CURP</label>
                                 <input type="text" pInputText id="curp" formControlName="curp"
-                                    [(ngModel)]="editingOperador.curp" required />
+                                    [(ngModel)]="editingOperador.curp" required pKeyFilter="alphanum"/>
+                                    <small *ngIf="submitted && !editingOperador.curp " style="color: red;">CURP es
+                                        requerido.</small>
                             </div>
                         </div>
                         <!-- Segunda columna -->
@@ -231,41 +265,52 @@
                                 <label for="nss">NSS</label>
                                 <input type="text" pInputText id="nss" formControlName="nss"
                                     [(ngModel)]="editingOperador.nss" required />
+                                    <small *ngIf="submitted && !editingOperador.nss " style="color: red;">NSS es requerido.</small>
                             </div>
                             <div class="field">
                                 <label for="direc">Dirección</label>
                                 <textarea id="direc" formControlName="direccion" pInputTextarea
                                     [(ngModel)]="editingOperador.direccion" required rows="3" cols="20"></textarea>
+                                    <small *ngIf="submitted && !editingOperador.direccion " style="color: red;">Dirección es
+                                        requerido.</small>
                             </div>
                             <div class="field">
-                                <label for="cpostal">Codigo postal</label>
+                                <label for="cpostal">Código postal</label>
                                 <p-inputNumber id="cpostal" formControlName="codigoPostal"
                                     [(ngModel)]="editingOperador.codigoPostal" [minlength]="5" [maxlength]="5"
                                     [useGrouping]="false"></p-inputNumber>
+                                    <small *ngIf="submitted && !editingOperador.codigoPostal " style="color: red;">Código postal es
+                                        requerido.</small>
                             </div>
                             <div class="field">
                                 <label for="puesto">Puesto</label>
                                 <input type="text" pInputText id="puesto" formControlName="puesto"
-                                    [(ngModel)]="editingOperador.puesto" required />
+                                    [(ngModel)]="editingOperador.puesto" required pKeyFilter="alpha"/>
+                                    <small *ngIf="submitted && !editingOperador.puesto " style="color: red;">Puesto es
+                                        requerido.</small>
                             </div>
                             <div class="field">
                                 <label for="licencia">Licencia</label>
                                 <input type="text" pInputText id="licencia" formControlName="licencia"
-                                    [(ngModel)]="editingOperador.licencia" required />
+                                    [(ngModel)]="editingOperador.licencia" required pKeyFilter="alphanum"/>
+                                    <small *ngIf="submitted && !editingOperador.licencia " style="color: red;">Licencia es
+                                        requerido.</small>
                             </div>
                             <div class="field">
                                 <label for="resi">Residencia</label>
                                 <input type="text" pInputText id="resi" formControlName="residencia"
-                                    [(ngModel)]="editingOperador.residencia" required />
+                                    [(ngModel)]="editingOperador.residencia" required pKeyFilter="alpha"/>
+                                    <small *ngIf="submitted && !editingOperador.residencia " style="color: red;">Residencia es
+                                        requerido.</small>
                             </div>
                             <div>
 
                                 <label for="estatus">Estatus</label>
                                 <p-dropdown optionValue="value" [options]="estatusDropdown" placeholder="Seleccione"
                                     formControlName="estatus" [(ngModel)]="editingOperador.estatus">
-
-
                                 </p-dropdown>
+                                <small *ngIf="submitted && !editingOperador.estatus " style="color: red;">Estatus es
+                                    requerido.</small>
 
                             </div>
                         </div>
