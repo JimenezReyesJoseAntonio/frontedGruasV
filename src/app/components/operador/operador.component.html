@@ -87,6 +87,8 @@
                                 <input type="text" pInputText id="name" formControlName="nombre" required autofocus  pattern="^[A-Za-z\s]+$" minlength="3" maxlength="18"/>
                                 <small *ngIf="submitted && !operador.nombre " style="color: red;">Nombre es
                                     requerido.</small>
+                                <small *ngIf="submitted && operadorForm.controls['nombre'].errors?.['pattern']" style="color: red;">El nombre no debe contener números.</small>
+
                             </div>
                             <div class="field">
                                 <label for="paterno">Apellido paterno</label>
@@ -112,6 +114,7 @@
                                 <label for="rfc">RFC</label>
                                 <input type="text" pInputText id="rfc" formControlName="rfc" required pKeyFilter="alphanum" minlength="13" maxlength="13" pattern="^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$"/>
                                 <small *ngIf="submitted && !operador.rfc " style="color: red;">RFC es requerido.</small>
+                                <small *ngIf="submitted && operadorForm.controls['rfc'].errors?.['pattern']" style="color: red;">El RFC no es válido.</small>
                             </div>
                             <div class="field">
                                 <label for="curp">CURP</label>
@@ -213,6 +216,7 @@
                                     [(ngModel)]="editingOperador.nombre" required autofocus pattern="^[A-Za-z\s]+$" minlength="3" maxlength="18"/>
                                     <small *ngIf="submitted && !editingOperador.nombre " style="color: red;">Nombre es
                                         requerido.</small>
+                                    <small *ngIf="submitted && operadorForm.controls['nombre'].errors?.['pattern']" style="color: red;">El nombre no debe contener números.</small>
                             </div>
                             <div class="field">
                                 <label for="paterno">Apellido paterno</label>
@@ -241,6 +245,8 @@
                                 <input type="text" pInputText id="rfc" formControlName="rfc"
                                     [(ngModel)]="editingOperador.rfc" required pKeyFilter="alphanum" minlength="13" maxlength="13" pattern="^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$" />
                                     <small *ngIf="submitted && !editingOperador.rfc " style="color: red;">RFC es requerido.</small>
+                                    <small *ngIf="submitted && operadorForm.controls['rfc'].errors?.['pattern']" style="color: red;">El RFC no es válido.</small>
+
                             </div>
                             <div class="field">
                                 <label for="curp">CURP</label>

@@ -30,8 +30,7 @@
                         <th>NoEco</th>
                         <th>Placa</th>
                         <th>Serie</th>
-                        <th>Km Salida</th>
-                        <th>Km Entrada</th>
+                        <th>Kilometraje</th>
                         <th>Estatus</th>
                         <th>Editar/Eliminar</th>
 
@@ -42,8 +41,7 @@
                         <td>{{ grua.noEco }}</td>
                         <td>{{grua.placa }}</td>
                         <td>{{ grua.serie }}</td>
-                        <td>{{ grua.kmSalida}}</td>
-                        <td>{{ grua.kmEntrada }}</td>
+                        <td>{{ grua.kilometraje}}</td>
                         <td>
                             <p-tag [value]="grua.estatus?.descripcion"
                                 [severity]="getSeverity(grua.estatus?.descripcion)"></p-tag>
@@ -84,24 +82,37 @@
                         <div class="p-col-6">
                             <div class="field">
                                 <label for="placa">Placa</label>
-                                <input type="text" pInputText id="placa" formControlName="placa" required autofocus />
+                                <input type="text" pInputText id="placa" formControlName="placa" required autofocus minlength="5" maxlength="10" />
+                                <small *ngIf="submitted && !grua.placa " style="color: red;">Placa es requerido.</small>
+
                             </div>
                             <div class="field">
                                 <label for="serie">Serie</label>
-                                <input type="text" pInputText id="serie" formControlName="serie" required />
+                                <input type="text" pInputText id="serie" formControlName="serie" required required minlength="17" maxlength="17" pattern="^[A-Za-z0-9]+$" />
+                                <small *ngIf="submitted && !grua.serie " style="color: red;">Serie es requerido.</small>
+                                <small *ngIf="submitted && gruaForm.controls['serie'].errors?.['pattern']" style="color: red;">La serie no debe contener puntos,comas o espacios.</small>
+
+
                             </div>
                             <div class="field">
                                 <label for="permiso">No Permiso</label>
-                                <input type="text" pInputText id="permiso" formControlName="noPermiso" required />
+                                <input type="text" pInputText id="permiso" formControlName="noPermiso" required minlength="24" maxlength="25" pattern="^[A-Za-z0-9]+$" />
+                                <small *ngIf="submitted && !grua.noPermiso " style="color: red;">No Permiso es requerido.</small>
+                                <small *ngIf="submitted && gruaForm.controls['noPermiso'].errors?.['pattern']" style="color: red;">El No permiso no debe contener puntos,comas o espacios.</small>
+
                             </div>
                             <div class="field">
                                 <label for="aseguradora">Aseguradora</label>
                                 <input type="text" pInputText id="aseguradora"
-                                    formControlName="aseguradora" required  />
+                                    formControlName="aseguradora" required  minlength="4" maxlength="18" />
+                                <small *ngIf="submitted && !grua.aseguradora " style="color: red;">Aseguradora es requerido.</small>
+
                             </div>
                             <div class="field">
                                 <label for="poliza">No Poliza</label>
-                                <input type="text" pInputText id="poliza" formControlName="noPoliza" required />
+                                <input type="text" pInputText id="poliza" formControlName="noPoliza" required  minlength="10" maxlength="13" pKeyFilter="int" />
+                                <small *ngIf="submitted && !grua.noPoliza " style="color: red;">No Poliza es requerido.</small>
+
                             </div>
                             
                         </div>
@@ -112,25 +123,22 @@
                                 <label for="año">Año</label>
                                 <p-inputNumber id="año" formControlName="ano" [maxlength]="4"
                                     [minlength]="4" [useGrouping]="false"></p-inputNumber>
+                                <small *ngIf="submitted && !grua.ano " style="color: red;">Año es requerido.</small>
+
                             </div>
                             <div class="field">
-                                <label for="salida">Km Salida</label>
-                                <p-inputNumber id="salida" formControlName="kmSalida" [maxlength]="6"
+                                <label for="salida">Kilometraje</label>
+                                <p-inputNumber id="salida" formControlName="kilometraje" [maxlength]="6"
                                     [minlength]="6" [useGrouping]="false"></p-inputNumber>
-                            </div>
-                            <div class="field">
-                                <label for="entrada">Km Entrada</label>
-                                <p-inputNumber id="entrada" formControlName="kmEntrada" [maxlength]="6"
-                                    [minlength]="6" [useGrouping]="false"></p-inputNumber>
+                                <small *ngIf="submitted && !grua.kilometraje " style="color: red;">Kilometraje es requerido.</small>
                             </div>
                             <div>
 
                                 <label for="estatus">Estatus</label>
                                 <p-dropdown optionValue="value" [options]="estatusDropdown" placeholder="Seleccione"
                                     formControlName="estatus">
-
-
                                 </p-dropdown>
+                                <small *ngIf="submitted && !grua.estatus " style="color: red;">Estatus es requerido.</small>
 
                             </div>
                         </div>
@@ -179,24 +187,36 @@
                         <div class="p-col-6">
                             <div class="field">
                                 <label for="placa">Placa</label>
-                                <input type="text" pInputText id="placa" formControlName="placa" [(ngModel)]="editingOperador.placa" required autofocus />
+                                <input type="text" pInputText id="placa" formControlName="placa" [(ngModel)]="editingOperador.placa" required autofocus minlength="5" maxlength="10" />
+                                <small *ngIf="submitted && !editingOperador.placa " style="color: red;">Placa es requerido.</small>
+
                             </div>
                             <div class="field">
                                 <label for="serie">Serie</label>
-                                <input type="text" pInputText id="serie" formControlName="serie" [(ngModel)]="editingOperador.serie" required />
+                                <input type="text" pInputText id="serie" formControlName="serie" [(ngModel)]="editingOperador.serie" required minlength="17" maxlength="17" pattern="^[A-Za-z0-9]+$" />
+                                <small *ngIf="submitted && !editingOperador.serie " style="color: red;">Serie es requerido.</small>
+                                <small *ngIf="submitted && gruaForm.controls['serie'].errors?.['pattern']" style="color: red;">La serie no debe contener puntos,comas o espacios.</small>
+
                             </div>
                             <div class="field">
                                 <label for="permiso">No Permiso</label>
-                                <input type="text" pInputText id="permiso" formControlName="noPermiso" [(ngModel)]="editingOperador.noPermiso" required />
+                                <input type="text" pInputText id="permiso" formControlName="noPermiso" [(ngModel)]="editingOperador.noPermiso" required minlength="24" maxlength="25" pattern="^[A-Za-z0-9]+$" />
+                                <small *ngIf="submitted && !editingOperador.noPermiso " style="color: red;">No Permiso es requerido.</small>
+                                <small *ngIf="submitted && gruaForm.controls['noPermiso'].errors?.['pattern']" style="color: red;">El No permiso no debe contener puntos,comas o espacios.</small>
+
                             </div>
                             <div class="field">
                                 <label for="aseguradora">Aseguradora</label>
                                 <input type="text" pInputText id="aseguradora"
-                                    formControlName="aseguradora"   [(ngModel)]="editingOperador.aseguradora" required  />
+                                    formControlName="aseguradora"   [(ngModel)]="editingOperador.aseguradora" required minlength="4" maxlength="18"  />
+                                <small *ngIf="submitted && !editingOperador.aseguradora " style="color: red;">Aseguradora es requerido.</small>
+
                             </div>
                             <div class="field">
                                 <label for="poliza">No Poliza</label>
-                                <input type="text" pInputText id="poliza" formControlName="noPoliza" required [(ngModel)]="editingOperador.noPoliza" />
+                                <input type="text" pInputText id="poliza" formControlName="noPoliza" required [(ngModel)]="editingOperador.noPoliza" minlength="10" maxlength="13" pKeyFilter="int" />
+                                <small *ngIf="submitted && !editingOperador.noPoliza " style="color: red;">No Poliza es requerido.</small>
+
                             </div>
                             
                         </div>
@@ -207,25 +227,22 @@
                                 <label for="año">Año</label>
                                 <p-inputNumber id="año" formControlName="ano" [maxlength]="4"
                                     [minlength]="4" [useGrouping]="false"  [(ngModel)]="editingOperador.ano"></p-inputNumber>
+                                <small *ngIf="submitted && !editingOperador.ano " style="color: red;">Año es requerido.</small>
                             </div>
                             <div class="field">
-                                <label for="salida">Km Salida</label>
-                                <p-inputNumber id="salida" formControlName="kmSalida" [maxlength]="6"
-                                    [minlength]="6" [useGrouping]="false" [(ngModel)]="editingOperador.kmSalida"></p-inputNumber>
-                            </div>
-                            <div class="field">
-                                <label for="entrada">Km Entrada</label>
-                                <p-inputNumber id="entrada" formControlName="kmEntrada" [maxlength]="6"
-                                    [minlength]="6" [useGrouping]="false" [(ngModel)]="editingOperador.kmEntrada"></p-inputNumber>
+                                <label for="salida">Kilometraje</label>
+                                <p-inputNumber id="salida" formControlName="kilometraje" [maxlength]="6"
+                                    [minlength]="6" [useGrouping]="false" [(ngModel)]="editingOperador.kilometraje"></p-inputNumber>
+                                <small *ngIf="submitted && !editingOperador.kilometraje " style="color: red;">Kilometraje es requerido.</small>
                             </div>
                             <div>
 
                                 <label for="estatus">Estatus</label>
                                 <p-dropdown optionValue="value" [options]="estatusDropdown" placeholder="Seleccione"
                                     formControlName="estatus" [(ngModel)]="editingOperador.estatus">
-
-
                                 </p-dropdown>
+                                <small *ngIf="submitted && !editingOperador.estatus " style="color: red;">Estatus es requerido.</small>
+
 
                             </div>
                         </div>

@@ -30,6 +30,8 @@ export class GruaComponent implements OnInit {
   productDialog: boolean = false;
   updateDialog: boolean = false;
   deleteOperadorDialog: boolean = false;
+  submitted: boolean = false;
+
 
   constructor(
     private messageService: MessageService,
@@ -45,8 +47,7 @@ export class GruaComponent implements OnInit {
       aseguradora: [null, [Validators.required]],
       noPoliza: [null, [Validators.required]],
       ano: [null, [Validators.required]],
-      kmSalida: [null, [Validators.required]],
-      kmEntrada: [null, [Validators.required]],
+      kilometraje: [null, [Validators.required]],
       estatus: [null, [Validators.required]]
 
 
@@ -109,13 +110,41 @@ export class GruaComponent implements OnInit {
   }
 
   registrarOperador(): void {
+    this.submitted = true;
+
     console.log(this.gruaForm.valid);
     console.log(this.gruaForm);
+    //asignamos el valor del formulario a grua para validar que el campo no este vacio, tiene que ver con el small
+    this.grua = this.gruaForm.value;
 
     if (this.gruaForm.valid) {
       console.log(this.gruaForm.value);
 
-      const formData = this.gruaForm.value;
+      // Obtener el valor del campo 'nombre' y eliminar espacios en blanco al principio y al final
+      const placaValue = this.gruaForm.get('placa')?.value.trim();
+
+      // Actualizar el valor del campo 'nombre' en el formulario
+      this.gruaForm.get('placa')?.setValue(placaValue);
+
+      const aseguradoraV = this.gruaForm.get('aseguradora')?.value.trim();
+
+      // Actualizar el valor del campo 'nombre' en el formulario
+      this.gruaForm.get('aseguradora')?.setValue(aseguradoraV);
+
+
+
+
+      const formData = { ...this.gruaForm.value }; // Clonar el objeto para no modificar el original
+
+      // Convertir campos a mayúsculas
+      for (const key of Object.keys(formData)) {
+        const value = formData[key];
+        if (typeof value === 'string') {
+          formData[key] = value.toUpperCase();
+        }
+      }
+
+      //const formData = this.gruaForm.value;
       this.gruaService.save(formData).subscribe(
         () => {
           // Operador registrado exitosamente
@@ -148,6 +177,7 @@ export class GruaComponent implements OnInit {
 
   showDialog() {
     this.gruaForm.reset();
+    this.submitted = false;
     this.productDialog = true;
   }
 
@@ -183,12 +213,37 @@ export class GruaComponent implements OnInit {
   editOperador(grua: Grua) {
     this.editingOperador = { ...grua }; // Clonar el operador para evitar modificar el original directamente
     console.log(typeof this.editingOperador.estatus)
+    this.submitted = true;
     this.updateDialog = true; // Mostrar el diálogo de edición
   }
 
   editOperadorConfirm() {
     if (this.gruaForm.valid && this.editingOperador) {
-      this.gruaService.update(this.editingOperador.noEco, this.editingOperador).subscribe(
+
+      // Obtener el valor del campo 'nombre' y eliminar espacios en blanco al principio y al final
+      const placaValue = this.gruaForm.get('placa')?.value.trim();
+
+      // Actualizar el valor del campo 'nombre' en el formulario
+      this.gruaForm.get('placa')?.setValue(placaValue);
+
+      const aseguradoraV = this.gruaForm.get('aseguradora')?.value.trim();
+
+      // Actualizar el valor del campo 'nombre' en el formulario
+      this.gruaForm.get('aseguradora')?.setValue(aseguradoraV);
+
+      const formValues = this.gruaForm.value;
+
+      
+
+      // Convertir campos a mayúsculas
+      for (const key of Object.keys(formValues)) {
+        const value = formValues[key];
+        if (typeof value === 'string') {
+          formValues[key] = value.toUpperCase();
+        }
+      }
+
+      this.gruaService.update(this.editingOperador.noEco, formValues).subscribe(
         () => {
           // Operador actualizado exitosamente
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador actualizado exitosamente' });

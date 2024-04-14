@@ -8,20 +8,18 @@ export class Grua{
     aseguradora: string;
     noPoliza:string;
     ano:number;
-    kmSalida: number;
-    kmEntrada: number;
+    kilometraje: number;
     estatus: EstatusGruaDto;
 
     constructor(placa:string,serie:string,noPermiso:string,aseguradora:string,noPoliza:string,ano:number,
-        kmSalida:number,kmEntrada:number,estatus:EstatusGruaDto){
+        kilometraje:number,estatus:EstatusGruaDto){
             this.placa = placa;
             this.serie = serie;
             this.noPermiso = noPermiso;
             this.aseguradora = aseguradora;
             this.noPoliza = noPoliza;
             this.ano = ano;
-            this.kmSalida = kmSalida;
-            this.kmEntrada = kmEntrada;
+            this.kilometraje = kilometraje;
             this.estatus = estatus;
 
 
