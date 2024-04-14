@@ -46,9 +46,7 @@ export class OperadorComponent implements OnInit {
       nss: [null, [Validators.required]],
       direccion: [null, [Validators.required]],
       codigoPostal: [null, [Validators.required]],
-      puesto: [null, [Validators.required]],
       licencia: [null, [Validators.required]],
-      residencia: [null, [Validators.required]],
       estatus: [null, [Validators.required]],
     });
   }
