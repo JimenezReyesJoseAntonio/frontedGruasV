@@ -25,11 +25,11 @@ export class GruaComponent implements OnInit {
 
 
   grua: Grua | null = null;
-  editingOperador: Grua | null = null;
+  editingGrua: Grua | null = null;
 
-  productDialog: boolean = false;
+  gruaDialog: boolean = false;
   updateDialog: boolean = false;
-  deleteOperadorDialog: boolean = false;
+  deleteGruaDialog: boolean = false;
   submitted: boolean = false;
 
 
@@ -57,14 +57,14 @@ export class GruaComponent implements OnInit {
 
   ngOnInit(): void {
 
-   this.cargarOperadores();
+   this.cargarGruas();
    this.cargarEstatus();
 
 
   }
 
 
-  cargarOperadores(): void {
+  cargarGruas(): void {
     console.log('carga operadores' + this.gruas.length)
 
     this.gruaService.lista().subscribe(
@@ -109,7 +109,7 @@ export class GruaComponent implements OnInit {
     );
   }
 
-  registrarOperador(): void {
+  registrarGrua(): void {
     this.submitted = true;
 
     console.log(this.gruaForm.valid);
@@ -150,8 +150,8 @@ export class GruaComponent implements OnInit {
           // Operador registrado exitosamente
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador registrado exitosamente' });
           // Limpiar los campos del formulario u otras acciones necesarias
-          this.cargarOperadores(); // Recargar la lista de operadores después de agregar uno nuevo
-          this.productDialog = false;
+          this.cargarGruas(); // Recargar la lista de operadores después de agregar uno nuevo
+          this.gruaDialog = false;
 
         },
         error => {
@@ -172,34 +172,34 @@ export class GruaComponent implements OnInit {
   }
 
   hideDialog() {
-    this.productDialog = false;
+    this.gruaDialog = false;
   }
 
   showDialog() {
     this.gruaForm.reset();
     this.submitted = false;
-    this.productDialog = true;
+    this.gruaDialog = true;
   }
 
-  deleteOperador(grua: Grua) {
+  deleteGrua(grua: Grua) {
     this.grua = grua;
-    this.deleteOperadorDialog = true;
+    this.deleteGruaDialog = true;
   }
 
-  deleteSelectedOperador() {
-    this.deleteOperadorDialog = true;
+  deleteSelectedGrua() {
+    this.deleteGruaDialog = true;
   }
 
 
-  confirmDeleteOperador(): void {
+  confirmDeleteGrua(): void {
     console.log(this.grua.noEco);
     if (this.grua) {
       this.gruaService.delete(this.grua.noEco).subscribe(
         () => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador eliminado exitosamente' });
           this.grua = null;
-          this.cargarOperadores(); // Recargar la lista de operadores después de eliminar
-          this.deleteOperadorDialog = false;
+          this.cargarGruas(); // Recargar la lista de operadores después de eliminar
+          this.deleteGruaDialog = false;
         },
         error => {
           console.error('Error:', error);
@@ -210,15 +210,15 @@ export class GruaComponent implements OnInit {
 
   }
 
-  editOperador(grua: Grua) {
-    this.editingOperador = { ...grua }; // Clonar el operador para evitar modificar el original directamente
-    console.log(typeof this.editingOperador.estatus)
+  editGrua(grua: Grua) {
+    this.editingGrua = { ...grua }; // Clonar el operador para evitar modificar el original directamente
+    console.log(typeof this.editingGrua.estatus)
     this.submitted = true;
     this.updateDialog = true; // Mostrar el diálogo de edición
   }
 
-  editOperadorConfirm() {
-    if (this.gruaForm.valid && this.editingOperador) {
+  editGruaConfirm() {
+    if (this.gruaForm.valid && this.editingGrua) {
 
       // Obtener el valor del campo 'nombre' y eliminar espacios en blanco al principio y al final
       const placaValue = this.gruaForm.get('placa')?.value.trim();
@@ -243,14 +243,14 @@ export class GruaComponent implements OnInit {
         }
       }
 
-      this.gruaService.update(this.editingOperador.noEco, formValues).subscribe(
+      this.gruaService.update(this.editingGrua.noEco, formValues).subscribe(
         () => {
           // Operador actualizado exitosamente
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador actualizado exitosamente' });
           this.gruaForm.reset();
           this.updateDialog = false; // Cerrar el diálogo de edición
-          this.cargarOperadores();
-          this.editingOperador = null; // Limpiar el operador en edición
+          this.cargarGruas();
+          this.editingGrua = null; // Limpiar el operador en edición
         },
         error => {
           // Error al actualizar el operador

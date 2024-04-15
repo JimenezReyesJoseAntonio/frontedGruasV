@@ -61,7 +61,7 @@
                 </ng-template>
                 <ng-template pTemplate="summary">
                     <div class="flex align-items-center justify-content-between">
-                        Cantidad de operadores: <b>{{ operadores.length }}</b>
+                        Total de operadores: <b>{{ operadores.length }}</b>
                     </div>
                 </ng-template>
             </p-table>
@@ -74,7 +74,7 @@
 
         </div>
 
-        <p-dialog [(visible)]="productDialog" [style]="{ width: '470px' }" header="Datos del operador" [modal]="true"
+        <p-dialog [(visible)]="operadorDialog" [style]="{ width: '470px' }" header="Datos del operador" [modal]="true"
             class="p-fluid">
             <ng-template pTemplate="content">
                 <div class="p-grid p-fluid">

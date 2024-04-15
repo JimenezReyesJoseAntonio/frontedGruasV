@@ -25,7 +25,7 @@ export class OperadorComponent implements OnInit {
   operador: Operador | null = null;
   editingOperador: Operador | null = null;
 
-  productDialog: boolean = false;
+  operadorDialog: boolean = false;
   updateDialog: boolean = false;
   deleteOperadorDialog: boolean = false;
   submitted: boolean = false;
@@ -134,7 +134,7 @@ export class OperadorComponent implements OnInit {
           });
           // Limpiar los campos del formulario u otras acciones necesarias
           this.cargarOperadores(); // Recargar la lista de operadores después de agregar uno nuevo
-          this.productDialog = false;
+          this.operadorDialog = false;
         },
         (error) => {
           // Error al registrar el operador
@@ -158,13 +158,13 @@ export class OperadorComponent implements OnInit {
   }
 
   hideDialog() {
-    this.productDialog = false;
+    this.operadorDialog = false;
   }
 
   showDialog() {
     this.operadorForm.reset();
     this.submitted = false;
-    this.productDialog = true;
+    this.operadorDialog = true;
   }
 
   deleteOperador(operador: Operador) {
