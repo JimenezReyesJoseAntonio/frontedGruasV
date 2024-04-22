@@ -1,0 +1,95 @@
+<div class="menuSteps">
+  <p-toast></p-toast>
+  <p-steps [(activeIndex)]="activeIndex" [model]="items" [readonly]="true"></p-steps>
+  
+</div>
+
+<p-card *ngIf="activeIndex === 0" title="Vertical Grid Form" header="Datos del vehiculo" [style]="{ width: '900px', height:'400px'}" class="car">
+  <form  class="p-formgrid">
+    <div class="p-col-12">
+      <div class="p-field">
+        <label for="firstName">Tipo de vehiculo</label>
+        <input type="text" pInputText id="firstName"  required />
+      </div>
+      <div class="p-field">
+        <label for="lastName">Marca</label>
+        <input type="text" pInputText id="lastName"  required />
+      </div>
+     
+      <div class="p-field">
+        <label for="zipCode">Placas</label>
+        <input type="text" pInputText id="zipCode" required />
+      </div>
+    </div>
+    <div class="p-col-12">
+      <div class="p-field">
+        <label for="email">Serie</label>
+        <input type="email" pInputText id="email"  required />
+      </div> 
+      <div class="p-field">
+        <label for="phone">Color</label>
+        <input type="text" pInputText id="phone"  mask="999-999-9999" />
+      </div>
+    
+    </div>
+    <div class="p-col-12">
+      <div class="p-field">
+        <label for="address">Año</label>
+        <input type="text" pInputText id="address"  required />
+      </div>
+      <div class="p-field">
+        <label for="state">Modelo</label>
+        <input type="text" pInputText id="state"  required />
+      </div>
+    
+    </div>
+    <div class="p-col-8">
+      <button type="button" pButton >Submit</button>
+    </div>
+  </form>
+</p-card>
+
+
+
+<div class="form-container">
+
+ 
+  <div *ngIf="activeIndex === 1">
+    <h3>Datos del cliente</h3>
+    <form
+      [formGroup]="contactDetailsForm"
+      (ngSubmit)="onContactDetailsSubmit()"
+    >
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="Correo electrónico"
+      />
+      <input type="tel" formControlName="phone" placeholder="Teléfono" />
+      <button
+        type="submit"
+        pButton
+        label="Siguiente"
+        [disabled]="!contactDetailsForm.valid"
+      ></button>
+    </form>
+  </div>
+  <div *ngIf="activeIndex === 2">
+    <h3>Datos del servicio</h3>
+    <p>Revise y confirme la información ingresada:</p>
+    <ul>
+      <li>
+        Nombre: {{ personalInfoForm.value.firstName }}
+        {{ personalInfoForm.value.lastName }}
+      </li>
+      <li>Correo electrónico: {{ contactDetailsForm.value.email }}</li>
+      <li>Teléfono: {{ contactDetailsForm.value.phone }}</li>
+    </ul>
+    <button
+      type="button"
+      pButton
+      label="Confirmar"
+      (click)="onConfirm()"
+    ></button>
+  </div>
+</div>

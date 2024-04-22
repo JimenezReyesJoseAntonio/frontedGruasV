@@ -12,21 +12,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TableModule } from 'primeng/table';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { LoginComponent } from './components/login/login.component';
 import { HttpClientModule, HttpClient, provideHttpClient, withFetch, HTTP_INTERCEPTORS  } from '@angular/common/http';
-import { OperadorComponent } from './components/operador/operador.component';//lo borre share module
 import { OperadorModule } from './components/operador/operador.module';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { GruaComponent } from './components/grua/grua.component';
 import { GruaModule } from './components/grua/grua.module';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { ServiciosModule } from './components/servicios/servicios.module';
+import { RegistroServicioModule } from './components/registro-servicio/registro-servicio.module';
 
 @NgModule({
   declarations: [
@@ -35,6 +34,7 @@ import { InputIconModule } from 'primeng/inputicon';
     LayoutComponent,
     LoginComponent,
     DashboardComponent,
+    
     
     
   ],
@@ -57,7 +57,9 @@ import { InputIconModule } from 'primeng/inputicon';
     OperadorModule,
     GruaModule,
     IconFieldModule,
-    InputIconModule
+    InputIconModule,
+    ServiciosModule,
+    RegistroServicioModule
 
   ],
   providers: [

@@ -13,7 +13,9 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { TagModule } from 'primeng/tag';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
-
+import { MenubarModule } from 'primeng/menubar';
+import { StepsModule } from 'primeng/steps';
+import { CardModule } from 'primeng/card';
 
 @NgModule({
   declarations: [],
@@ -37,7 +39,10 @@ import { ToastModule } from 'primeng/toast';
     KeyFilterModule,
     TagModule,
     DropdownModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MenubarModule,
+    StepsModule,
+    CardModule
   ]
 })
 export class SharedModule { }
