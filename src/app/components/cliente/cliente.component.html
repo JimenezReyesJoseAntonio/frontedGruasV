@@ -1,0 +1,20 @@
+<p-card
+  title="Vertical Grid Form"
+  header="Nuevo cliente"
+  [style]="{ width: '900px', height: '400px' }"
+  class="car"
+>
+  <form [formGroup]="clientForm" class="p-formgrid">
+    <div class="p-col-12">
+      <div class="p-field">
+        <label for="nameClient">Nombre del cliente</label>
+        <input type="text" formControlName="nombreCliente" pInputText id="nameClient" required />
+      </div>
+    </div>
+    <div class="p-col-8">
+      <button (click)="registrarCliente()" type="button" pButton>Registrar</button>
+      <p-toast position="top-center"></p-toast>
+
+    </div>
+  </form>
+</p-card>

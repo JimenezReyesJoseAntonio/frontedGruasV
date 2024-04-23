@@ -26,7 +26,7 @@ export class ServiciosComponent implements OnInit  {
                     label: 'Nuevo',
                     icon: 'pi pi-fw pi-plus',
                     command: () => {
-                      this.navigateToDashboard(); // Llama a un método para navegar a la ruta
+                      this.navigateToNuevo(); // Llama a un método para navegar a la ruta
                     }
                 },
                 {
@@ -70,7 +70,10 @@ export class ServiciosComponent implements OnInit  {
             items: [
                 {
                     label: 'New',
-                    icon: 'pi pi-fw pi-user-plus'
+                    icon: 'pi pi-fw pi-user-plus',
+                    command: () => {
+                        this.navigateToClient(); // Llama a un método para navegar a la ruta
+                      }
                 },
                 {
                     label: 'Delete',
@@ -135,9 +138,15 @@ export class ServiciosComponent implements OnInit  {
     ];
 }
 
-navigateToDashboard() {
+navigateToNuevo() {
   this.router.navigate(['/principal/servicios/nuevo']); // Navega a la ruta '/principal/dashboard'
   console.log('holaaa');
+}
+
+navigateToClient(){
+    this.router.navigate(['/principal/servicios/cliente']); // Navega a la ruta '/principal/dashboard'
+
+
 }
 
 }

@@ -26,6 +26,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { ServiciosModule } from './components/servicios/servicios.module';
 import { RegistroServicioModule } from './components/registro-servicio/registro-servicio.module';
+import { ClienteModule } from './components/cliente/cliente.module';
 
 @NgModule({
   declarations: [
@@ -34,8 +35,6 @@ import { RegistroServicioModule } from './components/registro-servicio/registro-
     LayoutComponent,
     LoginComponent,
     DashboardComponent,
-    
-    
     
   ],
   imports: [
@@ -59,8 +58,8 @@ import { RegistroServicioModule } from './components/registro-servicio/registro-
     IconFieldModule,
     InputIconModule,
     ServiciosModule,
-    RegistroServicioModule
-
+    RegistroServicioModule,
+    ClienteModule
   ],
   providers: [
 

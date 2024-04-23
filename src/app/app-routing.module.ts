@@ -8,6 +8,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { GruaComponent } from './components/grua/grua.component';
 import { ServiciosComponent } from './components/servicios/servicios.component';
 import { RegistroServicioComponent } from './components/registro-servicio/registro-servicio.component';
+import { ClienteComponent } from './components/cliente/cliente.component';
 
 
 const routes: Routes = [
@@ -45,6 +46,10 @@ const routes: Routes = [
           path: 'nuevo',
           component: RegistroServicioComponent
         },
+        {
+          path: 'cliente',
+          component: ClienteComponent
+        }
         // Agrega más rutas hijas para otros componentes dentro de "servicios" si es necesario
       ]
     }

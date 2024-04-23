@@ -1,0 +1,17 @@
+
+.car{
+  
+    margin-top: 40px;
+    display: flex;
+      justify-content: center;
+      
+  }
+  
+  
+  .p-formgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajusta el ancho según sea necesario */
+    gap: 15px;
+  }
+  
+  

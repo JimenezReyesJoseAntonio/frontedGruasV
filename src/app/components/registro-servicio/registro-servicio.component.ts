@@ -3,6 +3,8 @@ import { MenuItem } from './MenuItem';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Cliente } from '../../models/cliente';
+import { ClienteService } from '../../services/cliente.service';
 
 @Component({
   selector: 'app-registro-servicio',
@@ -14,13 +16,37 @@ export class RegistroServicioComponent implements OnInit {
 
   activeIndex = 0;
   vehicleForm: FormGroup;
+  clientForm: FormGroup;
+
   personalInfoForm: FormGroup;
   contactDetailsForm: FormGroup;
   items: MenuItem[];
+  clientes: Cliente[] = [];
+  clientDropdown: any[] = []; // Declaración de la variable estatusDropdown
+  listaVacia: string | undefined;
 
   //subscription: Subscription;
 
-  constructor(public messageService: MessageService, private fb: FormBuilder  ) {
+  constructor(
+    public messageService: MessageService, 
+    private fb: FormBuilder,
+    private clienteService: ClienteService,
+  ) {
+
+    this.clientForm = this.fb.group({
+      numTelefono: ['', Validators.required],
+      clienteTipo: ['', Validators.required]
+    });
+
+    this.vehicleForm = this.fb.group({
+      tipoVehiculo: ['', Validators.required],
+      marca: ['', Validators.required],
+      modelo: ['', Validators.required],
+      placas:  ['', Validators.required],
+      serie:  ['', Validators.required],
+      color: ['', Validators.required],
+      ano:  ['', Validators.required],
+    });
 
     this.personalInfoForm = this.fb.group({
         firstName: ['', Validators.required],
@@ -39,10 +65,10 @@ export class RegistroServicioComponent implements OnInit {
   ngOnInit() {
     this.items = [
         {
-            label: 'Datos del vehiculo',
+            label: 'Datos del cliente',
         },
         {
-            label: 'Datos del cliente',
+            label: 'Datos del vehiculo',
         },
         {
             label: 'Datos del servicio',
@@ -52,6 +78,23 @@ export class RegistroServicioComponent implements OnInit {
         }
     ];
     
+    this.cargarClientes();
+}
+
+onClientInfoSubmit(){
+   // Procesar los datos del primer formulario si es válido
+   if (this.clientForm.valid) {
+    this.activeIndex++; // Avanzar al siguiente paso
+  }
+
+}
+
+onVehicleInfoSubmit(){
+  // Procesar los datos del primer formulario si es válido
+  if (this.vehicleForm.valid) {
+   this.activeIndex++; // Avanzar al siguiente paso
+ }
+
 }
 
 onPersonalInfoSubmit() {
@@ -68,11 +111,39 @@ onPersonalInfoSubmit() {
     }
   }
 
+  cargarClientes(): void {
+
+    this.clienteService.lista().subscribe(
+      data => {
+        // Limpiar el arreglo de operadores antes de cargar los nuevos datos
+        this.clientes = data;
+
+        //this.clientes = this.clientes.filter(est => est.eliminado === 0);
+
+        this.clientDropdown = this.formatoDropdown(this.clientes); // Convertir el formato
+
+        console.log(data);
+        console.log('carga estatus' + this.clientes.length)
+
+      },
+      err => {
+        if (err && err.error && err.error.message) {
+          this.listaVacia = err.error.message;
+        } else {
+          this.listaVacia = 'Error al cargar estatus';
+        }
+      }
+    );
+  }
+
   onConfirm() {
     // Procesar la confirmación final, enviar datos, etc.
     console.log('Confirmado');
   }
 
-
+//formato de los estatus para usarlo en el droptown
+formatoDropdown(nameClient: Cliente[]): any[] {
+  return nameClient.map(item => ({ label: item.nombreCliente, value: item.id }));
+}
 
 }
