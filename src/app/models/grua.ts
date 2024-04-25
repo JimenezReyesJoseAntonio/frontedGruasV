@@ -10,9 +10,10 @@ export class Grua{
     ano:number;
     kilometraje: number;
     estatus: EstatusGruaDto;
+    eliminado: number;
 
     constructor(placa:string,serie:string,noPermiso:string,aseguradora:string,noPoliza:string,ano:number,
-        kilometraje:number,estatus:EstatusGruaDto){
+        kilometraje:number,estatus:EstatusGruaDto,eliminado:number){
             this.placa = placa;
             this.serie = serie;
             this.noPermiso = noPermiso;
@@ -21,6 +22,7 @@ export class Grua{
             this.ano = ano;
             this.kilometraje = kilometraje;
             this.estatus = estatus;
+            this.eliminado = eliminado;
 
 
 

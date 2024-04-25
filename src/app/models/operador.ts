@@ -13,9 +13,10 @@ export class Operador{
     codigoPostal: number;
     licencia: string;
     estatus: EstatusDto;
+    eliminado: number;
 
     constructor(nombre: string, apellidoPaterno: string, apellidoMaterno:string, numTelefono:string,rfc:string, curp:string,
-        nss:string,direccion:string,codigoPostal:number,licencia:string,estatus:EstatusDto ) {
+        nss:string,direccion:string,codigoPostal:number,licencia:string,estatus:EstatusDto, eliminado:number) {
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -27,7 +28,7 @@ export class Operador{
         this.codigoPostal = codigoPostal;
         this.licencia = licencia;
         this.estatus = estatus;
-
+        this.eliminado = eliminado;
 
     }
 

@@ -63,8 +63,9 @@ export class OperadorComponent implements OnInit {
       (data) => {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.operadores = data;
-
-        this.listaVacia = undefined;
+         //filtramos solo las gruas que no han sido borrados
+         this.operadores = this.operadores.filter(operador => operador.eliminado === 0); 
+         this.listaVacia = undefined;
       },
       (err) => {
         if (err && err.error && err.error.message) {

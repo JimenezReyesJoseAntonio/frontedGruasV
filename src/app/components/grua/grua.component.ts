@@ -72,13 +72,16 @@ export class GruaComponent implements OnInit {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.gruas = data;
 
+        this.gruas = this.gruas.filter(grua => grua.eliminado === 0);
+
+
         this.listaVacia = undefined;
       },
       err => {
         if (err && err.error && err.error.message) {
           this.listaVacia = err.error.message;
         } else {
-          this.listaVacia = 'Error al cargar operadores';
+          this.listaVacia = 'Error al cargar gruas';
         }
       }
     );
@@ -148,7 +151,7 @@ export class GruaComponent implements OnInit {
       this.gruaService.save(formData).subscribe(
         () => {
           // Operador registrado exitosamente
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador registrado exitosamente' });
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Grua registrada exitosamente' });
           // Limpiar los campos del formulario u otras acciones necesarias
           this.cargarGruas(); // Recargar la lista de operadores después de agregar uno nuevo
           this.gruaDialog = false;
@@ -196,7 +199,7 @@ export class GruaComponent implements OnInit {
     if (this.grua) {
       this.gruaService.delete(this.grua.noEco).subscribe(
         () => {
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador eliminado exitosamente' });
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Grua eliminada exitosamente' });
           this.grua = null;
           this.cargarGruas(); // Recargar la lista de operadores después de eliminar
           this.deleteGruaDialog = false;
@@ -246,7 +249,7 @@ export class GruaComponent implements OnInit {
       this.gruaService.update(this.editingGrua.noEco, formValues).subscribe(
         () => {
           // Operador actualizado exitosamente
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Operador actualizado exitosamente' });
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Grua actualizada exitosamente' });
           this.gruaForm.reset();
           this.updateDialog = false; // Cerrar el diálogo de edición
           this.cargarGruas();

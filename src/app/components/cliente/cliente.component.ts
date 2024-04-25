@@ -60,10 +60,7 @@ export class ClienteComponent {
     }
   }
 
-  //formato de los estatus para usarlo en el droptown
-  formatoDropdown(nameClient: Cliente[]): any[] {
-    return nameClient.map(item => ({ label: item.nombreCliente, value: item.id }));
-  }
+  
 
 
 }
