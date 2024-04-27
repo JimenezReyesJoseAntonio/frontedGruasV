@@ -72,6 +72,7 @@ export class GruaComponent implements OnInit {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.gruas = data;
 
+        //filtramos solo las gruas que no han sido borrados
         this.gruas = this.gruas.filter(grua => grua.eliminado === 0);
 
 
