@@ -114,15 +114,16 @@
   </ng-template>
 </p-card>
 
-<div *ngIf="activeIndex === 3" class="container">
+
+<p-card *ngIf="activeIndex === 3" title="Vertical Grid Form" header="Confirmación"
+  [style]="{ width: '1080px', height: '700px' }" class="car">
   <div>
-    <h3>Confirmación</h3>
     <p>Revise y confirme la información ingresada:</p>
-    
     <!-- Datos del cliente -->
     <h4>Datos del Cliente</h4>
     <ul>
-      <li>Cliente: {{ cliente.clienteTipo }}</li>
+      <li>Cliente: {{ clienteBuscado.nombreCliente }}</li>
+      <li>Numero de telefono: {{cliente.numTelefono}}</li>
       <!-- Agrega más detalles del cliente según sea necesario -->
     </ul>
  
@@ -131,6 +132,12 @@
     <ul>
       <li>Tipo de vehículo: {{ vehiculo.tipoVehiculo }}</li>
       <li>Marca: {{ vehiculo.marca }}</li>
+      <li>Modelo: {{ vehiculo.modelo }}</li>
+      <li>Serie: {{ vehiculo.serie }}</li>
+      <li>Color: {{ vehiculo.color }}</li>
+      <li>Año: {{ vehiculo.ano }}</li>
+
+
       <!-- Agrega más detalles del vehículo según sea necesario -->
     </ul>
 
@@ -138,10 +145,18 @@
     <h4>Datos del Servicio</h4>
     <ul>
       <li>Ubicación de salida: {{ servicio.ubicacionSalida }}</li>
+      <li>Ubicación de contacto: {{ servicio.ubicacionContacto }}</li>
+      <li>Ubicación de termino: {{ servicio.ubicacionTermino }}</li>
       <li>Monto cobrado: {{ servicio.montoCobrado }}</li>
-      <!-- Agrega más detalles del servicio según sea necesario -->
-    </ul>
+      <li>Operador: {{ operadorSeleccionado?.nombre }}</li>
+      <li>Grua: {{ gruaSeleccionada?.noEco }}</li>
+      <li>observaciones: {{ servicio.observaciones }}</li>
 
-    <button type="button" pButton label="Confirmar" (click)="onConfirm()"></button>
+    </ul>
   </div>
-</div>
+  <ng-template pTemplate="footer">
+    <p-button label="Confirmar" icon="pi pi-check" (click)="onConfirm()"></p-button>
+    <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"
+      [style]="{ 'margin-left': '.5em' }" ></p-button>
+  </ng-template>
+</p-card>

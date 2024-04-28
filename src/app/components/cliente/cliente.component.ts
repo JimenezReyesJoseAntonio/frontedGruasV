@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClienteTipo } from '../../models/clienteTipo';
 import { MessageService } from 'primeng/api';
-import { ClienteService } from '../../services/cliente.service';
+import { ClienteTipoService } from '../../services/clienteTipo.service';
 
 @Component({
   selector: 'app-cliente',
@@ -17,7 +17,7 @@ export class ClienteComponent {
 
   constructor(
     private messageService: MessageService,
-    private clienteService: ClienteService,
+    private clienteService: ClienteTipoService,
     private fb: FormBuilder,
 
   ) {

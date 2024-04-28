@@ -7,9 +7,9 @@ import { ClienteTipo } from '../models/clienteTipo';
 @Injectable({
   providedIn: 'root'
 })
-export class ClienteService {
+export class ClienteTipoService {
 
-  clientURL = environment.clientURL;
+  clientURL = environment.clientTipoURL;
   constructor(private httpClient: HttpClient) { }
 
 

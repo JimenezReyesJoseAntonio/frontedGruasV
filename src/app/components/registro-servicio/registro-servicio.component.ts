@@ -4,7 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClienteTipo } from '../../models/clienteTipo';
-import { ClienteService } from '../../services/cliente.service';
+import { ClienteTipoService } from '../../services/clienteTipo.service';
 import { OperadorService } from '../../services/operador.service';
 import { GruaService } from '../../services/grua.service';
 import { Operador } from '../../models/operador';
@@ -12,7 +12,6 @@ import { Grua } from '../../models/grua';
 import { Vehiculo } from '../../models/vehiculo';
 import { Servicio } from '../../models/servicio';
 import { Cliente } from '../../models/cliente';
-
 
 @Component({
   selector: 'app-registro-servicio',
@@ -35,7 +34,9 @@ export class RegistroServicioComponent implements OnInit {
   cliente: Cliente | null = null;
   vehiculo: Vehiculo | null = null;
   servicio: Servicio | null = null;
-
+  clienteBuscado: ClienteTipo | null = null;
+  operadorSeleccionado: Operador | null = null;
+  gruaSeleccionada: Grua | null = null;
 
   clientDropdown: any[] = []; // Declaración de la variable estatusDropdown
   operadorDropdown: any[] = []; // Declaración de la variable estatusDropdown
@@ -48,7 +49,7 @@ export class RegistroServicioComponent implements OnInit {
   constructor(
     public messageService: MessageService,
     private fb: FormBuilder,
-    private clienteService: ClienteService,
+    private clienteTipoService: ClienteTipoService,
     private operadorService: OperadorService,
     private gruaService: GruaService
   ) {
@@ -76,16 +77,6 @@ export class RegistroServicioComponent implements OnInit {
       operador: ['', Validators.required],
       grua: ['', Validators.required],
     });
-
-    this.personalInfoForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-    });
-
-    this.contactDetailsForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.pattern('[0-9]{10}')],
-    });
   }
 
   ngOnInit() {
@@ -112,8 +103,22 @@ export class RegistroServicioComponent implements OnInit {
   onClientInfoSubmit() {
     // Procesar los datos del primer formulario si es válido
     if (this.clientForm.valid) {
-     this.cliente = this.clientForm.value;
-     console.log('nombre cliente'+ this.cliente.clienteTipo.id);
+      // Obtener el objeto ClienteTipo seleccionado del formulario
+      this.cliente = this.clientForm.value;
+      console.log('numero  cliente' + this.cliente.numTelefono);
+      //onst clienteTipoSeleccionado: ClienteTipo = this.clientForm.get('clienteTipo').value;
+      //console.log(clienteTipoSeleccionado);
+
+      //buscamos el tipo cliente para el nombre
+      this.clienteTipoService.detail(this.cliente.clienteTipo).subscribe(
+        (cliente: ClienteTipo) => {
+          this.clienteBuscado = cliente;
+          console.log('Cliente buscado:', this.clienteBuscado.nombreCliente);
+        },
+        (error) => {
+          console.error('Error al buscar cliente por ID:', error);
+        }
+      );
       this.activeIndex++; // Avanzar al siguiente paso
     }
   }
@@ -130,6 +135,28 @@ export class RegistroServicioComponent implements OnInit {
     // Procesar los datos del primer formulario si es válido
     if (this.servicioFom.valid) {
       this.servicio = this.servicioFom.value;
+
+      this.operadorService.detail(this.servicio.operador).subscribe(
+        (operador: Operador) => {
+          this.operadorSeleccionado = operador;
+          console.log('Operador:', this.operadorSeleccionado.nombre);
+        },
+        (error) => {
+          console.error('Error al buscar operador por ID:', error);
+        }
+      );
+
+      this.gruaService.detail(this.servicio.grua).subscribe(
+        (grua: Grua) => {
+          this.gruaSeleccionada = grua;
+          console.log('Grua:', this.gruaSeleccionada.noEco);
+        },
+        (error) => {
+          console.error('Error al buscar grua por ID:', error);
+        }
+      );
+
+
       this.activeIndex++; // Avanzar al siguiente paso
     } else {
       console.log('kk');
@@ -155,7 +182,7 @@ export class RegistroServicioComponent implements OnInit {
   }
 
   cargarClientes(): void {
-    this.clienteService.lista().subscribe(
+    this.clienteTipoService.lista().subscribe(
       (data) => {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.clientes = data;

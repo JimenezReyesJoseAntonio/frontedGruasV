@@ -1,5 +1,5 @@
 export class ClienteTipo {
-    id?: number;
+    id: number;
     nombreCliente: string;
 
 
@@ -7,6 +7,6 @@ export class ClienteTipo {
         this.nombreCliente = nombreCliente;
 
     }
-
+ 
 
 }

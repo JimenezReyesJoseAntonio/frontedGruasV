@@ -5,5 +5,5 @@ export const environment = {
     estatusURL: 'http://localhost:8080/estatusOperador/',
     gruaURL: 'http://localhost:8080/grua/',
     estatusGruaURL:'http://localhost:8080/grua-estatus/',
-    clientURL: 'http://localhost:8080/cliente-tipo'
+    clientTipoURL: 'http://localhost:8080/cliente-tipo/'
   };
