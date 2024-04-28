@@ -62,9 +62,9 @@
     </div>
   </form>
   <ng-template pTemplate="footer">
-    <p-button label="Guardar" icon="pi pi-check" (onClick)="onVehicleInfoSubmit()"></p-button>
-    <p-button label="Regresar" icon="pi pi-arrow-left" styleClass="p-button-secondary"
-      [style]="{ 'margin-left': '.5em' }" [disabled]="!vehicleForm.valid"></p-button>
+    <p-button label="Guardar" icon="pi pi-check" (onClick)="onVehicleInfoSubmit()" [disabled]="!vehicleForm.valid"></p-button>
+    <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"
+      [style]="{ 'margin-left': '.5em' }" ></p-button>
   </ng-template>
 </p-card>
 
@@ -105,12 +105,12 @@
         <label for="grua">Seleccione la grua</label>
         <p-dropdown optionValue="value" [options]="gruaDropdown" formControlName="grua" placeholder="Seleccione"> </p-dropdown>
       </div>
-    </div>
+    </div> 
   </form>
   <ng-template pTemplate="footer">
-    <p-button label="Guardar" icon="pi pi-check" (onClick)="onServiceInfoSubmit()"></p-button>
-    <p-button label="Regresar" icon="pi pi-arrow-left" styleClass="p-button-secondary"
-      [style]="{ 'margin-left': '.5em' }" [disabled]="!servicioFom.valid"></p-button>
+    <p-button label="Guardar" icon="pi pi-check" (onClick)="onServiceInfoSubmit()" [disabled]="!servicioFom.valid"></p-button>
+    <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"
+      [style]="{ 'margin-left': '.5em' }" ></p-button>
   </ng-template>
 </p-card>
 
@@ -118,14 +118,30 @@
   <div>
     <h3>Confirmación</h3>
     <p>Revise y confirme la información ingresada:</p>
+    
+    <!-- Datos del cliente -->
+    <h4>Datos del Cliente</h4>
     <ul>
-      <li>
-        Nombre: {{ personalInfoForm.value.firstName }}
-        {{ personalInfoForm.value.lastName }}
-      </li>
-      <li>Correo electrónico: {{ contactDetailsForm.value.email }}</li>
-      <li>Teléfono: {{ contactDetailsForm.value.phone }}</li>
+      <li>Cliente: {{ cliente.clienteTipo }}</li>
+      <!-- Agrega más detalles del cliente según sea necesario -->
     </ul>
+ 
+    <!-- Datos del vehículo -->
+    <h4>Datos del Vehículo</h4>
+    <ul>
+      <li>Tipo de vehículo: {{ vehiculo.tipoVehiculo }}</li>
+      <li>Marca: {{ vehiculo.marca }}</li>
+      <!-- Agrega más detalles del vehículo según sea necesario -->
+    </ul>
+
+    <!-- Datos del servicio -->
+    <h4>Datos del Servicio</h4>
+    <ul>
+      <li>Ubicación de salida: {{ servicio.ubicacionSalida }}</li>
+      <li>Monto cobrado: {{ servicio.montoCobrado }}</li>
+      <!-- Agrega más detalles del servicio según sea necesario -->
+    </ul>
+
     <button type="button" pButton label="Confirmar" (click)="onConfirm()"></button>
   </div>
 </div>

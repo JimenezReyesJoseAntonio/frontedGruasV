@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Cliente } from '../../models/cliente';
+import { ClienteTipo } from '../../models/clienteTipo';
 import { MessageService } from 'primeng/api';
 import { ClienteService } from '../../services/cliente.service';
 
@@ -13,7 +13,7 @@ import { ClienteService } from '../../services/cliente.service';
 })
 export class ClienteComponent {
   clientForm: FormGroup;
-  cliente: Cliente | null = null;
+  cliente: ClienteTipo | null = null;
 
   constructor(
     private messageService: MessageService,

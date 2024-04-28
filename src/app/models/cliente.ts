@@ -1,12 +1,13 @@
-export class Cliente {
-    id?: number;
-    nombreCliente: string;
+import { ClienteTipo } from "./clienteTipo";
 
+export class Cliente{
+    numTelefono:string;
+    clienteTipo:ClienteTipo;
 
-    constructor(nombreCliente: string) {
-        this.nombreCliente = nombreCliente;
+    constructor(numTelefono:string, clienteTipo:ClienteTipo){
+        this.numTelefono = numTelefono;
+        this.clienteTipo = clienteTipo;
 
     }
-
 
 }

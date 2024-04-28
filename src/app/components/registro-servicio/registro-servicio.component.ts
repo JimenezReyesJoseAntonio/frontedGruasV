@@ -3,12 +3,16 @@ import { MenuItem } from './MenuItem';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Cliente } from '../../models/cliente';
+import { ClienteTipo } from '../../models/clienteTipo';
 import { ClienteService } from '../../services/cliente.service';
 import { OperadorService } from '../../services/operador.service';
 import { GruaService } from '../../services/grua.service';
 import { Operador } from '../../models/operador';
 import { Grua } from '../../models/grua';
+import { Vehiculo } from '../../models/vehiculo';
+import { Servicio } from '../../models/servicio';
+import { Cliente } from '../../models/cliente';
+
 
 @Component({
   selector: 'app-registro-servicio',
@@ -25,9 +29,13 @@ export class RegistroServicioComponent implements OnInit {
   personalInfoForm: FormGroup;
   contactDetailsForm: FormGroup;
   items: MenuItem[];
-  clientes: Cliente[] = [];
+  clientes: ClienteTipo[] = [];
   operadores: Operador[] = [];
   gruas: Grua[] = [];
+  cliente: Cliente | null = null;
+  vehiculo: Vehiculo | null = null;
+  servicio: Servicio | null = null;
+
 
   clientDropdown: any[] = []; // Declaración de la variable estatusDropdown
   operadorDropdown: any[] = []; // Declaración de la variable estatusDropdown
@@ -104,6 +112,8 @@ export class RegistroServicioComponent implements OnInit {
   onClientInfoSubmit() {
     // Procesar los datos del primer formulario si es válido
     if (this.clientForm.valid) {
+     this.cliente = this.clientForm.value;
+     console.log('nombre cliente'+ this.cliente.clienteTipo.id);
       this.activeIndex++; // Avanzar al siguiente paso
     }
   }
@@ -111,6 +121,7 @@ export class RegistroServicioComponent implements OnInit {
   onVehicleInfoSubmit() {
     // Procesar los datos del primer formulario si es válido
     if (this.vehicleForm.valid) {
+      this.vehiculo = this.vehicleForm.value;
       this.activeIndex++; // Avanzar al siguiente paso
     }
   }
@@ -118,6 +129,7 @@ export class RegistroServicioComponent implements OnInit {
   onServiceInfoSubmit() {
     // Procesar los datos del primer formulario si es válido
     if (this.servicioFom.valid) {
+      this.servicio = this.servicioFom.value;
       this.activeIndex++; // Avanzar al siguiente paso
     } else {
       console.log('kk');
@@ -136,6 +148,10 @@ export class RegistroServicioComponent implements OnInit {
     if (this.contactDetailsForm.valid) {
       this.activeIndex++; // Avanzar al siguiente paso
     }
+  }
+
+  onBackButtonClick() {
+    this.activeIndex--;
   }
 
   cargarClientes(): void {
@@ -213,7 +229,7 @@ export class RegistroServicioComponent implements OnInit {
   }
 
   //formato de los estatus para usarlo en el droptown
-  formatoDropdown(nameClient: Cliente[]): any[] {
+  formatoDropdown(nameClient: ClienteTipo[]): any[] {
     return nameClient.map((item) => ({
       label: item.nombreCliente,
       value: item.id,
