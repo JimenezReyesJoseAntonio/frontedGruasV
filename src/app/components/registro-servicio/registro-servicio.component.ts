@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MenuItem } from './MenuItem';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
@@ -12,6 +12,10 @@ import { Grua } from '../../models/grua';
 import { Vehiculo } from '../../models/vehiculo';
 import { Servicio } from '../../models/servicio';
 import { Cliente } from '../../models/cliente';
+import { ClienteService } from '../../services/cliente.service';
+import { VehiculoService } from '../../services/vehiculo.service';
+import { TokenService } from '../../services/token.service';
+import { ServicioService } from '../../services/servicio.service';
 
 @Component({
   selector: 'app-registro-servicio',
@@ -20,6 +24,7 @@ import { Cliente } from '../../models/cliente';
   providers: [MessageService],
 })
 export class RegistroServicioComponent implements OnInit {
+
   activeIndex = 0;
   vehicleForm: FormGroup;
   clientForm: FormGroup;
@@ -43,6 +48,11 @@ export class RegistroServicioComponent implements OnInit {
   gruaDropdown: any[] = []; // Declaración de la variable estatusDropdown
 
   listaVacia: string | undefined;
+  //
+  idCliente: number;
+  idVehiculo: number;
+  vehiculoC: Vehiculo; // Declaración de la variable vehiculo
+  idUser: number;
 
   //subscription: Subscription;
 
@@ -51,7 +61,12 @@ export class RegistroServicioComponent implements OnInit {
     private fb: FormBuilder,
     private clienteTipoService: ClienteTipoService,
     private operadorService: OperadorService,
-    private gruaService: GruaService
+    private gruaService: GruaService,
+    private cienteService: ClienteService,
+    private vehiculoService: VehiculoService,
+    private tokenService: TokenService,
+    private servicioService: ServicioService,
+    private router: Router
   ) {
     this.clientForm = this.fb.group({
       numTelefono: ['', Validators.required],
@@ -77,6 +92,8 @@ export class RegistroServicioComponent implements OnInit {
       operador: ['', Validators.required],
       grua: ['', Validators.required],
     });
+
+
   }
 
   ngOnInit() {
@@ -98,14 +115,20 @@ export class RegistroServicioComponent implements OnInit {
     this.cargarClientes();
     this.cargarOperadores();
     this.cargarGruas();
+    this.idUser = this.tokenService.getIdUsuario();
+
   }
+
+
+
+
 
   onClientInfoSubmit() {
     // Procesar los datos del primer formulario si es válido
     if (this.clientForm.valid) {
       // Obtener el objeto ClienteTipo seleccionado del formulario
       this.cliente = this.clientForm.value;
-      console.log('numero  cliente' + this.cliente.numTelefono);
+      console.log('datos  cliente' + this.cliente.clienteTipo);
       //onst clienteTipoSeleccionado: ClienteTipo = this.clientForm.get('clienteTipo').value;
       //console.log(clienteTipoSeleccionado);
 
@@ -210,7 +233,8 @@ export class RegistroServicioComponent implements OnInit {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.operadores = data;
 
-        //this.clientes = this.clientes.filter(est => est.eliminado === 0);
+        // filtramos los operadores que no estan eliminados, eliminado === 1
+        this.operadores = this.operadores.filter(operador => operador.eliminado === 0);
 
         this.operadorDropdown = this.formatoDropdownOp(this.operadores); // Convertir el formato
 
@@ -233,7 +257,7 @@ export class RegistroServicioComponent implements OnInit {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.gruas = data;
 
-        //this.clientes = this.clientes.filter(est => est.eliminado === 0);
+        this.gruas = this.gruas.filter(grua => grua.eliminado === 0);
 
         this.gruaDropdown = this.formatoDropdownGr(this.gruas); // Convertir el formato
 
@@ -253,6 +277,88 @@ export class RegistroServicioComponent implements OnInit {
   onConfirm() {
     // Procesar la confirmación final, enviar datos, etc.
     console.log('Confirmado');
+
+    //una vez confirmado guradamos los datos en la tabla: cliente, vehiculo
+    this.cienteService.save(this.cliente).subscribe(
+      (response) => {
+        // Operador registrado exitosamente
+        console.log('response ' + response);
+        this.idCliente = response;
+        console.log(this.idCliente);
+
+        // Llamar a una función para crear el vehículo después de guardar el cliente
+        this.crearVehiculo();
+
+      },
+      error => {
+        // Error al registrar el operador
+        console.error('Error:', error);
+        console.log('entre');
+
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
+      }
+    );
+
+
+  }
+
+  crearVehiculo() {
+    console.log('crear vehiculo ' + this.idCliente);
+    const formData = this.vehicleForm.value;
+    const vehiculo = new Vehiculo(
+      formData.tipoVehiculo, formData.marca, formData.modelo, formData.placas, formData.serie, formData.color, formData.ano, this.idCliente, 0
+    );
+    console.log(vehiculo);
+
+    this.vehiculoService.save(vehiculo).subscribe(
+      (response) => {
+        // Operador registrado exitosamente
+        this.idVehiculo = response;
+        this.crearServicio();
+      },
+      error => {
+        // Error al registrar el operador
+        console.error('Error:', error);
+        console.log('entre');
+
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
+      }
+    );
+
+  }
+
+  crearServicio() {
+    const formData = this.servicioFom.value;
+    const fechaActual = new Date();
+
+    const servicio = new Servicio(
+      "abc108", fechaActual, formData.ubicacionSalida, formData.ubicacionContacto, formData.montoCobrado, formData.observaciones, formData.ubicacionTermino, "en curso", this.idCliente, this.idVehiculo, formData.operador, formData.grua, this.idUser, 0
+    );
+    console.log(servicio);
+
+    this.servicioService.save(servicio).subscribe(
+      () => {
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Servicio registrado exitosamente' });
+
+        setTimeout(() => {
+          this.mostrarServicios(); // Redirigir después de un breve retraso
+        }, 3000); // 1000 milisegundos = 1 segundo (ajusta según sea necesario)
+      },
+      error => {
+        // Error al registrar el operador
+        console.error('Error:', error);
+        console.log('entre');
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
+      }
+    );
+
+
+  }
+
+  mostrarServicios() {
+
+    this.router.navigate(['/principal/servicios']);
+
   }
 
   //formato de los estatus para usarlo en el droptown

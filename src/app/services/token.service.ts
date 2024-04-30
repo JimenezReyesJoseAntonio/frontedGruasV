@@ -40,6 +40,21 @@ export class TokenService {
     return nombreUsuario;
   }
 
+  
+  getIdUsuario(): number {
+    if (!this.isLogged()) {
+      console.log('no hay id');
+
+      return null;
+    }
+    const token = this.getToken();
+    const payload = token.split('.')[1];
+    const values = atob(payload);
+    const valuesJson = JSON.parse(values);
+    const idUsuario = valuesJson.id;
+    return idUsuario;
+  }
+
   isAdmin(): boolean {
     if (!this.isLogged()) {
       return false;

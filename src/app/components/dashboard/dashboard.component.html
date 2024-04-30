@@ -2,6 +2,7 @@
 <div class="card flex justify-content-center">
     <p-card header="Bienvenido">
         <h1 class="display-4" *ngIf="!nombreUsuario">Hello, world!</h1>
-        <h1 class="display-4" *ngIf="nombreUsuario">Hello, {{nombreUsuario}}</h1>
+        <h1 class="display-4" *ngIf="nombreUsuario">Hello, {{nombreUsuario}},ID,{{idUser}}</h1>
+
     </p-card>
 </div>

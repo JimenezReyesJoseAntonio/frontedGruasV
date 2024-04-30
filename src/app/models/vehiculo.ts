@@ -9,11 +9,11 @@ export class Vehiculo{
     serie: string;
     color: string;
     ano:number;
-    cliente: ClienteTipo;
+    cliente: number;
     eliminado: number;
 
     constructor(tipoVehiculo: string,marca: string,modelo: string,placas: string,serie: string,color: string,
-        ano:number,cliente: ClienteTipo, eliminado: number
+        ano:number,cliente: number, eliminado: number
     ){
         this.tipoVehiculo= tipoVehiculo;
         this.marca = marca;
