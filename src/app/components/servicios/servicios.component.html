@@ -1,6 +1,46 @@
-
 <div class="card">
     <p-menubar [model]="items"></p-menubar>
 </div>
+<div *ngIf="router.url === '/principal/servicios'" class="tableServices">
+    <p-table [value]="servicios" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true" [rows]="5">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                Servicios
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Folio</th>
+                <th>Ubicación de salida</th>
+                <th>Ubicación de contacto</th>
+                <th>Ubicación de termino</th>
+                <th>Estatus</th>
+                <th>Editar/Eliminar</th>
 
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-servicio>
+            <tr>
+                <td>{{ servicio?.folioServicio }}</td>
+                <td>{{ servicio?.ubicacionSalida }}</td>
+                <td>{{ servicio?.ubicacionContacto }}</td>
+                <td>{{ servicio?.ubicacionTermino }}</td>
+                <td>{{ servicio?.estadoServicio }}</td>
+
+                <td>
+                    <div class="flex">
+                        <button pButton pRipple icon="pi pi-pencil"
+                            class="p-button-rounded p-button-success mr-2"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+
+            </div>
+        </ng-template>
+    </p-table>
+</div>
 <router-outlet></router-outlet>

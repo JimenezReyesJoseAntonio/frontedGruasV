@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from './MenuItem';
 import { Router } from '@angular/router';
+import { ServicioService } from '../../services/servicio.service';
+import { Servicio } from '../../models/servicio';
+import { Subscription } from 'rxjs';
+import { EventService } from '../../services/event.service';
 
 @Component({
   selector: 'app-servicios',
@@ -9,9 +13,15 @@ import { Router } from '@angular/router';
 })
 export class ServiciosComponent implements OnInit  {
   items: MenuItem[] | undefined;
+  servicios: Servicio[] = [];
+  listaVacia: string | undefined;
+  servicio: Servicio | null = null;
+  private eventoServicioCreadoSubscription: Subscription | undefined;
 
   constructor(
-    private router: Router
+    public router: Router,
+    private serviceService:ServicioService,
+    private eventService: EventService
   ){
     
   } 
@@ -136,7 +146,40 @@ export class ServiciosComponent implements OnInit  {
             icon: 'pi pi-fw pi-power-off'
         }
     ];
+
+    this.cargarServicios();
+    this.eventoServicioCreadoSubscription = this.eventService.servicioCreado$.subscribe(() => {
+        this.cargarServicios(); // Actualizar la lista de servicios
+      });
 }
+
+ngOnDestroy(): void {
+    if (this.eventoServicioCreadoSubscription) {
+      this.eventoServicioCreadoSubscription.unsubscribe();
+    }
+  }
+cargarServicios(): void {
+
+    this.serviceService.lista().subscribe(
+      (data) => {
+        // Limpiar el arreglo de operadores antes de cargar los nuevos datos
+        this.servicios = data.reverse();//regresa la lista de servicios en orden inverso
+        console.log('carga servicios' + this.servicios.length);
+
+         //filtramos solo las gruas que no han sido borrados
+         //this.operadores = this.operadores.filter(operador => operador.eliminado === 0); 
+         this.listaVacia = undefined;
+      },
+      (err) => {
+        if (err && err.error && err.error.message) {
+          this.listaVacia = err.error.message;
+        } else {
+          this.listaVacia = 'Error al cargar servicios';
+        }
+      }
+    );
+  }
+
 
 navigateToNuevo() {
   this.router.navigate(['/principal/servicios/nuevo']); // Navega a la ruta '/principal/dashboard'

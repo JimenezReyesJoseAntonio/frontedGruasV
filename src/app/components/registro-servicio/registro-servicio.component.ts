@@ -16,6 +16,7 @@ import { ClienteService } from '../../services/cliente.service';
 import { VehiculoService } from '../../services/vehiculo.service';
 import { TokenService } from '../../services/token.service';
 import { ServicioService } from '../../services/servicio.service';
+import { EventService } from '../../services/event.service';
 
 @Component({
   selector: 'app-registro-servicio',
@@ -35,6 +36,7 @@ export class RegistroServicioComponent implements OnInit {
   items: MenuItem[];
   clientes: ClienteTipo[] = [];
   operadores: Operador[] = [];
+  servicios: Servicio[] = [];
   gruas: Grua[] = [];
   cliente: Cliente | null = null;
   vehiculo: Vehiculo | null = null;
@@ -53,7 +55,7 @@ export class RegistroServicioComponent implements OnInit {
   idVehiculo: number;
   vehiculoC: Vehiculo; // Declaración de la variable vehiculo
   idUser: number;
-
+  idServicio: number;
   //subscription: Subscription;
 
   constructor(
@@ -66,7 +68,8 @@ export class RegistroServicioComponent implements OnInit {
     private vehiculoService: VehiculoService,
     private tokenService: TokenService,
     private servicioService: ServicioService,
-    private router: Router
+    private router: Router,
+    private eventService: EventService
   ) {
     this.clientForm = this.fb.group({
       numTelefono: ['', Validators.required],
@@ -331,28 +334,56 @@ export class RegistroServicioComponent implements OnInit {
     const formData = this.servicioFom.value;
     const fechaActual = new Date();
 
-    const servicio = new Servicio(
-      "abc108", fechaActual, formData.ubicacionSalida, formData.ubicacionContacto, formData.montoCobrado, formData.observaciones, formData.ubicacionTermino, "en curso", this.idCliente, this.idVehiculo, formData.operador, formData.grua, this.idUser, 0
-    );
-    console.log(servicio);
+    this.servicioService.lista().subscribe(
+      (data) => {
+        this.servicios = data;
 
-    this.servicioService.save(servicio).subscribe(
-      () => {
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Servicio registrado exitosamente' });
+        const folio = this.servicios.length + 1; // Aquí obtienes el folio correctamente
 
-        setTimeout(() => {
-          this.mostrarServicios(); // Redirigir después de un breve retraso
-        }, 3000); // 1000 milisegundos = 1 segundo (ajusta según sea necesario)
+        const servicio = new Servicio(
+          'SSS', fechaActual, formData.ubicacionSalida, formData.ubicacionContacto, formData.montoCobrado, formData.observaciones, formData.ubicacionTermino, "en curso", this.idCliente, this.idVehiculo, formData.operador, formData.grua, this.idUser, 0
+        );
+
+        servicio.folioServicio = 'OS00'+folio; // Asignas el folio al objeto servicio
+
+        this.servicioService.save(servicio).subscribe(
+          () => {
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Servicio registrado exitosamente' });
+            this.eventService.emitServicioCreado();
+
+            setTimeout(() => {
+              this.mostrarServicios(); // Redirigir después de un breve retraso
+            }, 3000); // 1000 milisegundos = 1 segundo (ajusta según sea necesario)
+          },
+          error => {
+            console.error('Error al registrar el servicio:', error);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
+          }
+        );
       },
-      error => {
-        // Error al registrar el operador
-        console.error('Error:', error);
-        console.log('entre');
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
+      (err) => {
+        console.error('Error al cargar servicios para folio:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar servicios para folio' });
       }
     );
+  }
 
 
+  generarFolio(): number {
+    this.servicioService.lista().subscribe(
+      (data) => {
+        this.servicios = data;
+        console.log('gf'+this.servicios.length)
+      },
+      (err) => {
+        if (err && err.error && err.error.message) {
+          this.listaVacia = err.error.message;
+        } else {
+          this.listaVacia = 'Error al cargar servicios para folio';
+        }
+      }
+    );
+    return this.servicios.length;
   }
 
   mostrarServicios() {
