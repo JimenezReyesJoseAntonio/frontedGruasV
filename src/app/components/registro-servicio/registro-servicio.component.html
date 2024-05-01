@@ -25,92 +25,83 @@
 <p-card *ngIf="activeIndex === 1" title="Vertical Grid Form" header="Datos del vehiculo"
   [style]="{ width: '900px', height: '400px' }" class="car">
   <form [formGroup]="vehicleForm" class="p-formgrid">
-    <div class="p-col-12">
-      <div class="p-field">
-        <label for="tipoV">Tipo de vehiculo</label>
-        <input type="text" pInputText id="tipoV" formControlName="tipoVehiculo" required />
-      </div>
-      <div class="p-field">
-        <label for="marca">Marca</label>
-        <input type="text" pInputText id="marca" formControlName="marca" required />
-      </div>
+    <div class="p-field">
+      <label for="tipoV">Tipo de vehiculo</label>
+      <input type="text" pInputText id="tipoV" formControlName="tipoVehiculo" required />
+    </div>
+    <div class="p-field">
+      <label for="marca">Marca</label>
+      <input type="text" pInputText id="marca" formControlName="marca" required />
+    </div>
+    <div class="p-field">
 
-      <div class="p-field">
-        <label for="placas">Placas</label>
-        <input type="text" pInputText id="placas" formControlName="placas" required />
-      </div>
+      <label for="placas">Placas</label>
+      <input type="text" pInputText id="placas" formControlName="placas" required />
     </div>
-    <div class="p-col-12">
-      <div class="p-field">
-        <label for="serie">Serie</label>
-        <input type="email" pInputText id="serie" formControlName="serie" required />
-      </div>
-      <div class="p-field">
-        <label for="color">Color</label>
-        <input type="text" pInputText id="color" formControlName="color" mask="999-999-9999" />
-      </div>
+    <div class="p-field">
+      <label for="serie">Serie</label>
+      <input type="email" pInputText id="serie" formControlName="serie" required />
     </div>
-    <div class="p-col-12">
-      <div class="p-field">
-        <label for="ano">Año</label>
-        <input type="text" pInputText id="ano" formControlName="ano" required />
-      </div>
-      <div class="p-field">
-        <label for="modelo">Modelo</label>
-        <input type="text" pInputText id="modelo" formControlName="modelo" required />
-      </div>
+    <div class="p-field">
+      <label for="color">Color</label>
+      <input type="text" pInputText id="color" formControlName="color" mask="999-999-9999" />
+    </div>
+    <div class="p-field">
+      <label for="ano">Año</label>
+      <input type="text" pInputText id="ano" formControlName="ano" required />
+    </div>
+    <div class="p-field">
+      <label for="modelo">Modelo</label>
+      <input type="text" pInputText id="modelo" formControlName="modelo" required />
     </div>
   </form>
   <ng-template pTemplate="footer">
-    <p-button label="Guardar" icon="pi pi-check" (onClick)="onVehicleInfoSubmit()" [disabled]="!vehicleForm.valid"></p-button>
+    <p-button label="Guardar" icon="pi pi-check" (onClick)="onVehicleInfoSubmit()"
+      [disabled]="!vehicleForm.valid"></p-button>
     <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"
-      [style]="{ 'margin-left': '.5em' }" ></p-button>
+      [style]="{ 'margin-left': '.5em' }"></p-button>
   </ng-template>
 </p-card>
 
 <p-card *ngIf="activeIndex === 2" title="Vertical Grid Form" header="Datos del servicio"
-  [style]="{ width: '930px', height: '400px' }" class="car">
+  [style]="{ width: '900px', height: '430px' }" class="car">
   <form [formGroup]="servicioFom" class="p-formgrid">
-    <div class="p-col-12">
       <div class="p-field">
         <label for="ubiSalida">Ubicación de salida</label>
         <input type="text" pInputText id="ubiSalida" formControlName="ubicacionSalida" required />
       </div>
       <div class="p-field">
-        <label for="monto">Monto cobrado</label>
-        <input type="number" pInputText id="monto" formControlName="montoCobrado" required />
-      </div>
-
-      <div class="p-field">
-        <label for="observaciones">Observaciones</label>
-        <textarea id="observaciones" pInputTextarea formControlName="observaciones"  rows="2" cols="50"></textarea>
-      </div>
-    </div>
-    <div class="p-col-12">
-      <div class="p-field">
         <label for="ubiContact">Ubicación de contacto</label>
         <input type="text" pInputText id="ubiContact" formControlName="ubicacionContacto" required />
       </div>
-      <div class="p-field">
-        <label for="operador">Seleccione el operador</label>
-        <p-dropdown optionValue="value"  [options]="operadorDropdown" placeholder="Seleccione" formControlName="operador"> </p-dropdown>
-      </div>
-    </div>
-    <div class="p-col-12">
       <div class="p-field">
         <label for="ubiTermino">Ubicación de termino</label>
         <input type="text" pInputText id="ano" formControlName="ubicacionTermino" required />
       </div>
       <div class="p-field">
-        <label for="grua">Seleccione la grua</label>
-        <p-dropdown optionValue="value" [options]="gruaDropdown" formControlName="grua" placeholder="Seleccione"> </p-dropdown>
+        <label for="monto">Monto cobrado</label>
+        <input type="number" pInputText id="monto" formControlName="montoCobrado" required />
+      </div> 
+      <div class="p-field">
+        <label for="operador">Seleccione el operador</label>
+        <p-dropdown optionValue="value" [options]="operadorDropdown" placeholder="Seleccione"
+          formControlName="operador"> </p-dropdown>
       </div>
-    </div> 
+      <div class="p-field">
+        <label for="grua">Seleccione la grua</label>
+        <p-dropdown optionValue="value" [options]="gruaDropdown" formControlName="grua" placeholder="Seleccione">
+        </p-dropdown>
+      </div>
+      <div class="p-field">
+        <label for="observaciones">Observaciones</label>
+        <textarea id="observaciones" pInputTextarea formControlName="observaciones" rows="2" cols="50"></textarea>
+      </div>
   </form>
   <ng-template pTemplate="footer">
-    <p-button label="Guardar" icon="pi pi-check" (onClick)="onServiceInfoSubmit()" [disabled]="!servicioFom.valid"></p-button>
+    <p-button label="Guardar" icon="pi pi-check" (onClick)="onServiceInfoSubmit()"
+      [disabled]="!servicioFom.valid"></p-button>
     <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"
-      [style]="{ 'margin-left': '.5em' }" ></p-button>
+      [style]="{ 'margin-left': '.5em' }"></p-button>
   </ng-template>
 </p-card>
 
@@ -126,7 +117,7 @@
       <li>Numero de telefono: {{cliente.numTelefono}}</li>
       <!-- Agrega más detalles del cliente según sea necesario -->
     </ul>
- 
+
     <!-- Datos del vehículo -->
     <h4>Datos del Vehículo</h4>
     <ul>
@@ -157,6 +148,6 @@
   <ng-template pTemplate="footer">
     <p-button label="Confirmar" icon="pi pi-check" (click)="onConfirm()"></p-button>
     <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"
-      [style]="{ 'margin-left': '.5em' }" ></p-button>
+      [style]="{ 'margin-left': '.5em' }"></p-button>
   </ng-template>
 </p-card>

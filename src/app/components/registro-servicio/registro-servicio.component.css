@@ -10,7 +10,7 @@
 
 .p-formgrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajusta el ancho según sea necesario */
+  grid-template-columns: repeat(3,  minmax(250px, 1fr)); /* Tres columnas de igual ancho */
   gap: 15px;
 }
 
