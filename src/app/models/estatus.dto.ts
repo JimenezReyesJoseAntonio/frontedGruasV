@@ -1,5 +1,7 @@
+import { Operador } from "./operador";
+
 export class EstatusDto {
-    id: number; // Identificador único del estado
-    descripcion: string; // Descripción opcional del estado
-    eliminado:number;
+    id: number;
+    nombreEstatus: string;
+    operador: Operador; // ID del operador
 }

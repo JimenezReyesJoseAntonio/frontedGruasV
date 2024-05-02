@@ -5,6 +5,7 @@ import { OperadorService } from '../../services/operador.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EstatusDto } from '../../models/estatus.dto';
 import { EstatusService } from '../../services/estatus.service';
+import { EstatusOperadorService } from '../../services/estatus-operador.service';
 
 @Component({
   selector: 'app-operador',
@@ -34,6 +35,7 @@ export class OperadorComponent implements OnInit {
     private messageService: MessageService,
     private operadorService: OperadorService,
     private fb: FormBuilder,
+    private estatusOperador: EstatusOperadorService,
     private estatusService: EstatusService
   ) {
     this.operadorForm = this.fb.group({
@@ -47,7 +49,6 @@ export class OperadorComponent implements OnInit {
       direccion: [null, [Validators.required]],
       codigoPostal: [null, [Validators.required]],
       licencia: [null, [Validators.required]],
-      estatus: [null, [Validators.required]],
     });
   }
 
@@ -56,6 +57,36 @@ export class OperadorComponent implements OnInit {
     this.cargarEstatus();
   }
 
+  cargarEstatus(): void {
+    this.estatusOperador.lista().subscribe(
+      (data) => {
+        this.estatus = data;
+        console.log('carga estatus:', this.estatus);
+  
+        // Verificar si existe al menos un elemento en el arreglo
+        if (this.estatus.length > 0 && this.estatus[0].operador) {
+          console.log('ID del operador:', this.estatus[0].operador.id);
+        } else {
+          console.log('No se encontró el ID del operador en el primer elemento del arreglo.');
+        }
+      },
+      (err) => {
+        if (err && err.error && err.error.message) {
+          this.listaVacia = err.error.message;
+        } else {
+          this.listaVacia = 'Error al cargar estatus';
+        }
+      }
+    );
+  }
+
+  //obtiene el valor del estatus del operador pero de la tabla estatusOperador
+  obtenerEstatusOperador(idOperador: number): string {
+    const estatus = this.estatus.find(est => est.operador.id === idOperador);
+    return estatus ? estatus.nombreEstatus : 'Desconocido';
+}
+  
+  
   cargarOperadores(): void {
     console.log('carga operadores' + this.operadores.length);
 
@@ -77,28 +108,7 @@ export class OperadorComponent implements OnInit {
     );
   }
 
-  cargarEstatus(): void {
-    this.estatusService.lista().subscribe(
-      (data) => {
-        // Limpiar el arreglo de operadores antes de cargar los nuevos datos
-        this.estatus = data;
-        //filtrar solo los que no estan elimnados
-        this.estatus = this.estatus.filter((est) => est.eliminado === 0);
-        //agregarlos al dropdown
-        this.estatusDropdown = this.formatoDropdown(this.estatus); // Convertir el formato
 
-        console.log(data);
-        console.log('carga estatus' + this.estatus.length);
-      },
-      (err) => {
-        if (err && err.error && err.error.message) {
-          this.listaVacia = err.error.message;
-        } else {
-          this.listaVacia = 'Error al cargar estatus';
-        }
-      }
-    );
-  }
 
   registrarOperador(): void {
     this.submitted = true;
@@ -262,10 +272,6 @@ export class OperadorComponent implements OnInit {
     }
   }
 
-  //formato de los estatus para usarlo en el d
-  formatoDropdown(estatus: EstatusDto[]): any[] {
-    return estatus.map((item) => ({ label: item.descripcion, value: item.id }));
-  }
 
   // cambia el color del tag
   getSeverity(status: string) {

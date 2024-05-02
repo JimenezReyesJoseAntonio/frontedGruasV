@@ -8,5 +8,6 @@ export const environment = {
     clientTipoURL: 'http://localhost:8080/cliente-tipo/',
     clienteURL: 'http://localhost:8080/cliente/',
     vehiculoURL:'http://localhost:8080/vehiculo/',
-    servicioURL: 'http://localhost:8080/servicio/'
+    servicioURL: 'http://localhost:8080/servicio/',
+    estatusOperador: 'http://localhost:8080/estatus-operador/'
   };
