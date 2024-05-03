@@ -17,6 +17,7 @@ import { VehiculoService } from '../../services/vehiculo.service';
 import { TokenService } from '../../services/token.service';
 import { ServicioService } from '../../services/servicio.service';
 import { EventService } from '../../services/event.service';
+import { EstatusOperadorService } from '../../services/estatus-operador.service';
 
 @Component({
   selector: 'app-registro-servicio',
@@ -36,6 +37,7 @@ export class RegistroServicioComponent implements OnInit {
   items: MenuItem[];
   clientes: ClienteTipo[] = [];
   operadores: Operador[] = [];
+  operadoresLibres: Operador[] = [];
   servicios: Servicio[] = [];
   gruas: Grua[] = [];
   cliente: Cliente | null = null;
@@ -69,7 +71,9 @@ export class RegistroServicioComponent implements OnInit {
     private tokenService: TokenService,
     private servicioService: ServicioService,
     private router: Router,
-    private eventService: EventService
+    private eventService: EventService,
+    private estatusOperador: EstatusOperadorService
+
   ) {
     this.clientForm = this.fb.group({
       numTelefono: ['', Validators.required],
@@ -235,25 +239,52 @@ export class RegistroServicioComponent implements OnInit {
       (data) => {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.operadores = data;
-
-        // filtramos los operadores que no estan eliminados, eliminado === 1
+  
+        // Filtrar los operadores que no están eliminados
         this.operadores = this.operadores.filter(operador => operador.eliminado === 0);
+  
+        // Lista para almacenar operadores libres
+  
+        // Obtener el estado de cada operador y filtrar los libres
+        this.operadores.forEach(operador => {
+          this.estatusOperador.obtenerEstatusOperador(operador.id).subscribe(
+            (nombreEstatus) => {
+              if (nombreEstatus.nombreEstatus === 'Libre') { 
+                this.operadoresLibres.push(operador);
+                console.log(this.operadoresLibres.length);
+              }
+              //ponemos en el dropdown los operadores que estan libre solamente, antes filtramos los eliminados
+              this.operadorDropdown = this.formatoDropdownOp(this.operadoresLibres); // Convertir el formato
 
-        this.operadorDropdown = this.formatoDropdownOp(this.operadores); // Convertir el formato
-
-        console.log(data);
-        console.log('carga estatus' + this.clientes.length);
+            },
+            (error) => {
+              console.error('Error al obtener estado del operador:', error);
+            }
+          );
+        });
+        console.log(this.operadoresLibres.length );
+        // Asignar la lista de operadores libres al arreglo de operadores
+        this.operadores = this.operadoresLibres;
+    
+        console.log('Carga de operadores completada');
       },
       (err) => {
         if (err && err.error && err.error.message) {
           this.listaVacia = err.error.message;
         } else {
-          this.listaVacia = 'Error al cargar estatus';
+          this.listaVacia = 'Error al cargar operadores';
         }
       }
     );
   }
+  
 
+  //obtenemos el estado del operador por separado
+  getEstadoOperador(id: number): void {
+   
+    
+  }
+  
   cargarGruas(): void {
     this.gruaService.lista().subscribe(
       (data) => {
@@ -337,17 +368,21 @@ export class RegistroServicioComponent implements OnInit {
     this.servicioService.lista().subscribe(
       (data) => {
         this.servicios = data;
-
+        console.log('numero de servicios'+this.servicios.length);
         const folio = this.servicios.length + 1; // Aquí obtienes el folio correctamente
 
         const servicio = new Servicio(
-          'SSS', fechaActual, formData.ubicacionSalida, formData.ubicacionContacto, formData.montoCobrado, formData.observaciones, formData.ubicacionTermino, "en curso", this.idCliente, this.idVehiculo, formData.operador, formData.grua, this.idUser, 0
+          '', fechaActual, formData.ubicacionSalida, formData.ubicacionContacto, formData.montoCobrado, formData.observaciones, formData.ubicacionTermino, "en curso", this.idCliente, this.idVehiculo, formData.operador, formData.grua, this.idUser, 0
         );
 
         servicio.folioServicio = 'OS00'+folio; // Asignas el folio al objeto servicio
 
         this.servicioService.save(servicio).subscribe(
-          () => {
+          (response) => {
+
+            const idOperador = response.operador;
+            this.cambiarEstatusOperador(idOperador);
+            console.log('id para cambiar estatus'+ idOperador);
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Servicio registrado exitosamente' });
             this.eventService.emitServicioCreado();
 
@@ -364,6 +399,17 @@ export class RegistroServicioComponent implements OnInit {
       (err) => {
         console.error('Error al cargar servicios para folio:', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar servicios para folio' });
+      }
+    );
+  }
+
+  cambiarEstatusOperador(idOperador:number){
+    this.estatusOperador.asignarEstatusOperador(idOperador, 'Ocupado').subscribe(
+      () => {
+        console.log('Estado asignado correctamente al operador');
+      },
+      (error) => {
+        console.error('Error al asignar estado al operador:', error);
       }
     );
   }

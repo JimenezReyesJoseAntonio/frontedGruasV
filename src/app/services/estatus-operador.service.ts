@@ -13,22 +13,27 @@ export class EstatusOperadorService {
   constructor(private http: HttpClient) { }
 
   asignarEstatusOperador(idOperador: number, estado: string): Observable<void> {
+    console.log('URL de la solicitud:', `${this.estatusOperadorURL}${idOperador}`);
+
     const body = { idOperador, estado };
-    return this.http.post<void>(this.estatusOperadorURL, body).pipe(
+    return this.http.post<any>(`${this.estatusOperadorURL}${idOperador}`, body).pipe(
+      
       catchError((error: any) => {
+
         throw new Error('Error al asignar estado al operador: ' + error.message);
+
       })
     );
   }
 
-  obtenerEstatusOperador(idOperador: number): Observable<string | null> {
-    return this.http.get<string>(`${this.estatusOperadorURL}/${idOperador}`).pipe(
+  obtenerEstatusOperador(idOperador: number): Observable<{ nombreEstatus: string } | null> {
+    return this.http.get<{ nombreEstatus: string }>(`${this.estatusOperadorURL}${idOperador}`).pipe(
       catchError((error: any) => {
         throw new Error('Error al obtener estado del operador: ' + error.message);
       })
     );
   }
-
+  
   public lista(): Observable<EstatusDto[]> {
     return this.http.get<EstatusDto[]>(`${this.estatusOperadorURL}`);
   }

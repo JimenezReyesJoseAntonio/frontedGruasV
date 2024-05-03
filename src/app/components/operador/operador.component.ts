@@ -30,6 +30,7 @@ export class OperadorComponent implements OnInit {
   updateDialog: boolean = false;
   deleteOperadorDialog: boolean = false;
   submitted: boolean = false;
+  idOperador: number;
 
   constructor(
     private messageService: MessageService,
@@ -57,12 +58,13 @@ export class OperadorComponent implements OnInit {
     this.cargarEstatus();
   }
 
+  //cargamos los estatus de los operadores 
   cargarEstatus(): void {
     this.estatusOperador.lista().subscribe(
       (data) => {
         this.estatus = data;
         console.log('carga estatus:', this.estatus);
-  
+
         // Verificar si existe al menos un elemento en el arreglo
         if (this.estatus.length > 0 && this.estatus[0].operador) {
           console.log('ID del operador:', this.estatus[0].operador.id);
@@ -84,9 +86,9 @@ export class OperadorComponent implements OnInit {
   obtenerEstatusOperador(idOperador: number): string {
     const estatus = this.estatus.find(est => est.operador.id === idOperador);
     return estatus ? estatus.nombreEstatus : 'Desconocido';
-}
-  
-  
+  }
+
+
   cargarOperadores(): void {
     console.log('carga operadores' + this.operadores.length);
 
@@ -94,9 +96,9 @@ export class OperadorComponent implements OnInit {
       (data) => {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.operadores = data;
-         //filtramos solo las gruas que no han sido borrados
-         this.operadores = this.operadores.filter(operador => operador.eliminado === 0); 
-         this.listaVacia = undefined;
+        //filtramos solo las gruas que no han sido borrados
+        this.operadores = this.operadores.filter(operador => operador.eliminado === 0);
+        this.listaVacia = undefined;
       },
       (err) => {
         if (err && err.error && err.error.message) {
@@ -136,16 +138,32 @@ export class OperadorComponent implements OnInit {
       }
 
       this.operadorService.save(formData).subscribe(
-        () => {
+        (response) => {
           // Operador registrado exitosamente
           this.messageService.add({
             severity: 'success',
             summary: 'Éxito',
             detail: 'Operador registrado exitosamente',
           });
+
+          this.idOperador = response;
+          console.log('idOpe'+this.idOperador)
+          // Asignar el estado "Libre" al operador utilizando el servicio de estatus
+          this.estatusOperador.asignarEstatusOperador(this.idOperador, 'Libre').subscribe(
+            () => {
+              console.log('Estado asignado correctamente al operador');
+              //CAMBIAMOS EL ESTATUS DEL OPERADOR UNA VEZ AGREGAGO AL REGISTRO
+              this.cargarEstatus();
+
+            },
+            (error) => {
+              console.error('Error al asignar estado al operador:', error);
+            }
+          );
           // Limpiar los campos del formulario u otras acciones necesarias
           this.cargarOperadores(); // Recargar la lista de operadores después de agregar uno nuevo
           this.operadorDialog = false;
+
         },
         (error) => {
           // Error al registrar el operador
@@ -278,7 +296,7 @@ export class OperadorComponent implements OnInit {
     switch (status) {
       case 'Libre':
         return 'success';
-      case 'Ocupapdo':
+      case 'Ocupado':
         return 'warning';
       case 'Permiso':
         return 'danger';
