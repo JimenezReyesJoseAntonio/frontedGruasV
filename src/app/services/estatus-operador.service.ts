@@ -26,6 +26,7 @@ export class EstatusOperadorService {
     );
   }
 
+  // recibe como respuesta un valor json para que no tenga error la respuesta obtenida del servidor.
   obtenerEstatusOperador(idOperador: number): Observable<{ nombreEstatus: string } | null> {
     return this.http.get<{ nombreEstatus: string }>(`${this.estatusOperadorURL}${idOperador}`).pipe(
       catchError((error: any) => {

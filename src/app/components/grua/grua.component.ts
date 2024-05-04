@@ -5,6 +5,8 @@ import { EstatusGruaDto } from '../../models/estatusGrua.dto';
 import { MessageService } from 'primeng/api';
 import { GruaService } from '../../services/grua.service';
 import { EstatusGruaService } from '../../services/estatus-grua.service';
+//import { EstatusGruaService } from '../../services/estatus-grua.service';
+
 
 @Component({
   selector: 'app-grua',
@@ -31,6 +33,7 @@ export class GruaComponent implements OnInit {
   updateDialog: boolean = false;
   deleteGruaDialog: boolean = false;
   submitted: boolean = false;
+  idGrua: number;
 
 
   constructor(
@@ -48,8 +51,6 @@ export class GruaComponent implements OnInit {
       noPoliza: [null, [Validators.required]],
       ano: [null, [Validators.required]],
       kilometraje: [null, [Validators.required]],
-      estatus: [null, [Validators.required]]
-
 
     });
   }
@@ -57,9 +58,8 @@ export class GruaComponent implements OnInit {
 
   ngOnInit(): void {
 
-   this.cargarGruas();
-   this.cargarEstatus();
-
+    this.cargarGruas();
+    this.cargarEstatus();
 
   }
 
@@ -89,28 +89,32 @@ export class GruaComponent implements OnInit {
   }
 
   cargarEstatus(): void {
-
     this.estatusGruaService.lista().subscribe(
-      data => {
-        // Limpiar el arreglo de operadores antes de cargar los nuevos datos
+      (data) => {
         this.estatus = data;
+        console.log('carga estatus grua:', this.estatus);
 
-        this.estatus = this.estatus.filter(est => est.eliminado === 0);
-
-        this.estatusDropdown = this.formatoDropdown(this.estatus); // Convertir el formato
-
-        console.log(data);
-        console.log('carga estatus' + this.estatus.length)
-
+        // Verificar si existe al menos un elemento en el arreglo
+        if (this.estatus.length > 0 && this.estatus[0].grua) {
+          console.log('ID del operador:', this.estatus[0].grua.noEco);
+        } else {
+          console.log('No se encontró el ID de la grua en el primer elemento del arreglo.');
+        }
       },
-      err => {
+      (err) => {
         if (err && err.error && err.error.message) {
           this.listaVacia = err.error.message;
         } else {
-          this.listaVacia = 'Error al cargar estatus';
+          this.listaVacia = 'Error al cargar estatus grua';
         }
       }
     );
+  }
+
+   //obtiene el valor del estatus del operador pero de la tabla estatusOperador  para mostrarlo en la tabla
+   obtenerEstatusGrua(idGrua: number): string {
+    const estatus = this.estatus.find(est => est.grua.noEco === idGrua);
+    return estatus ? estatus.nombreEstatus : 'Desconocido';
   }
 
   registrarGrua(): void {
@@ -150,9 +154,24 @@ export class GruaComponent implements OnInit {
 
       //const formData = this.gruaForm.value;
       this.gruaService.save(formData).subscribe(
-        () => {
+        (response) => {
           // Operador registrado exitosamente
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Grua registrada exitosamente' });
+          this.idGrua = response;
+          console.log('idGrua para estatus' + this.idGrua);
+
+          // Asignar el estado "Libre" al operador utilizando el servicio de estatus
+          this.estatusGruaService.asignarEstatusGrua(this.idGrua, 'Libre').subscribe(
+            () => {
+              console.log('Estado asignado correctamente al operador');
+              //CAMBIAMOS EL ESTATUS DEL OPERADOR UNA VEZ AGREGAGO AL REGISTRO
+              this.cargarEstatus();
+
+            },
+            (error) => {
+              console.error('Error al asignar estado al operador:', error);
+            }
+          );
           // Limpiar los campos del formulario u otras acciones necesarias
           this.cargarGruas(); // Recargar la lista de operadores después de agregar uno nuevo
           this.gruaDialog = false;
@@ -216,7 +235,7 @@ export class GruaComponent implements OnInit {
 
   editGrua(grua: Grua) {
     this.editingGrua = { ...grua }; // Clonar el operador para evitar modificar el original directamente
-    console.log(typeof this.editingGrua.estatus)
+    //console.log(typeof this.editingGrua.estatus)
     this.submitted = true;
     this.updateDialog = true; // Mostrar el diálogo de edición
   }
@@ -237,7 +256,7 @@ export class GruaComponent implements OnInit {
 
       const formValues = this.gruaForm.value;
 
-      
+
 
       // Convertir campos a mayúsculas
       for (const key of Object.keys(formValues)) {
@@ -267,10 +286,7 @@ export class GruaComponent implements OnInit {
     }
   }
 
-  //formato de los estatus para usarlo en el droptown
-  formatoDropdown(estatus: EstatusGruaDto[]): any[] {
-    return estatus.map(item => ({ label: item.descripcion, value: item.id }));
-  }
+
 
   // cambia el color del tag
   getSeverity(status: string) {

@@ -18,6 +18,7 @@ import { TokenService } from '../../services/token.service';
 import { ServicioService } from '../../services/servicio.service';
 import { EventService } from '../../services/event.service';
 import { EstatusOperadorService } from '../../services/estatus-operador.service';
+import { EstatusGruaService } from '../../services/estatus-grua.service';
 
 @Component({
   selector: 'app-registro-servicio',
@@ -40,6 +41,7 @@ export class RegistroServicioComponent implements OnInit {
   operadoresLibres: Operador[] = [];
   servicios: Servicio[] = [];
   gruas: Grua[] = [];
+  gruasLibres: Grua[] = [];
   cliente: Cliente | null = null;
   vehiculo: Vehiculo | null = null;
   servicio: Servicio | null = null;
@@ -72,7 +74,9 @@ export class RegistroServicioComponent implements OnInit {
     private servicioService: ServicioService,
     private router: Router,
     private eventService: EventService,
-    private estatusOperador: EstatusOperadorService
+    private estatusOperador: EstatusOperadorService,
+    private estatusGruaService: EstatusGruaService
+
 
   ) {
     this.clientForm = this.fb.group({
@@ -292,8 +296,24 @@ export class RegistroServicioComponent implements OnInit {
         this.gruas = data;
 
         this.gruas = this.gruas.filter(grua => grua.eliminado === 0);
+        console.log('gruas no borradas'+ this.gruas.length);
+        this.gruas.forEach(grua => {
+          this.estatusGruaService.obtenerEstatusGrua(grua.noEco).subscribe(
+            (nombreEstatus) => {
+              if (nombreEstatus.nombreEstatus === 'Libre') { 
+                this.gruasLibres.push(grua);
+                console.log('gruas libres'+this.gruasLibres.length);
+              }
+              //ponemos en el dropdown los operadores que estan libre solamente, antes filtramos los eliminados
+              this.gruaDropdown = this.formatoDropdownGr(this.gruasLibres); // Convertir el formato
 
-        this.gruaDropdown = this.formatoDropdownGr(this.gruas); // Convertir el formato
+            },
+            (error) => {
+              console.error('Error al obtener estado del operador:', error);
+            }
+          );
+        });
+
 
         console.log(data);
         console.log('carga estatus' + this.clientes.length);
@@ -381,7 +401,10 @@ export class RegistroServicioComponent implements OnInit {
           (response) => {
 
             const idOperador = response.operador;
+            const idGrua = response.grua;
+            //cambiamos el estatus de la grua y del operador
             this.cambiarEstatusOperador(idOperador);
+            this.cambiarEstatusGrua(idGrua);
             console.log('id para cambiar estatus'+ idOperador);
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Servicio registrado exitosamente' });
             this.eventService.emitServicioCreado();
@@ -410,6 +433,17 @@ export class RegistroServicioComponent implements OnInit {
       },
       (error) => {
         console.error('Error al asignar estado al operador:', error);
+      }
+    );
+  }
+
+  cambiarEstatusGrua(idGrua:number){
+    this.estatusGruaService.asignarEstatusGrua(idGrua, 'Ocupada').subscribe(
+      () => {
+        console.log('Estado asignado correctamente a la grua');
+      },
+      (error) => {
+        console.error('Error al asignar estado a la grua:', error);
       }
     );
   }

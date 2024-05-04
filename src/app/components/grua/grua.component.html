@@ -43,8 +43,8 @@
                         <td>{{ grua.serie }}</td>
                         <td>{{ grua.kilometraje}}</td>
                         <td>
-                            <p-tag [value]="grua.estatus?.descripcion"
-                                [severity]="getSeverity(grua.estatus?.descripcion)"></p-tag>
+                            <p-tag [value]="obtenerEstatusGrua(grua.noEco)"
+                            [severity]="getSeverity( obtenerEstatusGrua(grua.noEco))"></p-tag>
                         </td>
                         <td>
                             <div class="flex">
@@ -131,15 +131,6 @@
                                 <p-inputNumber id="salida" formControlName="kilometraje" [maxlength]="6"
                                     [minlength]="6" [useGrouping]="false"></p-inputNumber>
                                 <small *ngIf="submitted && !grua.kilometraje " style="color: red;">Kilometraje es requerido.</small>
-                            </div>
-                            <div>
-
-                                <label for="estatus">Estatus</label>
-                                <p-dropdown optionValue="value" [options]="estatusDropdown" placeholder="Seleccione"
-                                    formControlName="estatus">
-                                </p-dropdown>
-                                <small *ngIf="submitted && !grua.estatus " style="color: red;">Estatus es requerido.</small>
-
                             </div>
                         </div>
                     </form>
@@ -235,16 +226,7 @@
                                     [minlength]="6" [useGrouping]="false" [(ngModel)]="editingGrua.kilometraje"></p-inputNumber>
                                 <small *ngIf="submitted && !editingGrua.kilometraje " style="color: red;">Kilometraje es requerido.</small>
                             </div>
-                            <div>
-
-                                <label for="estatus">Estatus</label>
-                                <p-dropdown optionValue="value" [options]="estatusDropdown" placeholder="Seleccione"
-                                    formControlName="estatus" [(ngModel)]="editingGrua.estatus">
-                                </p-dropdown>
-                                <small *ngIf="submitted && !editingGrua.estatus " style="color: red;">Estatus es requerido.</small>
-
-
-                            </div>
+                    
                         </div>
                     </form>
                 </div>

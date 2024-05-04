@@ -1,5 +1,7 @@
+import { Grua } from "./grua";
+
 export class EstatusGruaDto {
     id: number; // Identificador único del estado
-    descripcion: string; // Descripción opcional del estado
-    eliminado: number;
+    nombreEstatus: string; // Descripción opcional del estado
+    grua: Grua;
 }

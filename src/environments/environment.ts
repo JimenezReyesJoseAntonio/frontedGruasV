@@ -9,5 +9,7 @@ export const environment = {
     clienteURL: 'http://localhost:8080/cliente/',
     vehiculoURL:'http://localhost:8080/vehiculo/',
     servicioURL: 'http://localhost:8080/servicio/',
-    estatusOperador: 'http://localhost:8080/estatus-operador/'
+    estatusOperador: 'http://localhost:8080/estatus-operador/',
+    estatusGrua: 'http://localhost:8080/estatus-grua/'
+
   };
