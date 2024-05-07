@@ -5,6 +5,9 @@ import { ServicioService } from '../../services/servicio.service';
 import { Servicio } from '../../models/servicio';
 import { Subscription } from 'rxjs';
 import { EventService } from '../../services/event.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { EstatusOperadorService } from '../../services/estatus-operador.service';
+import { EstatusGruaService } from '../../services/estatus-grua.service';
 
 @Component({
   selector: 'app-servicios',
@@ -16,13 +19,33 @@ export class ServiciosComponent implements OnInit  {
   servicios: Servicio[] = [];
   listaVacia: string | undefined;
   servicio: Servicio | null = null;
+  servicioFom: FormGroup;
+  updateDialog: boolean = false;
+  deleteServicioDialog:boolean =false;
+  servicioFinalizado:Servicio | null = null;
+
   private eventoServicioCreadoSubscription: Subscription | undefined;
 
   constructor(
     public router: Router,
     private serviceService:ServicioService,
-    private eventService: EventService
+    private eventService: EventService,
+    private fb: FormBuilder,
+    private estatusOperador: EstatusOperadorService,
+    private estatusGruaService: EstatusGruaService
+
+
   ){
+    this.servicioFom = this.fb.group({
+        ubicacionSalida: ['', Validators.required],
+        ubicacionContacto: ['', Validators.required],
+        montoCobrado: ['', Validators.required],
+        observaciones: ['', Validators.required],
+        ubicacionTermino: ['', Validators.required],
+        operador: ['', Validators.required],
+        grua: ['', Validators.required],
+      });
+  
     
   } 
 
@@ -165,6 +188,8 @@ cargarServicios(): void {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.servicios = data.reverse();//regresa la lista de servicios en orden inverso
         console.log('carga servicios' + this.servicios.length);
+        //filtramos los servicios que no estan finaliazados para que aparezcan en la tabla
+         this.servicios = this.servicios.filter(serv => serv.estadoServicio !== 'Finalizado'); 
 
          //filtramos solo las gruas que no han sido borrados
          //this.operadores = this.operadores.filter(operador => operador.eliminado === 0); 
@@ -192,4 +217,87 @@ navigateToClient(){
 
 }
 
+editOperador() {
+    console.log('nada');
+    this.updateDialog = true; // Mostrar el diálogo de edición
+
+  }
+
+  confirmFinishServicio(servicio:Servicio){
+    this.deleteServicioDialog = true; // Mostrar el diálogo de edición
+    this.servicioFinalizado = { ...servicio }; // Clonar el servicio para evitar modificar el original directamente
+
+  }
+
+  finServicio(){
+    const servicio = this.servicioFinalizado;
+    const folio= servicio.id;
+    console.log(folio);
+
+
+    this.serviceService.detail(folio).subscribe(
+      (data) => {
+
+        const idOpe = data.operador.id;
+        const idGrua = data.grua.noEco;
+        const idSer = data.id;
+        console.log(idOpe);
+        console.log(idGrua);
+        this.cambiarEstatusOperador(idOpe);
+        this.cambiarEstatusGrua(idGrua);
+        this.cambiarEstatusServicio(idSer,'estadoServicio','Finalizado');
+        
+        //servicio.estadoServicio = 'Completado';
+        console.log('llega aqui'+servicio);
+        
+      },
+      (err) => {
+        if (err && err.error && err.error.message) {
+          this.listaVacia = err.error.message;
+        } else {
+          this.listaVacia = 'Error al cargar el servicio';
+        }
+      }
+    );
+  
+
+  }
+
+  cambiarEstatusOperador(idOperador:number){
+    this.estatusOperador.asignarEstatusOperador(idOperador, 'Libre').subscribe(
+      () => {
+        console.log('Estado asignado correctamente al operador');
+      },
+      (error) => {
+        console.error('Error al asignar estado al operador:', error);
+      }
+    );
+  }
+
+  cambiarEstatusGrua(idGrua:number){
+    this.estatusGruaService.asignarEstatusGrua(idGrua, 'Libre').subscribe(
+      () => {
+        console.log('Estado asignado correctamente a la grua');
+      },
+      (error) => {
+        console.error('Error al asignar estado a la grua:', error);
+      }
+    );
+  }
+
+  cambiarEstatusServicio(id: number, campo: string, nuevoValor: any){
+    this.serviceService.upadateEstatus(id,campo,nuevoValor).subscribe(
+      () => {
+        console.log('Estado asignado correctamente al servicio');
+        //al finalizar un servicio cargamos nuevamente los servicios
+        this.cargarServicios();
+        this.deleteServicioDialog = false; // Mostrar el diálogo de edición
+
+      },
+      (error) => {
+        console.error('Error al asignar estado al servicio:', error);
+      }
+    );
+
+  }
 }

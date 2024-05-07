@@ -1,5 +1,8 @@
-export class Servicio {
+import { Grua } from "./grua";
+import { Operador } from "./operador";
 
+export class Servicio {
+    id:number;
     folioServicio: string;
     fecha: Date;
     ubicacionSalida: string;
@@ -10,14 +13,14 @@ export class Servicio {
     estadoServicio: string;
     cliente: number;
     vehiculo: number;
-    operador: number;
-    grua: number;
+    operador:Operador ;
+    grua: Grua;
     usuario: number;
     eliminado: number;
 
     constructor(folioServicio: string, fecha: Date, ubicacionSalida: string, ubicacionContacto: string,
         montoCobrado: number, observaciones: string, ubicacionTermino: string, estadoServicio: string, cliente: number,
-        vehiculo: number, operador: number, grua: number, usuario: number, eliminado: number
+        vehiculo: number, operador: Operador, grua: Grua, usuario: number, eliminado: number
     ) {
 
         this.folioServicio = folioServicio;

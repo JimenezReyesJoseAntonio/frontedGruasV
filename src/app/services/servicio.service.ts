@@ -28,6 +28,11 @@ export class ServicioService {
     return this.httpClient.put<any>(`${this.servicioURL}${id}`, servicio);
   }
 
+  public upadateEstatus(id: number, campo: string, nuevoValor: any) {
+    const url = `${this.servicioURL}${id}/${campo}`;
+    return this.httpClient.put(url, { valor: nuevoValor });
+  }
+
   public delete(id: number): Observable<any> {
     return this.httpClient.delete<any>(`${this.servicioURL}${id}`);
   }

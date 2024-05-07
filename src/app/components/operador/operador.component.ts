@@ -147,7 +147,7 @@ export class OperadorComponent implements OnInit {
           });
 
           this.idOperador = response;
-          console.log('idOpe'+this.idOperador)
+          console.log('idOpe' + this.idOperador)
           // Asignar el estado "Libre" al operador utilizando el servicio de estatus
           this.estatusOperador.asignarEstatusOperador(this.idOperador, 'Libre').subscribe(
             () => {

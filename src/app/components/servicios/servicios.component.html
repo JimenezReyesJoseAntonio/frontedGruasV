@@ -15,7 +15,8 @@
                 <th>Ubicación de contacto</th>
                 <th>Ubicación de termino</th>
                 <th>Estatus</th>
-                <th>Editar/Eliminar</th>
+                <th>Editar</th>
+                <th>Finalizar</th>
 
             </tr>
         </ng-template>
@@ -29,9 +30,14 @@
 
                 <td>
                     <div class="flex">
-                        <button pButton pRipple icon="pi pi-pencil"
-                            class="p-button-rounded p-button-success mr-2"></button>
-                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"></button>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2"
+                            (click)="editOperador()"></button>
+                    </div>
+                </td>
+                <td>
+                    <div class="flex">
+                        <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success mr-2"
+                            (click)="confirmFinishServicio(servicio)"></button>
                     </div>
                 </td>
             </tr>
@@ -43,4 +49,34 @@
         </ng-template>
     </p-table>
 </div>
+
+<p-dialog [(visible)]="updateDialog" [style]="{ width: '900px' }" header="Editar servicio" [modal]="true"
+    class="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-grid p-fluid">
+
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+            (click)="updateDialog = false"></button>
+        <button pButton pRipple label="Actualizar" icon="pi pi-check" class="p-button-text"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="deleteServicioDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <span *ngIf="servicioFinalizado">Esta seguro que quiere finalizar el servicio ?</span>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="deleteServicioDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+            (click)="finServicio()"></button>
+    </ng-template>
+</p-dialog>
+
+
 <router-outlet></router-outlet>

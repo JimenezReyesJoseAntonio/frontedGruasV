@@ -170,7 +170,7 @@ export class RegistroServicioComponent implements OnInit {
     if (this.servicioFom.valid) {
       this.servicio = this.servicioFom.value;
 
-      this.operadorService.detail(this.servicio.operador).subscribe(
+      this.operadorService.detail(this.servicio.operador.id).subscribe(
         (operador: Operador) => {
           this.operadorSeleccionado = operador;
           console.log('Operador:', this.operadorSeleccionado.nombre);
@@ -180,7 +180,7 @@ export class RegistroServicioComponent implements OnInit {
         }
       );
 
-      this.gruaService.detail(this.servicio.grua).subscribe(
+      this.gruaService.detail(this.servicio.grua.noEco).subscribe(
         (grua: Grua) => {
           this.gruaSeleccionada = grua;
           console.log('Grua:', this.gruaSeleccionada.noEco);
