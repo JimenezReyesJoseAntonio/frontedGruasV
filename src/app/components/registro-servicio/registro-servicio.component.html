@@ -53,6 +53,7 @@
     <div class="p-field">
       <label for="modelo">Modelo</label>
       <input type="text" pInputText id="modelo" formControlName="modelo" required />
+
     </div>
   </form>
   <ng-template pTemplate="footer">
@@ -66,36 +67,36 @@
 <p-card *ngIf="activeIndex === 2" title="Vertical Grid Form" header="Datos del servicio"
   [style]="{ width: '900px', height: '430px' }" class="car">
   <form [formGroup]="servicioFom" class="p-formgrid">
-      <div class="p-field">
-        <label for="ubiSalida">Ubicación de salida</label>
-        <input type="text" pInputText id="ubiSalida" formControlName="ubicacionSalida" required />
-      </div>
-      <div class="p-field">
-        <label for="ubiContact">Ubicación de contacto</label>
-        <input type="text" pInputText id="ubiContact" formControlName="ubicacionContacto" required />
-      </div>
-      <div class="p-field">
-        <label for="ubiTermino">Ubicación de termino</label>
-        <input type="text" pInputText id="ano" formControlName="ubicacionTermino" required />
-      </div>
-      <div class="p-field">
-        <label for="monto">Monto cobrado</label>
-        <input type="number" pInputText id="monto" formControlName="montoCobrado" required />
-      </div> 
-      <div class="p-field">
-        <label for="operador">Seleccione el operador</label>
-        <p-dropdown optionValue="value" [options]="operadorDropdown" placeholder="Seleccione"
-          formControlName="operador"> </p-dropdown>
-      </div>
-      <div class="p-field">
-        <label for="grua">Seleccione la grua</label>
-        <p-dropdown optionValue="value" [options]="gruaDropdown" formControlName="grua" placeholder="Seleccione">
-        </p-dropdown>
-      </div>
-      <div class="p-field">
-        <label for="observaciones">Observaciones</label>
-        <textarea id="observaciones" pInputTextarea formControlName="observaciones" rows="2" cols="50"></textarea>
-      </div>
+    <div class="p-field">
+      <label for="ubiSalida">Ubicación de salida</label>
+      <input type="text" pInputText id="ubiSalida" formControlName="ubicacionSalida" required />
+    </div>
+    <div class="p-field">
+      <label for="ubiContact">Ubicación de contacto</label>
+      <input type="text" pInputText id="ubiContact" formControlName="ubicacionContacto" required />
+    </div>
+    <div class="p-field">
+      <label for="ubiTermino">Ubicación de termino</label>
+      <input type="text" pInputText id="ano" formControlName="ubicacionTermino" required />
+    </div>
+    <div class="p-field">
+      <label for="monto">Monto cobrado</label>
+      <input type="number" pInputText id="monto" formControlName="montoCobrado" required />
+    </div>
+    <div class="p-field">
+      <label for="operador">Seleccione el operador</label>
+      <p-dropdown optionValue="value" [options]="operadorDropdown" placeholder="Seleccione" formControlName="operador">
+      </p-dropdown>
+    </div>
+    <div class="p-field">
+      <label for="grua">Seleccione la grua</label>
+      <p-dropdown optionValue="value" [options]="gruaDropdown" formControlName="grua" placeholder="Seleccione">
+      </p-dropdown>
+    </div>
+    <div class="p-field">
+      <label for="observaciones">Observaciones</label>
+      <textarea id="observaciones" pInputTextarea formControlName="observaciones" rows="2" cols="50"></textarea>
+    </div>
   </form>
   <ng-template pTemplate="footer">
     <p-button label="Guardar" icon="pi pi-check" (onClick)="onServiceInfoSubmit()"

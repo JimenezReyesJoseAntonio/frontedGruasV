@@ -10,6 +10,9 @@ export const environment = {
     vehiculoURL:'http://localhost:8080/vehiculo/',
     servicioURL: 'http://localhost:8080/servicio/',
     estatusOperador: 'http://localhost:8080/estatus-operador/',
-    estatusGrua: 'http://localhost:8080/estatus-grua/'
+    estatusGrua: 'http://localhost:8080/estatus-grua/',
+    marcaURL: 'http://localhost:8080/marca/',
+    modeloURL: 'http://localhost:8080/modelo/',
+
 
   };

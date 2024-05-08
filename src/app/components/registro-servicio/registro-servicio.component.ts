@@ -169,8 +169,10 @@ export class RegistroServicioComponent implements OnInit {
     // Procesar los datos del primer formulario si es válido
     if (this.servicioFom.valid) {
       this.servicio = this.servicioFom.value;
+      console.log(this.servicioFom.value.operador);
+      console.log(this.servicio.grua);
 
-      this.operadorService.detail(this.servicio.operador.id).subscribe(
+      this.operadorService.detail(this.servicioFom.value.operador).subscribe(
         (operador: Operador) => {
           this.operadorSeleccionado = operador;
           console.log('Operador:', this.operadorSeleccionado.nombre);
@@ -180,7 +182,7 @@ export class RegistroServicioComponent implements OnInit {
         }
       );
 
-      this.gruaService.detail(this.servicio.grua.noEco).subscribe(
+      this.gruaService.detail(this.servicioFom.value.grua).subscribe(
         (grua: Grua) => {
           this.gruaSeleccionada = grua;
           console.log('Grua:', this.gruaSeleccionada.noEco);
@@ -193,7 +195,7 @@ export class RegistroServicioComponent implements OnInit {
 
       this.activeIndex++; // Avanzar al siguiente paso
     } else {
-      console.log('kk');
+      console.log('fomulario servcio invalido');
     }
   }
 
