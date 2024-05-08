@@ -51,7 +51,7 @@
                                 <button pButton pRipple icon="pi pi-pencil"
                                     class="p-button-rounded p-button-success mr-2"
                                     (click)="editGrua(grua)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                <button [disabled]="obtenerEstatusGrua(grua.noEco) == 'Ocupada'" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
                                     (click)="deleteGrua(grua)"></button>
                             </div>
                         </td>
