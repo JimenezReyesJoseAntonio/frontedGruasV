@@ -19,6 +19,12 @@ import { ServicioService } from '../../services/servicio.service';
 import { EventService } from '../../services/event.service';
 import { EstatusOperadorService } from '../../services/estatus-operador.service';
 import { EstatusGruaService } from '../../services/estatus-grua.service';
+import { MarcaService } from '../../services/marca.service';
+import { ModeloService } from '../../services/modelo.service';
+import { Marca } from '../../models/marca';
+import { Modelo } from '../../models/modelo';
+import { TransaccionService } from '../../services/transaccion.service';
+import { TransaccionData } from '../../models/transaccionData';
 
 @Component({
   selector: 'app-registro-servicio',
@@ -53,10 +59,18 @@ export class RegistroServicioComponent implements OnInit {
   operadorDropdown: any[] = []; // Declaración de la variable estatusDropdown
   gruaDropdown: any[] = []; // Declaración de la variable estatusDropdown
 
+  //vehiculo
+  selectedMarca: any;
+  modelosFiltrados: any[] = [];
+  selectedModelo: any;
+  marcas: Marca[] = [];
+  modelos: Modelo[] = [];
+
+
   listaVacia: string | undefined;
   //
-  idCliente: number;
-  idVehiculo: number;
+  idCliente: Cliente;
+  idVehiculo: Vehiculo;
   vehiculoC: Vehiculo; // Declaración de la variable vehiculo
   idUser: number;
   idServicio: number;
@@ -75,7 +89,10 @@ export class RegistroServicioComponent implements OnInit {
     private router: Router,
     private eventService: EventService,
     private estatusOperador: EstatusOperadorService,
-    private estatusGruaService: EstatusGruaService
+    private estatusGruaService: EstatusGruaService,
+    private marcaService: MarcaService,
+    private modeloService: ModeloService,
+    private transaccionService:TransaccionService
 
 
   ) {
@@ -127,9 +144,56 @@ export class RegistroServicioComponent implements OnInit {
     this.cargarOperadores();
     this.cargarGruas();
     this.idUser = this.tokenService.getIdUsuario();
+    this.cargarMarcas();
+    this.cargarModelos();
 
   }
 
+  cargarMarcas() {
+    this.marcaService.lista().subscribe(
+      (data) => {
+        // Limpiar el arreglo de operadores antes de cargar los nuevos datos
+        this.marcas = data;
+
+        //this.clientes = this.clientes.filter(est => est.eliminado === 0);
+        console.log(data);
+      },
+      (err) => {
+        if (err && err.error && err.error.message) {
+          this.listaVacia = err.error.message;
+        } else {
+          this.listaVacia = 'Error al cargar marcas';
+        }
+      }
+    );
+  }
+
+  cargarModelos() {
+    this.modeloService.lista().subscribe(
+      (data) => {
+        // Limpiar el arreglo de operadores antes de cargar los nuevos datos
+        this.modelos = data;
+
+        //this.clientes = this.clientes.filter(est => est.eliminado === 0);
+        console.log(data);
+      },
+      (err) => {
+        if (err && err.error && err.error.message) {
+          this.listaVacia = err.error.message;
+        } else {
+          this.listaVacia = 'Error al cargar marcas';
+        }
+      }
+    );
+  }
+
+  filtrarModelosPorMarca(): void {
+    if (this.selectedMarca) {
+      this.modelosFiltrados = this.modelos.filter(m => m.marcaId === this.selectedMarca.id);
+    } else {
+      this.modelosFiltrados = [];
+    }
+  }
 
 
 
@@ -161,6 +225,9 @@ export class RegistroServicioComponent implements OnInit {
     // Procesar los datos del primer formulario si es válido
     if (this.vehicleForm.valid) {
       this.vehiculo = this.vehicleForm.value;
+      console.log('modelo'+this.vehicleForm.value.modelo.id);
+      console.log('marca'+this.vehicleForm.value.marca.id);
+
       this.activeIndex++; // Avanzar al siguiente paso
     }
   }
@@ -245,17 +312,17 @@ export class RegistroServicioComponent implements OnInit {
       (data) => {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.operadores = data;
-  
+
         // Filtrar los operadores que no están eliminados
         this.operadores = this.operadores.filter(operador => operador.eliminado === 0);
-  
+
         // Lista para almacenar operadores libres
-  
+
         // Obtener el estado de cada operador y filtrar los libres
         this.operadores.forEach(operador => {
           this.estatusOperador.obtenerEstatusOperador(operador.id).subscribe(
             (nombreEstatus) => {
-              if (nombreEstatus.nombreEstatus === 'Libre') { 
+              if (nombreEstatus.nombreEstatus === 'Libre') {
                 this.operadoresLibres.push(operador);
                 console.log(this.operadoresLibres.length);
               }
@@ -268,10 +335,10 @@ export class RegistroServicioComponent implements OnInit {
             }
           );
         });
-        console.log(this.operadoresLibres.length );
+        console.log(this.operadoresLibres.length);
         // Asignar la lista de operadores libres al arreglo de operadores
         this.operadores = this.operadoresLibres;
-    
+
         console.log('Carga de operadores completada');
       },
       (err) => {
@@ -283,14 +350,14 @@ export class RegistroServicioComponent implements OnInit {
       }
     );
   }
-  
+
 
   //obtenemos el estado del operador por separado
   getEstadoOperador(id: number): void {
-   
-    
+
+
   }
-  
+
   cargarGruas(): void {
     this.gruaService.lista().subscribe(
       (data) => {
@@ -298,13 +365,13 @@ export class RegistroServicioComponent implements OnInit {
         this.gruas = data;
 
         this.gruas = this.gruas.filter(grua => grua.eliminado === 0);
-        console.log('gruas no borradas'+ this.gruas.length);
+        console.log('gruas no borradas' + this.gruas.length);
         this.gruas.forEach(grua => {
           this.estatusGruaService.obtenerEstatusGrua(grua.noEco).subscribe(
             (nombreEstatus) => {
               if (nombreEstatus.nombreEstatus === 'Libre') { 
                 this.gruasLibres.push(grua);
-                console.log('gruas libres'+this.gruasLibres.length);
+                console.log('gruas libres' + this.gruasLibres.length);
               }
               //ponemos en el dropdown los operadores que estan libre solamente, antes filtramos los eliminados
               this.gruaDropdown = this.formatoDropdownGr(this.gruasLibres); // Convertir el formato
@@ -330,102 +397,66 @@ export class RegistroServicioComponent implements OnInit {
     );
   }
 
+
   onConfirm() {
-    // Procesar la confirmación final, enviar datos, etc.
     console.log('Confirmado');
-
-    //una vez confirmado guradamos los datos en la tabla: cliente, vehiculo
-    this.cienteService.save(this.cliente).subscribe(
-      (response) => {
-        // Operador registrado exitosamente
-        console.log('response ' + response);
-        this.idCliente = response;
-        console.log(this.idCliente);
-
-        // Llamar a una función para crear el vehículo después de guardar el cliente
-        this.crearVehiculo();
-
-      },
-      error => {
-        // Error al registrar el operador
-        console.error('Error:', error);
-        console.log('entre');
-
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
-      }
-    );
-
-
-  }
-
-  crearVehiculo() {
-    console.log('crear vehiculo ' + this.idCliente);
-    const formData = this.vehicleForm.value;
-    const vehiculo = new Vehiculo(
-      formData.tipoVehiculo, formData.marca, formData.modelo, formData.placas, formData.serie, formData.color, formData.ano, this.idCliente, 0
-    );
-    console.log(vehiculo);
-
-    this.vehiculoService.save(vehiculo).subscribe(
-      (response) => {
-        // Operador registrado exitosamente
-        this.idVehiculo = response;
-        this.crearServicio();
-      },
-      error => {
-        // Error al registrar el operador
-        console.error('Error:', error);
-        console.log('entre');
-
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
-      }
-    );
-
-  }
-
-  crearServicio() {
-    const formData = this.servicioFom.value;
-    const fechaActual = new Date();
-
+  //OBTENEMOS LA LISTA PARA EL FOLIO
     this.servicioService.lista().subscribe(
       (data) => {
         this.servicios = data;
         console.log('numero de servicios'+this.servicios.length);
-        const folio = this.servicios.length + 1; // Aquí obtienes el folio correctamente
-
-        const servicio = new Servicio(
-          '', fechaActual, formData.ubicacionSalida, formData.ubicacionContacto, formData.montoCobrado, formData.observaciones, formData.ubicacionTermino, "en curso", this.idCliente, this.idVehiculo, formData.operador, formData.grua, this.idUser, 0
-        );
-
+        const folio = this.servicios.length +1; // Calculas correctamente el folio
+  
+        //CREAMOS LOS OBJETOS PARA LOS REGISTROS
+        const formDataCliente = this.clientForm.value;
+        const cliente = new Cliente(formDataCliente.numTelefono, formDataCliente.clienteTipo, 0);
+    
+        const formDataVehiculo = this.vehicleForm.value;
+        const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.color, formDataVehiculo.ano,1, 0);
+      
+        const formDataServicio = this.servicioFom.value;
+        const fechaActual = new Date();
+        const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'en curso',cliente , vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
         servicio.folioServicio = 'OS00'+folio; // Asignas el folio al objeto servicio
-
-        this.servicioService.save(servicio).subscribe(
-          (response) => {
-
-            const idOperador = response.operador;
-            const idGrua = response.grua;
-            //cambiamos el estatus de la grua y del operador
-            this.cambiarEstatusOperador(idOperador);
-            this.cambiarEstatusGrua(idGrua);
-            console.log('id para cambiar estatus'+ idOperador);
-            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Servicio registrado exitosamente' });
-            this.eventService.emitServicioCreado();
-
-            setTimeout(() => {
-              this.mostrarServicios(); // Redirigir después de un breve retraso
-            }, 3000); // 1000 milisegundos = 1 segundo (ajusta según sea necesario)
-          },
-          error => {
-            console.error('Error al registrar el servicio:', error);
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
-          }
-        );
+    
+        this.crearServicio(cliente,vehiculo,servicio,formDataServicio);
       },
       (err) => {
         console.error('Error al cargar servicios para folio:', err);
+        
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar servicios para folio' });
       }
     );
+    
+  }
+
+  //RECIBE LOS OBJETOS PARA LA TRANSACCION Y LOS FORMDATA DEL SERVICIO PARA OPERADOR Y GRUA
+  crearServicio(cliente:Cliente,vehiculo:Vehiculo,servicio:Servicio,formDataServicio:any){
+    const transaccionData = new TransaccionData();
+    transaccionData.clienteDto = cliente;
+    transaccionData.vehiculoDto = vehiculo;
+    transaccionData.servicioDto = servicio;
+
+    this.transaccionService.crearRegistroTransaccional(transaccionData).subscribe(
+      (response) => {
+        console.log('Transacción exitosa:', response);
+        //CAMBIAMOS EL ESTATUS DEL OPERADOR Y DE LA GRUA
+        this.cambiarEstatusOperador(formDataServicio.operador);
+        this.cambiarEstatusGrua(formDataServicio.grua);
+        // Realizar acciones adicionales después de la transacción, como redireccionar o mostrar un mensaje de éxito
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Servicio registrado exitosamente' });
+        this.eventService.emitServicioCreado();
+
+        setTimeout(() => {
+          this.mostrarServicios(); // Redirigir después de un breve retraso
+        }, 1000); // 1000 milisegundos = 1 segundo (ajusta según sea necesario)
+      },
+      (error) => {
+        console.error('Error en la transacción:', error);
+        // Manejar errores, por ejemplo, mostrar un mensaje de error al usuario
+      }
+    );
+
   }
 
   cambiarEstatusOperador(idOperador:number){

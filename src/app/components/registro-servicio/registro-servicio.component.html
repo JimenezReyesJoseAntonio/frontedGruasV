@@ -8,7 +8,7 @@
   <form [formGroup]="clientForm" class="p-formgrid">
     <div class="p-field">
       <label for="tipoVehiculo">Número de teléfono</label>
-      <input type="text" pInputText id="tipoVehiculo" formControlName="numTelefono" required />
+      <input type="text" pInputText pKeyFilter="int" id="tipoVehiculo" formControlName="numTelefono" required maxlength="10" minlength="10" />
     </div>
     <div class="p-field">
       <label for="marca">Seleccione el cliente</label>
@@ -31,7 +31,16 @@
     </div>
     <div class="p-field">
       <label for="marca">Marca</label>
-      <input type="text" pInputText id="marca" formControlName="marca" required />
+      <p-dropdown [options]="marcas" [(ngModel)]="selectedMarca" (onChange)="filtrarModelosPorMarca()"
+        placeholder="Selecciona una Marca" optionLabel="nombre" formControlName="marca">
+      </p-dropdown>
+    </div>
+    <div class="p-field">
+      <label for="modelo">Modelo</label>
+      <p-dropdown [options]="modelosFiltrados" [(ngModel)]="selectedModelo" placeholder="Selecciona un Modelo"
+        optionLabel="nombre" formControlName="modelo">
+      </p-dropdown>
+
     </div>
     <div class="p-field">
 
@@ -44,17 +53,14 @@
     </div>
     <div class="p-field">
       <label for="color">Color</label>
-      <input type="text" pInputText id="color" formControlName="color" mask="999-999-9999" />
+      <input type="text" pInputText id="color" formControlName="color" />
     </div>
     <div class="p-field">
       <label for="ano">Año</label>
-      <input type="text" pInputText id="ano" formControlName="ano" required />
+      <p-inputNumber id="ano" formControlName="ano" [maxlength]="4"
+       [minlength]="4" [useGrouping]="false"></p-inputNumber>
     </div>
-    <div class="p-field">
-      <label for="modelo">Modelo</label>
-      <input type="text" pInputText id="modelo" formControlName="modelo" required />
-
-    </div>
+   
   </form>
   <ng-template pTemplate="footer">
     <p-button label="Guardar" icon="pi pi-check" (onClick)="onVehicleInfoSubmit()"
@@ -123,8 +129,8 @@
     <h4>Datos del Vehículo</h4>
     <ul>
       <li>Tipo de vehículo: {{ vehiculo.tipoVehiculo }}</li>
-      <li>Marca: {{ vehiculo.marca }}</li>
-      <li>Modelo: {{ vehiculo.modelo }}</li>
+      <li>Marca: {{ vehiculo.marca.nombre }}</li>
+      <li>Modelo: {{ vehiculo.modelo.nombre }}</li>
       <li>Serie: {{ vehiculo.serie }}</li>
       <li>Color: {{ vehiculo.color }}</li>
       <li>Año: {{ vehiculo.ano }}</li>

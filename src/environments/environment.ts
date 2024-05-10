@@ -13,6 +13,8 @@ export const environment = {
     estatusGrua: 'http://localhost:8080/estatus-grua/',
     marcaURL: 'http://localhost:8080/marca/',
     modeloURL: 'http://localhost:8080/modelo/',
+    transaccionURL: 'http://localhost:8080/transaccion-service/',
+
 
 
   };

@@ -1,5 +1,7 @@
+import { Cliente } from "./cliente";
 import { Grua } from "./grua";
 import { Operador } from "./operador";
+import { Vehiculo } from "./vehiculo";
 
 export class Servicio {
     id:number;
@@ -11,16 +13,16 @@ export class Servicio {
     observaciones: string;
     ubicacionTermino: string;
     estadoServicio: string;
-    cliente: number;
-    vehiculo: number;
+    cliente: Cliente;
+    vehiculo: Vehiculo;
     operador:Operador ;
     grua: Grua;
     usuario: number;
     eliminado: number;
 
     constructor(folioServicio: string, fecha: Date, ubicacionSalida: string, ubicacionContacto: string,
-        montoCobrado: number, observaciones: string, ubicacionTermino: string, estadoServicio: string, cliente: number,
-        vehiculo: number, operador: Operador, grua: Grua, usuario: number, eliminado: number
+        montoCobrado: number, observaciones: string, ubicacionTermino: string, estadoServicio: string, cliente: Cliente,
+        vehiculo: Vehiculo, operador: Operador, grua: Grua, usuario: number, eliminado: number
     ) {
 
         this.folioServicio = folioServicio;

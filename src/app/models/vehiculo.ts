@@ -1,10 +1,13 @@
+import { Cliente } from "./cliente";
 import { ClienteTipo } from "./clienteTipo";
+import { Marca } from "./marca";
+import { Modelo } from "./modelo";
 
 export class Vehiculo{
     id?: number;
     tipoVehiculo: string;
-    marca: string;
-    modelo: string;
+    marca: Marca;
+    modelo: Modelo;
     placas: string;
     serie: string;
     color: string;
@@ -12,7 +15,7 @@ export class Vehiculo{
     cliente: number;
     eliminado: number;
 
-    constructor(tipoVehiculo: string,marca: string,modelo: string,placas: string,serie: string,color: string,
+    constructor(tipoVehiculo: string,marca: Marca,modelo: Modelo,placas: string,serie: string,color: string,
         ano:number,cliente: number, eliminado: number
     ){
         this.tipoVehiculo= tipoVehiculo;
