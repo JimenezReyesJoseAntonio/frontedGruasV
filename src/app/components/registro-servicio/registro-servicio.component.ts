@@ -236,7 +236,7 @@ export class RegistroServicioComponent implements OnInit {
     // Procesar los datos del primer formulario si es válido
     if (this.servicioFom.valid) {
       this.servicio = this.servicioFom.value;
-      console.log(this.servicioFom.value.operador);
+      console.log('ser sub'+this.servicioFom.value.operador);
       console.log(this.servicio.grua);
 
       this.operadorService.detail(this.servicioFom.value.operador).subscribe(

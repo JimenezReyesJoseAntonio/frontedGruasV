@@ -21,3 +21,9 @@
     grid-template-columns: repeat(3,  minmax(250px, 1fr)); /* Tres columnas de igual ancho */
     gap: 15px;
   }
+
+  .custom-button {
+    width: 180px;
+    margin-top: 10px;
+    /* Agrega más estilos según sea necesario */
+}

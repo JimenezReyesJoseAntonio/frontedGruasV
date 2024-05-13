@@ -5,7 +5,7 @@ import { Vehiculo } from "./vehiculo";
 
 export class Servicio {
     id:number;
-    folioServicio: string;
+    folioServicio?: string;
     fecha: Date;
     ubicacionSalida: string;
     ubicacionContacto: string;
