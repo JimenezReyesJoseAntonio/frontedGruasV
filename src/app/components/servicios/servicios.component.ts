@@ -8,6 +8,8 @@ import { EventService } from '../../services/event.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EstatusOperadorService } from '../../services/estatus-operador.service';
 import { EstatusGruaService } from '../../services/estatus-grua.service';
+import { Cliente } from '../../models/cliente';
+import { ClienteService } from '../../services/cliente.service';
 
 @Component({
   selector: 'app-servicios',
@@ -19,10 +21,15 @@ export class ServiciosComponent implements OnInit  {
   servicios: Servicio[] = [];
   listaVacia: string | undefined;
   servicio: Servicio | null = null;
-  servicioFom: FormGroup;
+  servEdit:Servicio| null = null;
+  editingServicio:Servicio| null = null;
   updateDialog: boolean = false;
   deleteServicioDialog:boolean =false;
   servicioFinalizado:Servicio | null = null;
+//formularios
+vehicleForm: FormGroup;
+clientForm: FormGroup;
+servicioForm: FormGroup;
 
   private eventoServicioCreadoSubscription: Subscription | undefined;
 
@@ -32,19 +39,35 @@ export class ServiciosComponent implements OnInit  {
     private eventService: EventService,
     private fb: FormBuilder,
     private estatusOperador: EstatusOperadorService,
-    private estatusGruaService: EstatusGruaService
+    private estatusGruaService: EstatusGruaService,
+    private clienteService: ClienteService
 
 
   ){
-    this.servicioFom = this.fb.group({
-        ubicacionSalida: ['', Validators.required],
-        ubicacionContacto: ['', Validators.required],
-        montoCobrado: ['', Validators.required],
-        observaciones: ['', Validators.required],
-        ubicacionTermino: ['', Validators.required],
-        operador: ['', Validators.required],
-        grua: ['', Validators.required],
-      });
+    this.clientForm = this.fb.group({
+      numTelefono: ['', Validators.required],
+      clienteTipo: ['', Validators.required],
+    });
+
+    this.vehicleForm = this.fb.group({
+      tipoVehiculo: ['', Validators.required],
+      marca: ['', Validators.required],
+      modelo: ['', Validators.required],
+      placas: ['', Validators.required],
+      serie: ['', Validators.required],
+      color: ['', Validators.required],
+      ano: ['', Validators.required],
+    });
+
+    this.servicioForm = this.fb.group({
+      ubicacionSalida: ['', Validators.required],
+      ubicacionContacto: ['', Validators.required],
+      montoCobrado: ['', Validators.required],
+      observaciones: ['', Validators.required],
+      ubicacionTermino: ['', Validators.required],
+      operador: ['', Validators.required],
+      grua: ['', Validators.required],
+    });
   
     
   } 
@@ -189,7 +212,7 @@ cargarServicios(): void {
         this.servicios = data.reverse();//regresa la lista de servicios en orden inverso
         console.log('carga servicios' + this.servicios.length);
         //filtramos los servicios que no estan finaliazados para que aparezcan en la tabla
-         this.servicios = this.servicios.filter(serv => serv.estadoServicio !== 'Finalizado'); 
+         this.servicios = this.servicios.filter(serv => serv.estadoServicio !== 'FINALIZADO'); 
 
          //filtramos solo las gruas que no han sido borrados
          //this.operadores = this.operadores.filter(operador => operador.eliminado === 0); 
@@ -217,11 +240,26 @@ navigateToClient(){
 
 }
 
-editOperador() {
-    console.log('nada');
+editServicio(servicio:Servicio) {
+  this.editingServicio = { ...servicio }; // Clonar el operador para evitar modificar el original directamente
+console.log('ll'+servicio.cliente.id);
+
+  this.serviceService.detail(servicio.id).subscribe(
+    (data) => {
+     this.servEdit= data;
+      console.log(this.servEdit.cliente.clienteTipo);
+    },
+    (err) => {
+      console.log(err);
+
+    }
+  );
+    console.log('nada'+servicio.id);
     this.updateDialog = true; // Mostrar el diálogo de edición
 
   }
+
+
 
   confirmFinishServicio(servicio:Servicio){
     this.deleteServicioDialog = true; // Mostrar el diálogo de edición
@@ -234,7 +272,7 @@ editOperador() {
     const folio= servicio.id;
     console.log(folio);
 
-
+//cambia el estatus del servicio a finalizado para liberar a los operadores y grua
     this.serviceService.detail(folio).subscribe(
       (data) => {
 
@@ -245,7 +283,7 @@ editOperador() {
         console.log(idGrua);
         this.cambiarEstatusOperador(idOpe);
         this.cambiarEstatusGrua(idGrua);
-        this.cambiarEstatusServicio(idSer,'estadoServicio','Finalizado');
+        this.cambiarEstatusServicio(idSer,'estadoServicio','FINALIZADO');
         
         //servicio.estadoServicio = 'Completado';
         console.log('llega aqui'+servicio);
@@ -300,4 +338,20 @@ editOperador() {
     );
 
   }
+
+   // cambia el color del tag
+   getSeverity(status: string) {
+    switch (status) {
+      case 'EN CURSO':
+        return 'success';
+      case 'FINALIZADO':
+        return 'warning';
+      case 'Fuera de servicio':
+        return 'danger';
+      default:
+        return ''; // Handle other cases, such as returning an empty string
+    }
+  }
+
+
 }

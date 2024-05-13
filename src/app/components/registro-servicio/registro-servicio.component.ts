@@ -65,7 +65,7 @@ export class RegistroServicioComponent implements OnInit {
   selectedModelo: any;
   marcas: Marca[] = [];
   modelos: Modelo[] = [];
-
+  selectedClient: any[] = [];
 
   listaVacia: string | undefined;
   //
@@ -92,7 +92,7 @@ export class RegistroServicioComponent implements OnInit {
     private estatusGruaService: EstatusGruaService,
     private marcaService: MarcaService,
     private modeloService: ModeloService,
-    private transaccionService:TransaccionService
+    private transaccionService: TransaccionService
 
 
   ) {
@@ -203,15 +203,15 @@ export class RegistroServicioComponent implements OnInit {
     if (this.clientForm.valid) {
       // Obtener el objeto ClienteTipo seleccionado del formulario
       this.cliente = this.clientForm.value;
-      console.log('datos  cliente' + this.cliente.clienteTipo);
+      console.log('datos  cliente' + this.cliente.clienteTipo.id);
       //onst clienteTipoSeleccionado: ClienteTipo = this.clientForm.get('clienteTipo').value;
       //console.log(clienteTipoSeleccionado);
 
       //buscamos el tipo cliente para el nombre
-      this.clienteTipoService.detail(this.cliente.clienteTipo).subscribe(
+      this.clienteTipoService.detail(this.cliente.clienteTipo.id).subscribe(
         (cliente: ClienteTipo) => {
           this.clienteBuscado = cliente;
-          console.log('Cliente buscado:', this.clienteBuscado.nombreCliente);
+          console.log('Cliente buscado:', this.clienteBuscado);
         },
         (error) => {
           console.error('Error al buscar cliente por ID:', error);
@@ -225,8 +225,8 @@ export class RegistroServicioComponent implements OnInit {
     // Procesar los datos del primer formulario si es válido
     if (this.vehicleForm.valid) {
       this.vehiculo = this.vehicleForm.value;
-      console.log('modelo'+this.vehicleForm.value.modelo.id);
-      console.log('marca'+this.vehicleForm.value.marca.id);
+      console.log('modelo' + this.vehicleForm.value.modelo.id);
+      console.log('marca' + this.vehicleForm.value.marca.id);
 
       this.activeIndex++; // Avanzar al siguiente paso
     }
@@ -369,7 +369,7 @@ export class RegistroServicioComponent implements OnInit {
         this.gruas.forEach(grua => {
           this.estatusGruaService.obtenerEstatusGrua(grua.noEco).subscribe(
             (nombreEstatus) => {
-              if (nombreEstatus.nombreEstatus === 'Libre') { 
+              if (nombreEstatus.nombreEstatus === 'Libre') {
                 this.gruasLibres.push(grua);
                 console.log('gruas libres' + this.gruasLibres.length);
               }
@@ -400,38 +400,68 @@ export class RegistroServicioComponent implements OnInit {
 
   onConfirm() {
     console.log('Confirmado');
-  //OBTENEMOS LA LISTA PARA EL FOLIO
+    //OBTENEMOS LA LISTA PARA EL FOLIO
     this.servicioService.lista().subscribe(
       (data) => {
         this.servicios = data;
-        console.log('numero de servicios'+this.servicios.length);
-        const folio = this.servicios.length +1; // Calculas correctamente el folio
-  
+        console.log('numero de servicios' + this.servicios.length);
+        const folio = this.servicios.length + 1; // Calculas correctamente el folio
+
         //CREAMOS LOS OBJETOS PARA LOS REGISTROS
         const formDataCliente = this.clientForm.value;
         const cliente = new Cliente(formDataCliente.numTelefono, formDataCliente.clienteTipo, 0);
-    
+
         const formDataVehiculo = this.vehicleForm.value;
-        const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.color, formDataVehiculo.ano,1, 0);
-      
+        // Convertir campos de vehiculo a mayúsculas
+        for (const key of Object.keys(formDataVehiculo)) {
+          const value = formDataVehiculo[key];
+          if (typeof value === 'string') {
+            formDataVehiculo[key] = value.toUpperCase();
+          }
+        }
+        const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
+
         const formDataServicio = this.servicioFom.value;
+        // Convertir campos de servicio a mayúsculas
+        for (const key of Object.keys(formDataServicio)) {
+          const value = formDataServicio[key];
+          if (typeof value === 'string') {
+            formDataServicio[key] = value.toUpperCase();
+          }
+        }
+
         const fechaActual = new Date();
-        const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'en curso',cliente , vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
-        servicio.folioServicio = 'OS00'+folio; // Asignas el folio al objeto servicio
-    
-        this.crearServicio(cliente,vehiculo,servicio,formDataServicio);
+        const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
+        servicio.folioServicio = 'OS00' + folio; // Asignas el folio al objeto servicio
+
+        this.crearServicio(cliente, vehiculo, servicio, formDataServicio);
       },
       (err) => {
-        console.error('Error al cargar servicios para folio:', err);
-        
+        console.error('Primer folio:', err);
+
+        //CREAMOS LOS OBJETOS PARA LOS REGISTROS
+        const formDataCliente = this.clientForm.value;
+        const cliente = new Cliente(formDataCliente.numTelefono, formDataCliente.clienteTipo, 0);
+
+        const formDataVehiculo = this.vehicleForm.value;
+        const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
+
+        const formDataServicio = this.servicioFom.value;
+        const fechaActual = new Date();
+        const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
+        servicio.folioServicio = 'OS00' + 1; // primer folio si no hyay nada
+
+        this.crearServicio(cliente, vehiculo, servicio, formDataServicio);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar servicios para folio' });
       }
     );
-    
+
   }
 
+
+
   //RECIBE LOS OBJETOS PARA LA TRANSACCION Y LOS FORMDATA DEL SERVICIO PARA OPERADOR Y GRUA
-  crearServicio(cliente:Cliente,vehiculo:Vehiculo,servicio:Servicio,formDataServicio:any){
+  crearServicio(cliente: Cliente, vehiculo: Vehiculo, servicio: Servicio, formDataServicio: any) {
     const transaccionData = new TransaccionData();
     transaccionData.clienteDto = cliente;
     transaccionData.vehiculoDto = vehiculo;
@@ -459,7 +489,7 @@ export class RegistroServicioComponent implements OnInit {
 
   }
 
-  cambiarEstatusOperador(idOperador:number){
+  cambiarEstatusOperador(idOperador: number) {
     this.estatusOperador.asignarEstatusOperador(idOperador, 'Ocupado').subscribe(
       () => {
         console.log('Estado asignado correctamente al operador');
@@ -470,7 +500,7 @@ export class RegistroServicioComponent implements OnInit {
     );
   }
 
-  cambiarEstatusGrua(idGrua:number){
+  cambiarEstatusGrua(idGrua: number) {
     this.estatusGruaService.asignarEstatusGrua(idGrua, 'Ocupada').subscribe(
       () => {
         console.log('Estado asignado correctamente a la grua');
@@ -486,7 +516,7 @@ export class RegistroServicioComponent implements OnInit {
     this.servicioService.lista().subscribe(
       (data) => {
         this.servicios = data;
-        console.log('gf'+this.servicios.length)
+        console.log('gf' + this.servicios.length)
       },
       (err) => {
         if (err && err.error && err.error.message) {

@@ -8,12 +8,14 @@
   <form [formGroup]="clientForm" class="p-formgrid">
     <div class="p-field">
       <label for="tipoVehiculo">Número de teléfono</label>
-      <input type="text" pInputText pKeyFilter="int" id="tipoVehiculo" formControlName="numTelefono" required maxlength="10" minlength="10" />
+      <input type="text" pInputText pKeyFilter="int" id="tipoVehiculo" formControlName="numTelefono" required
+        maxlength="10" minlength="10"  />
     </div>
     <div class="p-field">
       <label for="marca">Seleccione el cliente</label>
-      <p-dropdown optionValue="value" [options]="clientDropdown" formControlName="clienteTipo" placeholder="Seleccione">
+      <p-dropdown  [options]="clientes" optionLabel="nombreCliente" [(ngModel)]="selectedClient" formControlName="clienteTipo" placeholder="Seleccione" [editable]="true">
       </p-dropdown>
+     
     </div>
   </form>
   <ng-template pTemplate="footer">
@@ -32,13 +34,14 @@
     <div class="p-field">
       <label for="marca">Marca</label>
       <p-dropdown [options]="marcas" [(ngModel)]="selectedMarca" (onChange)="filtrarModelosPorMarca()"
-        placeholder="Selecciona una Marca" optionLabel="nombre" formControlName="marca">
+        placeholder="Selecciona una Marca" optionLabel="nombre" formControlName="marca" 
+        [editable]="true">
       </p-dropdown>
     </div>
     <div class="p-field">
       <label for="modelo">Modelo</label>
       <p-dropdown [options]="modelosFiltrados" [(ngModel)]="selectedModelo" placeholder="Selecciona un Modelo"
-        optionLabel="nombre" formControlName="modelo">
+        optionLabel="nombre" formControlName="modelo"  [editable]="true">
       </p-dropdown>
 
     </div>
@@ -57,16 +60,15 @@
     </div>
     <div class="p-field">
       <label for="ano">Año</label>
-      <p-inputNumber id="ano" formControlName="ano" [maxlength]="4"
-       [minlength]="4" [useGrouping]="false"></p-inputNumber>
+      <input type="text" pInputText pKeyFilter="int" id="ano" formControlName="ano" required [maxlength]="4" [minlength]="4">
     </div>
-   
+
   </form>
   <ng-template pTemplate="footer">
+    <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"></p-button>
     <p-button label="Guardar" icon="pi pi-check" (onClick)="onVehicleInfoSubmit()"
-      [disabled]="!vehicleForm.valid"></p-button>
-    <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"
-      [style]="{ 'margin-left': '.5em' }"></p-button>
+      [disabled]="!vehicleForm.valid"  [style]="{ 'margin-left': '.5em' }"></p-button>
+   
   </ng-template>
 </p-card>
 
@@ -91,12 +93,12 @@
     </div>
     <div class="p-field">
       <label for="operador">Seleccione el operador</label>
-      <p-dropdown optionValue="value" [options]="operadorDropdown" placeholder="Seleccione" formControlName="operador">
+      <p-dropdown optionValue="value" [options]="operadorDropdown" placeholder="Seleccione" formControlName="operador" [editable]="true"  >
       </p-dropdown>
     </div>
     <div class="p-field">
       <label for="grua">Seleccione la grua</label>
-      <p-dropdown optionValue="value" [options]="gruaDropdown" formControlName="grua" placeholder="Seleccione">
+      <p-dropdown optionValue="value" [options]="gruaDropdown" formControlName="grua" placeholder="Seleccione"  [editable]="true" >
       </p-dropdown>
     </div>
     <div class="p-field">
@@ -105,56 +107,62 @@
     </div>
   </form>
   <ng-template pTemplate="footer">
+    <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"></p-button>
     <p-button label="Guardar" icon="pi pi-check" (onClick)="onServiceInfoSubmit()"
-      [disabled]="!servicioFom.valid"></p-button>
-    <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"
-      [style]="{ 'margin-left': '.5em' }"></p-button>
+      [disabled]="!servicioFom.valid"  [style]="{ 'margin-left': '.5em' }"></p-button>
+    
   </ng-template>
 </p-card>
 
 
 <p-card *ngIf="activeIndex === 3" title="Vertical Grid Form" header="Confirmación"
   [style]="{ width: '1080px', height: '700px' }" class="car">
-  <div>
-    <p>Revise y confirme la información ingresada:</p>
+  <p>Revise y confirme la información ingresada:</p>
+
+  <div class="contenedor">
     <!-- Datos del cliente -->
-    <h4>Datos del Cliente</h4>
-    <ul>
-      <li>Cliente: {{ clienteBuscado.nombreCliente }}</li>
-      <li>Numero de telefono: {{cliente.numTelefono}}</li>
-      <!-- Agrega más detalles del cliente según sea necesario -->
-    </ul>
+    <div class="izquierdo">
+      <h4>Datos del Cliente</h4>
+      <ul>
+        <li>Cliente: {{ clienteBuscado.nombreCliente }}</li>
+        <li>Numero de telefono: {{cliente.numTelefono}}</li>
+        <!-- Agrega más detalles del cliente según sea necesario -->
+      </ul>
 
-    <!-- Datos del vehículo -->
-    <h4>Datos del Vehículo</h4>
-    <ul>
-      <li>Tipo de vehículo: {{ vehiculo.tipoVehiculo }}</li>
-      <li>Marca: {{ vehiculo.marca.nombre }}</li>
-      <li>Modelo: {{ vehiculo.modelo.nombre }}</li>
-      <li>Serie: {{ vehiculo.serie }}</li>
-      <li>Color: {{ vehiculo.color }}</li>
-      <li>Año: {{ vehiculo.ano }}</li>
+      <!-- Datos del vehículo -->
+      <h4>Datos del Vehículo</h4>
+      <ul>
+        <li>Tipo de vehículo: {{ vehiculo.tipoVehiculo }}</li>
+        <li>Marca: {{ vehiculo.marca.nombre }}</li>
+        <li>Modelo: {{ vehiculo.modelo.nombre }}</li>
+        <li>Serie: {{ vehiculo.serie }}</li>
+        <li>Color: {{ vehiculo.color }}</li>
+        <li>Año: {{ vehiculo.ano }}</li>
 
 
-      <!-- Agrega más detalles del vehículo según sea necesario -->
-    </ul>
+        <!-- Agrega más detalles del vehículo según sea necesario -->
+      </ul>
+    </div>
+    <div class="derecho">
+      <!-- Datos del servicio -->
+      <h4>Datos del Servicio</h4>
+      <ul>
+        <li>Ubicación de salida: {{ servicio.ubicacionSalida }}</li>
+        <li>Ubicación de contacto: {{ servicio.ubicacionContacto }}</li>
+        <li>Ubicación de termino: {{ servicio.ubicacionTermino }}</li>
+        <li>Monto cobrado: {{ servicio.montoCobrado }}</li>
+        <li>Operador: {{ operadorSeleccionado?.nombre }}</li>
+        <li>Grua: {{ gruaSeleccionada?.noEco }}</li>
+        <li>observaciones: {{ servicio.observaciones }}</li>
 
-    <!-- Datos del servicio -->
-    <h4>Datos del Servicio</h4>
-    <ul>
-      <li>Ubicación de salida: {{ servicio.ubicacionSalida }}</li>
-      <li>Ubicación de contacto: {{ servicio.ubicacionContacto }}</li>
-      <li>Ubicación de termino: {{ servicio.ubicacionTermino }}</li>
-      <li>Monto cobrado: {{ servicio.montoCobrado }}</li>
-      <li>Operador: {{ operadorSeleccionado?.nombre }}</li>
-      <li>Grua: {{ gruaSeleccionada?.noEco }}</li>
-      <li>observaciones: {{ servicio.observaciones }}</li>
+      </ul>
+    </div>
 
-    </ul>
   </div>
   <ng-template pTemplate="footer">
-    <p-button label="Confirmar" icon="pi pi-check" (click)="onConfirm()"></p-button>
-    <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"
-      [style]="{ 'margin-left': '.5em' }"></p-button>
+    <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"></p-button>
+    <p-button label="Confirmar" icon="pi pi-check" (click)="onConfirm()" [style]="{ 'margin-left': '.5em' }"></p-button>
+    
   </ng-template>
 </p-card>
+

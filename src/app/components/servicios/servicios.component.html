@@ -26,12 +26,13 @@
                 <td>{{ servicio?.ubicacionSalida }}</td>
                 <td>{{ servicio?.ubicacionContacto }}</td>
                 <td>{{ servicio?.ubicacionTermino }}</td>
-                <td>{{ servicio?.estadoServicio }}</td>
-
+                <td>
+                    <p-tag [value]="servicio?.estadoServicio"></p-tag>
+                </td>
                 <td>
                     <div class="flex">
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2"
-                            (click)="editOperador()"></button>
+                            (click)="editServicio(servicio)"></button>
                     </div>
                 </td>
                 <td>
@@ -53,9 +54,128 @@
 <p-dialog [(visible)]="updateDialog" [style]="{ width: '900px' }" header="Editar servicio" [modal]="true"
     class="p-fluid">
     <ng-template pTemplate="content">
-        <div class="p-grid p-fluid">
+        <p-accordion [activeIndex]="0">
+            <p-accordionTab header="Datos del cliente">
+                <div class="car">
+                    <form [formGroup]="clientForm" class="p-formgrid">
+                        <div class="p-field">
+                            <label for="numTe">Número de teléfono</label>
+                            <p-inputNumber id="numTe"  formControlName="numTelefono" [maxlength]="10" [(ngModel)]="servEdit?.cliente.numTelefono"
+                                    [minlength]="10" [useGrouping]="false"></p-inputNumber>
+                        </div>
+                        <div class="p-field">
+                            <label for="cliente">Seleccione el cliente</label>
+                            <p-dropdown optionValue="value" formControlName="clienteTipo" placeholder="Seleccione"
+                                [editable]="true"  [(ngModel)]="servEdit?.cliente.clienteTipo.nombreCliente" >
+                            </p-dropdown>
+                        </div>
 
-        </div>
+                    </form>
+                    <ng-template pTemplate="footer">
+                        <p-button label="Guardar" icon="pi pi-check"></p-button>
+                    </ng-template>
+                </div>
+
+
+            </p-accordionTab>
+            <p-accordionTab header="Datos del vehiculo">
+                <div class="car">
+                    <form [formGroup]="vehicleForm" class="p-formgrid">
+                        <div class="p-field">
+                            <label for="tipoV">Tipo de vehiculo</label>
+                            <input type="text" pInputText id="tipoV" formControlName="tipoVehiculo" required  [(ngModel)]="servEdit?.vehiculo.tipoVehiculo" />
+                        </div>
+                        <div class="p-field">
+                            <label for="marca">Marca</label>
+                            <p-dropdown placeholder="Selecciona una Marca" optionLabel="nombre" formControlName="marca"
+                                [editable]="true"  [(ngModel)]="servEdit?.vehiculo.marca.nombre" >
+                            </p-dropdown>
+                        </div>
+                        <div class="p-field">
+                            <label for="modelo">Modelo</label>
+                            <p-dropdown placeholder="Selecciona un Modelo" optionLabel="nombre" formControlName="modelo"
+                                [editable]="true" [(ngModel)]="servEdit?.vehiculo.modelo.nombre">
+                            </p-dropdown>
+
+                        </div>
+                        <div class="p-field">
+
+                            <label for="placas">Placas</label>
+                            <input type="text" pInputText id="placas" formControlName="placas" required  [(ngModel)]="servEdit?.vehiculo.placas" />
+                        </div>
+                        <div class="p-field">
+                            <label for="serie">Serie</label>
+                            <input type="email" pInputText id="serie" formControlName="serie" required [(ngModel)]="servEdit?.vehiculo.serie"/>
+                        </div>
+                        <div class="p-field">
+                            <label for="color">Color</label>
+                            <input type="text" pInputText id="color" formControlName="color" [(ngModel)]="servEdit?.vehiculo.color"/>
+                        </div>
+                        <div class="p-field">
+                            <label for="ano">Año</label>
+                            <p-inputNumber id="ano"  formControlName="ano" [maxlength]="4" [(ngModel)]="servEdit?.vehiculo.ano"
+                                    [minlength]="4" [useGrouping]="false"></p-inputNumber>
+            
+                        </div>
+
+                    </form>
+                    <ng-template pTemplate="footer">
+                        <p-button label="Regresar" icon="pi pi-arrow-left" styleClass="p-button-secondary"></p-button>
+                        <p-button label="Guardar" icon="pi pi-check" [disabled]="!vehicleForm.valid"
+                            [style]="{ 'margin-left': '.5em' }"></p-button>
+
+                    </ng-template>
+                </div>
+
+            </p-accordionTab>
+            <p-accordionTab header="Datos del servicio">
+                <div class="car">
+                    <form [formGroup]="servicioForm" class="p-formgrid">
+                        <div class="p-field">
+                            <label for="ubiSalida">Ubicación de salida</label>
+                        <input type="text" pInputText id="ubiSalida" formControlName="ubicacionSalida" required [(ngModel)]="editingServicio.ubicacionSalida"
+                            />
+                        </div>
+                        <div class="p-field">
+                            <label for="ubiContact">Ubicación de contacto</label>
+                            <input type="text" pInputText id="ubiContact" formControlName="ubicacionContacto" [(ngModel)]="editingServicio.ubicacionContacto"
+                                required />
+                        </div>
+                        <div class="p-field">
+                            <label for="ubiTermino">Ubicación de termino</label>
+                            <input type="text" pInputText id="ano" formControlName="ubicacionTermino" required [(ngModel)]="editingServicio.ubicacionTermino"/>
+                        </div>
+                        <div class="p-field">
+                            <label for="monto">Monto cobrado</label>
+                            <input type="number" pInputText id="monto" formControlName="montoCobrado" required [(ngModel)]="editingServicio.montoCobrado"/>
+                        </div>
+                        <div class="p-field">
+                            <label for="operador">Seleccione el operador</label>
+                            <p-dropdown optionValue="value" placeholder="Seleccione" formControlName="operador"
+                                [editable]="true" [(ngModel)]="servEdit?.operador.nombre">
+                            </p-dropdown>
+                        </div>
+                        <div class="p-field">
+                            <label for="grua">Seleccione la grua</label>
+                            <p-dropdown optionValue="value" formControlName="grua" placeholder="Seleccione"
+                                [editable]="true" [(ngModel)]="servEdit?.grua.noEco">
+                            </p-dropdown>
+                        </div>
+                        <div class="p-field">
+                            <label for="observaciones">Observaciones</label>
+                            <textarea id="observaciones" pInputTextarea formControlName="observaciones" rows="2" [(ngModel)]="editingServicio.observaciones"
+                                cols="50"></textarea>
+                        </div>
+                    </form>
+                    <ng-template pTemplate="footer">
+                        <p-button label="Regresar" icon="pi pi-arrow-left" styleClass="p-button-secondary"></p-button>
+                        <p-button label="Guardar" icon="pi pi-check" [style]="{ 'margin-left': '.5em' }"></p-button>
+
+                    </ng-template>
+                </div>
+
+            </p-accordionTab>
+        </p-accordion>
     </ng-template>
 
     <ng-template pTemplate="footer">
@@ -73,8 +193,7 @@
     <ng-template pTemplate="footer">
         <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
             (click)="deleteServicioDialog = false"></button>
-        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
-            (click)="finServicio()"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="finServicio()"></button>
     </ng-template>
 </p-dialog>
 

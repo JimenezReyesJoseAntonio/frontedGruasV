@@ -5,3 +5,19 @@
     margin-left: 100px;
     padding: 10px;
 }
+
+
+.car{
+  
+    margin-top: 40px;
+    display: inline-flex;
+      justify-content: center;
+      
+  }
+  
+  
+  .p-formgrid {
+    display: grid;
+    grid-template-columns: repeat(3,  minmax(250px, 1fr)); /* Tres columnas de igual ancho */
+    gap: 15px;
+  }

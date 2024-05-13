@@ -19,3 +19,17 @@
   justify-content: center;
 
 }
+
+.contenedor {
+  display: flex;
+  justify-content: space-between; /* Para que los divs se separen a los extremos */
+  padding-right: 100px;
+}
+
+.izquierdo {
+  /* Estilos adicionales para el div izquierdo si es necesario */
+}
+
+.derecho {
+  /* Estilos adicionales para el div derecho si es necesario */
+}

@@ -16,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { MenubarModule } from 'primeng/menubar';
 import { StepsModule } from 'primeng/steps';
 import { CardModule } from 'primeng/card';
+import { AccordionModule } from 'primeng/accordion';
 
 @NgModule({
   declarations: [],
@@ -42,7 +43,8 @@ import { CardModule } from 'primeng/card';
     ReactiveFormsModule,
     MenubarModule,
     StepsModule,
-    CardModule
+    CardModule,
+    AccordionModule
   ]
 })
 export class SharedModule { }
