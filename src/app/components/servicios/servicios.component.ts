@@ -25,6 +25,8 @@ import { TokenService } from '../../services/token.service';
 import { Vehiculo } from '../../models/vehiculo';
 import { MessageService } from 'primeng/api';
 import { VehiculoService } from '../../services/vehiculo.service';
+import { TiposVehiculoService } from '../../services/tipos-vehiculo.service';
+import { TiposVehiculo } from '../../models/tiposVehiculo';
 
 @Component({
   selector: 'app-servicios',
@@ -61,11 +63,12 @@ export class ServiciosComponent implements OnInit {
   gruas: Grua[] = [];
   gruasLibres: Grua[] = [];
   idUser: number;
+  tiposVehiculo: TiposVehiculo[] = [];
 
   //buttons
-  enaClien:boolean= true;
-  enaVehi:boolean= true;
-  enaSer:boolean= true;
+  enaClien: boolean = true;
+  enaVehi: boolean = true;
+  enaSer: boolean = true;
 
 
   private eventoServicioCreadoSubscription: Subscription | undefined;
@@ -82,11 +85,11 @@ export class ServiciosComponent implements OnInit {
     private gruaService: GruaService,
     private marcaService: MarcaService,
     private modeloService: ModeloService,
-    private transaccionService: TransaccionService,
     private clienteTipoService: ClienteTipoService,
     private tokenService: TokenService,
     private messageService: MessageService,
     private vehiculoService: VehiculoService,
+    private tiposVService: TiposVehiculoService
 
 
 
@@ -251,7 +254,7 @@ export class ServiciosComponent implements OnInit {
     this.idUser = this.tokenService.getIdUsuario();
     this.cargarMarcas();
     this.cargarModelos();
-
+    this.cargarTiposVehiculo();
   }
 
   ngOnDestroy(): void {
@@ -330,8 +333,27 @@ export class ServiciosComponent implements OnInit {
     }
   }
 
+  cargarTiposVehiculo() {
+    this.tiposVService.lista().subscribe(
+      (data) => {
+        // Limpiar el arreglo de operadores antes de cargar los nuevos datos
+        this.tiposVehiculo = data;
+        //this.clientes = this.clientes.filter(est => est.eliminado === 0);
+        console.log(data);
+      },
+      (err) => {
+        if (err && err.error && err.error.message) {
+          this.listaVacia = err.error.message;
+        } else {
+          this.listaVacia = 'Error al cargar marcas';
+        }
+      }
+    );
 
-cargarClientes(): void {
+  }
+
+
+  cargarClientes(): void {
     this.clienteTipoService.lista().subscribe(
       (data) => {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
@@ -374,7 +396,7 @@ cargarClientes(): void {
                 console.log(this.operadoresLibres.length);
               }
               //ponemos en el dropdown los operadores que estan libre solamente, antes filtramos los eliminados
-            //  this.operadorDropdown = this.formatoDropdownOp(this.operadoresLibres); // Convertir el formato
+              //  this.operadorDropdown = this.formatoDropdownOp(this.operadoresLibres); // Convertir el formato
 
             },
             (error) => {
@@ -384,7 +406,7 @@ cargarClientes(): void {
         });
         console.log(this.operadoresLibres.length);
         // Asignar la lista de operadores libres al arreglo de operadores
-        this.operadores = this.operadoresLibres;
+       // this.operadores = this.operadoresLibres;
 
         console.log('Carga de operadores completada');
       },
@@ -465,7 +487,13 @@ cargarClientes(): void {
     this.serviceService.detail(servicio.id).subscribe(
       (data) => {
         this.servEdit = data;
+        this.selectedMarca =this.servEdit.vehiculo.marca; // para que tenga como primer valor la marca original del servicio
+        this.selectedModelo= this.servEdit.vehiculo.modelo;// "" modelo original del servicio
+        this.filtrarModelosPorMarca(); // filtra los valores de la marca del servicio para no mostrar todos
+
         console.log(this.servEdit.cliente.clienteTipo);
+        console.log(this.servEdit.vehiculo.tipoVehiculo);
+
       },
       (err) => {
         console.log(err);
@@ -557,51 +585,51 @@ cargarClientes(): void {
 
   }
 
-  updateServicio(){
+  updateServicio() {
 
     console.log(this.clientForm.value);
     console.log(this.vehicleForm.value);
     console.log(this.servicioForm.value);
 
- //CREAMOS LOS OBJETOS PARA LOS REGISTROS
-        const formDataCliente = this.clientForm.value;
-        const cliente = new Cliente(formDataCliente.numTelefono, formDataCliente.clienteTipo, 0);
-
-        const formDataVehiculo = this.vehicleForm.value;
-        // Convertir campos de vehiculo a mayúsculas
-        for (const key of Object.keys(formDataVehiculo)) {
-          const value = formDataVehiculo[key];
-          if (typeof value === 'string') {
-            formDataVehiculo[key] = value.toUpperCase();
-          }
-        }
-        const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
-
-        const formDataServicio = this.servicioForm.value;
-        // Convertir campos de servicio a mayúsculas
-        for (const key of Object.keys(formDataServicio)) {
-          const value = formDataServicio[key];
-          if (typeof value === 'string') {
-            formDataServicio[key] = value.toUpperCase();
-          }
-        }
-
-        const servicio = new Servicio(this.editingServicio.folioServicio, this.editingServicio.fecha, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
-
-        //this.crearServicio(cliente, vehiculo, servicio, formDataServicio);
-
-  }
-
-  updateCliente(){
-    console.log('up cli'+this.servEdit.cliente.id );
-    const idClien= this.servEdit.cliente.id;
+    //CREAMOS LOS OBJETOS PARA LOS REGISTROS
     const formDataCliente = this.clientForm.value;
     const cliente = new Cliente(formDataCliente.numTelefono, formDataCliente.clienteTipo, 0);
 
-    this.clienteService.update(idClien,cliente).subscribe(
+    const formDataVehiculo = this.vehicleForm.value;
+    // Convertir campos de vehiculo a mayúsculas
+    for (const key of Object.keys(formDataVehiculo)) {
+      const value = formDataVehiculo[key];
+      if (typeof value === 'string') {
+        formDataVehiculo[key] = value.toUpperCase();
+      }
+    }
+    const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
+
+    const formDataServicio = this.servicioForm.value;
+    // Convertir campos de servicio a mayúsculas
+    for (const key of Object.keys(formDataServicio)) {
+      const value = formDataServicio[key];
+      if (typeof value === 'string') {
+        formDataServicio[key] = value.toUpperCase();
+      }
+    }
+
+    const servicio = new Servicio(this.editingServicio.folioServicio, this.editingServicio.fecha, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
+
+    //this.crearServicio(cliente, vehiculo, servicio, formDataServicio);
+
+  }
+
+  updateCliente() {
+    console.log('up cli' + this.servEdit.cliente.id);
+    const idClien = this.servEdit.cliente.id;
+    const formDataCliente = this.clientForm.value;
+    const cliente = new Cliente(formDataCliente.numTelefono, formDataCliente.clienteTipo, 0);
+
+    this.clienteService.update(idClien, cliente).subscribe(
       () => {
         this.enaClien = true;
-      
+
         console.log('exito actualizado cliente');
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Cliente actualizado exitosamente' });
 
@@ -614,9 +642,9 @@ cargarClientes(): void {
 
   }
 
-  updateVehiculo(){
+  updateVehiculo() {
     const idVehi = this.servEdit.vehiculo.id;
-    
+
     const formDataVehiculo = this.vehicleForm.value;
     // Convertir campos de vehiculo a mayúsculas
     for (const key of Object.keys(formDataVehiculo)) {
@@ -627,7 +655,7 @@ cargarClientes(): void {
     }
     const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
 
-    this.vehiculoService.update(idVehi,vehiculo).subscribe(
+    this.vehiculoService.update(idVehi, vehiculo).subscribe(
       () => {
         this.enaVehi = true;
         console.log('exito actualizado vehiculo');
@@ -639,11 +667,11 @@ cargarClientes(): void {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.message });
       }
     );
-    
+
   }
 
-  updateService(){
-    console.log('up serv' +this.servEdit.id );
+  updateService() {
+    console.log('up serv' + this.servEdit.id);
     const idSer = this.servEdit.id;
     const formDataServicio = this.servicioForm.value;
     // Convertir campos de servicio a mayúsculas
@@ -656,7 +684,7 @@ cargarClientes(): void {
 
     const servicio = new Servicio(this.editingServicio.folioServicio, this.editingServicio.fecha, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', this.servEdit.cliente, this.servEdit.vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
 
-    this.serviceService.update(idSer,servicio).subscribe(
+    this.serviceService.update(idSer, servicio).subscribe(
       () => {
         this.enaSer = true;
         console.log('exito actualizado vehiculo');
@@ -669,9 +697,6 @@ cargarClientes(): void {
       }
     );
   }
-
-
-  
 
   // cambia el color del tag
   getSeverity(status: string) {

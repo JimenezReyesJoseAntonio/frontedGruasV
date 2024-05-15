@@ -25,6 +25,8 @@ import { Marca } from '../../models/marca';
 import { Modelo } from '../../models/modelo';
 import { TransaccionService } from '../../services/transaccion.service';
 import { TransaccionData } from '../../models/transaccionData';
+import { TiposVehiculo } from '../../models/tiposVehiculo';
+import { TiposVehiculoService } from '../../services/tipos-vehiculo.service';
 
 @Component({
   selector: 'app-registro-servicio',
@@ -65,6 +67,7 @@ export class RegistroServicioComponent implements OnInit {
   selectedModelo: any;
   marcas: Marca[] = [];
   modelos: Modelo[] = [];
+  tiposVehiculo: TiposVehiculo[] = [];
   selectedClient: any[] = [];
 
   listaVacia: string | undefined;
@@ -74,7 +77,8 @@ export class RegistroServicioComponent implements OnInit {
   vehiculoC: Vehiculo; // Declaración de la variable vehiculo
   idUser: number;
   idServicio: number;
-  //subscription: Subscription;
+  enaService:boolean= true;
+  //subscription: Subscription
 
   constructor(
     public messageService: MessageService,
@@ -92,7 +96,8 @@ export class RegistroServicioComponent implements OnInit {
     private estatusGruaService: EstatusGruaService,
     private marcaService: MarcaService,
     private modeloService: ModeloService,
-    private transaccionService: TransaccionService
+    private transaccionService: TransaccionService,
+    private tiposVService: TiposVehiculoService
 
 
   ) {
@@ -103,20 +108,20 @@ export class RegistroServicioComponent implements OnInit {
 
     this.vehicleForm = this.fb.group({
       tipoVehiculo: ['', Validators.required],
-      marca: ['', Validators.required],
-      modelo: ['', Validators.required],
-      placas: ['', Validators.required],
-      serie: ['', Validators.required],
-      color: ['', Validators.required],
-      ano: ['', Validators.required],
+      marca: [''],
+      modelo: [''],
+      placas: [''],
+      serie: [''],
+      color: [''],
+      ano: [''],
     });
 
     this.servicioFom = this.fb.group({
       ubicacionSalida: ['', Validators.required],
       ubicacionContacto: ['', Validators.required],
       montoCobrado: ['', Validators.required],
-      observaciones: ['', Validators.required],
-      ubicacionTermino: ['', Validators.required],
+      observaciones: [''],
+      ubicacionTermino: [''],
       operador: ['', Validators.required],
       grua: ['', Validators.required],
     });
@@ -146,6 +151,7 @@ export class RegistroServicioComponent implements OnInit {
     this.idUser = this.tokenService.getIdUsuario();
     this.cargarMarcas();
     this.cargarModelos();
+    this. cargarTiposVehiculo();
 
   }
 
@@ -195,6 +201,25 @@ export class RegistroServicioComponent implements OnInit {
     }
   }
 
+  cargarTiposVehiculo(){
+    this.tiposVService.lista().subscribe(
+      (data) => {
+        // Limpiar el arreglo de operadores antes de cargar los nuevos datos
+        this.tiposVehiculo = data;
+        //this.clientes = this.clientes.filter(est => est.eliminado === 0);
+        console.log(data);
+      },
+      (err) => {
+        if (err && err.error && err.error.message) {
+          this.listaVacia = err.error.message;
+        } else {
+          this.listaVacia = 'Error al cargar marcas';
+        }
+      }
+    );
+
+  }
+
 
 
 
@@ -225,14 +250,15 @@ export class RegistroServicioComponent implements OnInit {
     // Procesar los datos del primer formulario si es válido
     if (this.vehicleForm.valid) {
       this.vehiculo = this.vehicleForm.value;
-      console.log('modelo' + this.vehicleForm.value.modelo.id);
-      console.log('marca' + this.vehicleForm.value.marca.id);
+      //console.log('modelo' + this.vehicleForm.value.modelo.id);
+     // console.log('marca' + this.vehicleForm.value.marca.id);
 
       this.activeIndex++; // Avanzar al siguiente paso
     }
   }
 
   onServiceInfoSubmit() {
+    this.enaService = false;
     // Procesar los datos del primer formulario si es válido
     if (this.servicioFom.valid) {
       this.servicio = this.servicioFom.value;
@@ -399,6 +425,7 @@ export class RegistroServicioComponent implements OnInit {
 
 
   onConfirm() {
+    this.enaService = true; //desabilitamos el boton 
     console.log('Confirmado');
     //OBTENEMOS LA LISTA PARA EL FOLIO
     this.servicioService.lista().subscribe(
@@ -419,7 +446,8 @@ export class RegistroServicioComponent implements OnInit {
             formDataVehiculo[key] = value.toUpperCase();
           }
         }
-        const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
+        console.log('pv'+this.vehicleForm.value);
+        const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca?.id, formDataVehiculo.modelo?.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
 
         const formDataServicio = this.servicioFom.value;
         // Convertir campos de servicio a mayúsculas

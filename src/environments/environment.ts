@@ -14,7 +14,6 @@ export const environment = {
     marcaURL: 'http://localhost:8080/marca/',
     modeloURL: 'http://localhost:8080/modelo/',
     transaccionURL: 'http://localhost:8080/transaccion-service/',
-
-
+    tiposVehiculoURL: 'http://localhost:8080/tipos-vehiculo/'
 
   };

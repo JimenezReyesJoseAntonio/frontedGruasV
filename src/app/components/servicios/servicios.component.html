@@ -68,18 +68,19 @@
                             <label for="cliente">Seleccione el cliente</label>
                             <p-dropdown [options]="clientes" optionLabel="nombreCliente" formControlName="clienteTipo"
                                 placeholder="Seleccione" [editable]="true"
-                                [(ngModel)]="servEdit?.cliente.clienteTipo.nombreCliente">
+                                [(ngModel)]="servEdit?.cliente.clienteTipo">
                             </p-dropdown>
                         </div>
 
                     </form>
                 </div>
                 <div class="custom-button">
-                    <p-button label="Actualizar" icon="pi pi-check" styleClass="custom-button" (onClick)="updateCliente()" [disabled]="enaClien"></p-button>
+                    <p-button label="Actualizar" icon="pi pi-check" styleClass="custom-button"
+                        (onClick)="updateCliente()" [disabled]="enaClien"></p-button>
                     <p-toast position="top-center"></p-toast>
 
-                </div>              
-                
+                </div>
+
 
             </p-accordionTab>
             <p-accordionTab header="Datos del vehiculo">
@@ -87,20 +88,21 @@
                     <form [formGroup]="vehicleForm" class="p-formgrid">
                         <div class="p-field">
                             <label for="tipoV">Tipo de vehiculo</label>
-                            <input type="text" pInputText id="tipoV" formControlName="tipoVehiculo" required
-                                [(ngModel)]="servEdit?.vehiculo.tipoVehiculo" />
+                            <p-dropdown [options]="tiposVehiculo" placeholder="Selecciona" optionLabel="nombre"
+                                formControlName="tipoVehiculo" [editable]="true"  [(ngModel)]="servEdit?.vehiculo.tipoVehiculo">
+                            </p-dropdown>
                         </div>
                         <div class="p-field">
                             <label for="marca">Marca</label>
-                            <p-dropdown placeholder="Selecciona una Marca" [options]="marcas" optionLabel="nombre"
-                                formControlName="marca" [editable]="true" [(ngModel)]="servEdit?.vehiculo.marca.nombre">
+                            <p-dropdown placeholder="Selecciona una Marca" [options]="marcas" optionLabel="nombre" (onChange)="filtrarModelosPorMarca()"
+                                formControlName="marca" [editable]="true" [(ngModel)]="selectedMarca">
                             </p-dropdown>
                         </div>
                         <div class="p-field">
                             <label for="modelo">Modelo</label>
-                            <p-dropdown placeholder="Selecciona un Modelo" [options]="modelos" optionLabel="nombre"
+                            <p-dropdown placeholder="Selecciona un Modelo" [options]="modelosFiltrados" optionLabel="nombre"
                                 formControlName="modelo" [editable]="true"
-                                [(ngModel)]="servEdit?.vehiculo.modelo.nombre">
+                                [(ngModel)]="selectedModelo">
                             </p-dropdown>
 
                         </div>
@@ -129,15 +131,15 @@
                         </div>
 
                     </form>
-                    
+
                 </div>
                 <div class="custom-button">
                     <p-button label="Actualizar" icon="pi pi-check" [disabled]="!vehicleForm.valid"
-                    styleClass="custom-button" (onClick)="updateVehiculo()" [disabled]="enaVehi"></p-button>
+                        styleClass="custom-button" (onClick)="updateVehiculo()" [disabled]="enaVehi"></p-button>
                     <p-toast position="top-center"></p-toast>
 
 
-                </div>      
+                </div>
 
             </p-accordionTab>
             <p-accordionTab header="Datos del servicio">
@@ -166,13 +168,13 @@
                         <div class="p-field">
                             <label for="operador">Seleccione el operador</label>
                             <p-dropdown [options]="operadores" optionLabel="nombre" placeholder="Seleccione"
-                                formControlName="operador" [editable]="true" [(ngModel)]="servEdit?.operador.nombre">
+                                formControlName="operador" [editable]="true" [(ngModel)]="servEdit.operador">
                             </p-dropdown>
                         </div>
                         <div class="p-field">
                             <label for="grua">Seleccione la grua</label>
                             <p-dropdown [options]="gruas" optionLabel="noEco" formControlName="grua"
-                                placeholder="Seleccione" [editable]="true" [(ngModel)]="servEdit?.grua.noEco">
+                                placeholder="Seleccione" [editable]="true" [(ngModel)]="servEdit.grua">
                             </p-dropdown>
                         </div>
                         <div class="p-field">
@@ -184,11 +186,11 @@
                 </div>
                 <div class="custom-button">
                     <p-button label="Actualizar" icon="pi pi-check" [disabled]="!servicioForm.valid"
-                    styleClass="custom-button" (onClick)="updateService()" [disabled]="enaSer"></p-button>
+                        styleClass="custom-button" (onClick)="updateService()" [disabled]="enaSer"></p-button>
                     <p-toast position="top-center"></p-toast>
 
 
-                </div>  
+                </div>
 
             </p-accordionTab>
         </p-accordion>
@@ -197,8 +199,7 @@
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
             (click)="updateDialog = false"></button>
-        <button pButton pRipple label="Actualizar" icon="pi pi-check" class="p-button-text"
-            (click)="updateServicio()"></button>
+
 
     </ng-template>
 </p-dialog>
