@@ -3,7 +3,7 @@ import { MenuItem } from './MenuItem';
 import { Router } from '@angular/router';
 import { ServicioService } from '../../services/servicio.service';
 import { Servicio } from '../../models/servicio';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, forkJoin, map, of, tap } from 'rxjs';
 import { EventService } from '../../services/event.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EstatusOperadorService } from '../../services/estatus-operador.service';
@@ -14,7 +14,6 @@ import { OperadorService } from '../../services/operador.service';
 import { GruaService } from '../../services/grua.service';
 import { MarcaService } from '../../services/marca.service';
 import { ModeloService } from '../../services/modelo.service';
-import { TransaccionService } from '../../services/transaccion.service';
 import { Marca } from '../../models/marca';
 import { Modelo } from '../../models/modelo';
 import { ClienteTipo } from '../../models/clienteTipo';
@@ -69,6 +68,8 @@ export class ServiciosComponent implements OnInit {
   enaClien: boolean = true;
   enaVehi: boolean = true;
   enaSer: boolean = true;
+  estatusOpe: string;
+  estatusGrua: string;
 
 
   private eventoServicioCreadoSubscription: Subscription | undefined;
@@ -89,7 +90,7 @@ export class ServiciosComponent implements OnInit {
     private tokenService: TokenService,
     private messageService: MessageService,
     private vehiculoService: VehiculoService,
-    private tiposVService: TiposVehiculoService
+    private tiposVService: TiposVehiculoService,
 
 
 
@@ -393,7 +394,7 @@ export class ServiciosComponent implements OnInit {
             (nombreEstatus) => {
               if (nombreEstatus.nombreEstatus === 'Libre') {
                 this.operadoresLibres.push(operador);
-                console.log(this.operadoresLibres.length);
+                console.log('opeLibres' + this.operadoresLibres.length);
               }
               //ponemos en el dropdown los operadores que estan libre solamente, antes filtramos los eliminados
               //  this.operadorDropdown = this.formatoDropdownOp(this.operadoresLibres); // Convertir el formato
@@ -406,7 +407,7 @@ export class ServiciosComponent implements OnInit {
         });
         console.log(this.operadoresLibres.length);
         // Asignar la lista de operadores libres al arreglo de operadores
-       // this.operadores = this.operadoresLibres;
+        // this.operadores = this.operadoresLibres;
 
         console.log('Carga de operadores completada');
       },
@@ -487,8 +488,8 @@ export class ServiciosComponent implements OnInit {
     this.serviceService.detail(servicio.id).subscribe(
       (data) => {
         this.servEdit = data;
-        this.selectedMarca =this.servEdit.vehiculo.marca; // para que tenga como primer valor la marca original del servicio
-        this.selectedModelo= this.servEdit.vehiculo.modelo;// "" modelo original del servicio
+        this.selectedMarca = this.servEdit.vehiculo.marca; // para que tenga como primer valor la marca original del servicio
+        this.selectedModelo = this.servEdit.vehiculo.modelo;// "" modelo original del servicio
         this.filtrarModelosPorMarca(); // filtra los valores de la marca del servicio para no mostrar todos
 
         console.log(this.servEdit.cliente.clienteTipo);
@@ -527,8 +528,8 @@ export class ServiciosComponent implements OnInit {
         const idSer = data.id;
         console.log(idOpe);
         console.log(idGrua);
-        this.cambiarEstatusOperador(idOpe);
-        this.cambiarEstatusGrua(idGrua);
+        this.cambiarEstatusOperador(idOpe, 'Libre');
+        this.cambiarEstatusGrua(idGrua, 'Libre');
         this.cambiarEstatusServicio(idSer, 'estadoServicio', 'FINALIZADO');
 
         //servicio.estadoServicio = 'Completado';
@@ -547,8 +548,8 @@ export class ServiciosComponent implements OnInit {
 
   }
 
-  cambiarEstatusOperador(idOperador: number) {
-    this.estatusOperador.asignarEstatusOperador(idOperador, 'Libre').subscribe(
+  cambiarEstatusOperador(idOperador: number, valor: string) {
+    this.estatusOperador.asignarEstatusOperador(idOperador, valor).subscribe(
       () => {
         console.log('Estado asignado correctamente al operador');
       },
@@ -558,8 +559,8 @@ export class ServiciosComponent implements OnInit {
     );
   }
 
-  cambiarEstatusGrua(idGrua: number) {
-    this.estatusGruaService.asignarEstatusGrua(idGrua, 'Libre').subscribe(
+  cambiarEstatusGrua(idGrua: number, valor: string) {
+    this.estatusGruaService.asignarEstatusGrua(idGrua, valor).subscribe(
       () => {
         console.log('Estado asignado correctamente a la grua');
       },
@@ -582,41 +583,6 @@ export class ServiciosComponent implements OnInit {
         console.error('Error al asignar estado al servicio:', error);
       }
     );
-
-  }
-
-  updateServicio() {
-
-    console.log(this.clientForm.value);
-    console.log(this.vehicleForm.value);
-    console.log(this.servicioForm.value);
-
-    //CREAMOS LOS OBJETOS PARA LOS REGISTROS
-    const formDataCliente = this.clientForm.value;
-    const cliente = new Cliente(formDataCliente.numTelefono, formDataCliente.clienteTipo, 0);
-
-    const formDataVehiculo = this.vehicleForm.value;
-    // Convertir campos de vehiculo a mayúsculas
-    for (const key of Object.keys(formDataVehiculo)) {
-      const value = formDataVehiculo[key];
-      if (typeof value === 'string') {
-        formDataVehiculo[key] = value.toUpperCase();
-      }
-    }
-    const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
-
-    const formDataServicio = this.servicioForm.value;
-    // Convertir campos de servicio a mayúsculas
-    for (const key of Object.keys(formDataServicio)) {
-      const value = formDataServicio[key];
-      if (typeof value === 'string') {
-        formDataServicio[key] = value.toUpperCase();
-      }
-    }
-
-    const servicio = new Servicio(this.editingServicio.folioServicio, this.editingServicio.fecha, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
-
-    //this.crearServicio(cliente, vehiculo, servicio, formDataServicio);
 
   }
 
@@ -670,33 +636,106 @@ export class ServiciosComponent implements OnInit {
 
   }
 
+  
   updateService() {
-    console.log('up serv' + this.servEdit.id);
     const idSer = this.servEdit.id;
     const formDataServicio = this.servicioForm.value;
+  
     // Convertir campos de servicio a mayúsculas
-    for (const key of Object.keys(formDataServicio)) {
-      const value = formDataServicio[key];
+    this.convertirCamposMayusculas(formDataServicio);
+  
+    const idOperador = this.editingServicio.operador.id;
+    const idGrua = this.editingServicio.grua.noEco;
+  
+    const idOpeCambiado = formDataServicio.operador.id;
+    const idGruaCambiada = formDataServicio.grua.noEco;
+  
+    forkJoin([
+      this.obtenerEstatusOperador(idOperador, idOpeCambiado),
+      this.obtenerEstatusGrua(idGrua, idGruaCambiada)
+    ]).subscribe(([estatusOperador, estatusGrua]) => {
+      if (estatusOperador && estatusGrua) {
+        // Actualizar el estatus del operador si corresponde
+        if (idOperador != idOpeCambiado) {
+          this.cambiarEstatusOperador(idOperador, 'Libre'); // Cambiar el estatus del operador anterior a 'Libre'
+          this.cambiarEstatusOperador(idOpeCambiado, 'Ocupado'); // Cambiar el estatus del operador cambiado a 'Ocupado'
+        }
+  
+        // Actualizar el estatus de la grúa si corresponde
+        if (idGrua != idGruaCambiada) {
+          this.cambiarEstatusGrua(idGrua, 'Libre'); // Cambiar el estatus de la grúa anterior a 'Libre'
+          this.cambiarEstatusGrua(idGruaCambiada, 'Ocupada'); // Cambiar el estatus de la grúa cambiada a 'Ocupada'
+        }
+  
+        // Actualizar el servicio después de haber actualizado los estatus de operador y grúa
+        const servicio = this.actualizarServicio(formDataServicio);
+        this.serviceService.update(idSer, servicio).subscribe(
+          () => {
+            this.enaSer = true;
+            console.log('exito actualizado servicio');
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Servicio actualizado exitosamente' });
+            this.cargarServicios();
+          },
+          (err) => {
+            console.error('Error:', err);
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.message });
+          }
+        );
+      }
+    });
+  }
+  
+  convertirCamposMayusculas(formData: any) {
+    for (const key of Object.keys(formData)) {
+      const value = formData[key];
       if (typeof value === 'string') {
-        formDataServicio[key] = value.toUpperCase();
+        formData[key] = value.toUpperCase();
       }
     }
-
-    const servicio = new Servicio(this.editingServicio.folioServicio, this.editingServicio.fecha, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', this.servEdit.cliente, this.servEdit.vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
-
-    this.serviceService.update(idSer, servicio).subscribe(
-      () => {
-        this.enaSer = true;
-        console.log('exito actualizado vehiculo');
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Servicio actualizado exitosamente' });
-        this.cargarServicios();
-      },
-      (err) => {
-        console.error('Error:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.message });
-      }
+  }
+  
+  obtenerEstatusOperador(idOperador: number, idOpeCambiado: number): Observable<boolean> {
+    if (idOperador != idOpeCambiado) {
+      return this.estatusOperador.obtenerEstatusOperador(idOpeCambiado).pipe(
+        tap((response) => {
+          if (response.nombreEstatus === 'Ocupado') {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El operador se encuentra ocupado' });
+          }
+        }),
+        map((response) => response.nombreEstatus !== 'Ocupado')
+      );
+    } else {
+      return of(true); // No hubo cambios en el operador
+    }
+  }
+  
+  obtenerEstatusGrua(idGrua: number, idGruaCambiada: number): Observable<boolean> {
+    if (idGrua != idGruaCambiada) {
+      return this.estatusGruaService.obtenerEstatusGrua(idGruaCambiada).pipe(
+        tap((response) => {
+          if (response.nombreEstatus === 'Ocupada') {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'La grua se encuentra ocupada' });
+          }
+        }),
+        map((response) => response.nombreEstatus !== 'Ocupada')
+      );
+    } else {
+      return of(true); // No hubo cambios en la grúa
+    }
+  }
+  
+  actualizarServicio(formData: any): Servicio {
+    return new Servicio(
+      this.editingServicio.folioServicio, this.editingServicio.fecha,
+      formData.ubicacionSalida, formData.ubicacionContacto, formData.montoCobrado,
+      formData.observaciones, formData.ubicacionTermino, 'EN CURSO',
+      this.servEdit.cliente, this.servEdit.vehiculo, formData.operador, formData.grua,
+      this.idUser, 0
     );
   }
+  
+  
+
 
   // cambia el color del tag
   getSeverity(status: string) {

@@ -168,13 +168,13 @@
                         <div class="p-field">
                             <label for="operador">Seleccione el operador</label>
                             <p-dropdown [options]="operadores" optionLabel="nombre" placeholder="Seleccione"
-                                formControlName="operador" [editable]="true" [(ngModel)]="servEdit.operador">
+                                formControlName="operador" [editable]="true" [(ngModel)]="editingServicio.operador">
                             </p-dropdown>
                         </div>
                         <div class="p-field">
                             <label for="grua">Seleccione la grua</label>
                             <p-dropdown [options]="gruas" optionLabel="noEco" formControlName="grua"
-                                placeholder="Seleccione" [editable]="true" [(ngModel)]="servEdit.grua">
+                                placeholder="Seleccione" [editable]="true" [(ngModel)]="editingServicio.grua">
                             </p-dropdown>
                         </div>
                         <div class="p-field">
