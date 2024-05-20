@@ -644,10 +644,15 @@ export class ServiciosComponent implements OnInit {
     // Convertir campos de servicio a mayúsculas
     this.convertirCamposMayusculas(formDataServicio);
   
-    const idOperador = this.editingServicio.operador.id;
-    const idGrua = this.editingServicio.grua.noEco;
+    const idOperador = this.servEdit.operador.id;//usamos servEdit no editingServicio ya que cambia por el ngmodel
+    console.log('id operador servicio' + idOperador );
+
+    const idGrua = this.servEdit.grua.noEco;
   
     const idOpeCambiado = formDataServicio.operador.id;
+    console.log('id operador servicio cambiado' + idOpeCambiado );
+
+    
     const idGruaCambiada = formDataServicio.grua.noEco;
   
     forkJoin([
@@ -657,6 +662,7 @@ export class ServiciosComponent implements OnInit {
       if (estatusOperador && estatusGrua) {
         // Actualizar el estatus del operador si corresponde
         if (idOperador != idOpeCambiado) {
+          console.log('operadores cambiado de '+ idOpeCambiado +' a '+idOpeCambiado);
           this.cambiarEstatusOperador(idOperador, 'Libre'); // Cambiar el estatus del operador anterior a 'Libre'
           this.cambiarEstatusOperador(idOpeCambiado, 'Ocupado'); // Cambiar el estatus del operador cambiado a 'Ocupado'
         }
@@ -695,7 +701,13 @@ export class ServiciosComponent implements OnInit {
   }
   
   obtenerEstatusOperador(idOperador: number, idOpeCambiado: number): Observable<boolean> {
+    console.log('no entra estatus operador' );
+    console.log('id operador' + idOperador );
+    console.log('id operador cambiado' + idOpeCambiado );
+
     if (idOperador != idOpeCambiado) {
+      console.log('operador diferente' );
+
       return this.estatusOperador.obtenerEstatusOperador(idOpeCambiado).pipe(
         tap((response) => {
           if (response.nombreEstatus === 'Ocupado') {
@@ -710,7 +722,11 @@ export class ServiciosComponent implements OnInit {
   }
   
   obtenerEstatusGrua(idGrua: number, idGruaCambiada: number): Observable<boolean> {
+    console.log('no entra estatus grua' );
+
     if (idGrua != idGruaCambiada) {
+      console.log('grua diferente' );
+
       return this.estatusGruaService.obtenerEstatusGrua(idGruaCambiada).pipe(
         tap((response) => {
           if (response.nombreEstatus === 'Ocupada') {

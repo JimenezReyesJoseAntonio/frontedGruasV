@@ -5,6 +5,7 @@ import { EstatusGruaDto } from '../../models/estatusGrua.dto';
 import { MessageService } from 'primeng/api';
 import { GruaService } from '../../services/grua.service';
 import { EstatusGruaService } from '../../services/estatus-grua.service';
+import { ExcelGruasService } from '../../services/excel-gruas.service';
 //import { EstatusGruaService } from '../../services/estatus-grua.service';
 
 
@@ -40,7 +41,8 @@ export class GruaComponent implements OnInit {
     private messageService: MessageService,
     private gruaService: GruaService,
     private fb: FormBuilder,
-    private estatusGruaService: EstatusGruaService
+    private estatusGruaService: EstatusGruaService,
+    private excelGrua: ExcelGruasService
 
   ) {
     this.gruaForm = this.fb.group({
@@ -301,4 +303,21 @@ export class GruaComponent implements OnInit {
         return ''; // Handle other cases, such as returning an empty string
     }
   }
+
+  exportarExcel() {
+    this.excelGrua.downloadExcel().subscribe((response: Blob) => {
+      const url = window.URL.createObjectURL(response);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'gruas.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, error => {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error descargando el archivo' });
+      console.error('Error downloading the file', error);
+    });
+  }
+
 }

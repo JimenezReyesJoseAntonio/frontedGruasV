@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EstatusDto } from '../../models/estatus.dto';
 import { EstatusService } from '../../services/estatus.service';
 import { EstatusOperadorService } from '../../services/estatus-operador.service';
+import { ExcelOperadoresService } from '../../services/excel-operadores.service';
 
 @Component({
   selector: 'app-operador',
@@ -37,7 +38,8 @@ export class OperadorComponent implements OnInit {
     private operadorService: OperadorService,
     private fb: FormBuilder,
     private estatusOperador: EstatusOperadorService,
-    private estatusService: EstatusService
+    private estatusService: EstatusService,
+    private excelOperador: ExcelOperadoresService
   ) {
     this.operadorForm = this.fb.group({
       nombre: [null, [Validators.required]],
@@ -304,4 +306,22 @@ export class OperadorComponent implements OnInit {
         return ''; // Handle other cases, such as returning an empty string
     }
   }
+
+  exportarExcel() {
+    this.excelOperador.downloadExcel().subscribe((response: Blob) => {
+      const url = window.URL.createObjectURL(response);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'operadores.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, error => {
+      console.error('Error downloading the file', error);
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error descargando el archivo' });
+
+    });
+  }
+
 }
