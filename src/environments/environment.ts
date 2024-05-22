@@ -16,6 +16,8 @@ export const environment = {
     transaccionURL: 'http://localhost:8080/transaccion-service/',
     tiposVehiculoURL: 'http://localhost:8080/tipos-vehiculo/',
     excelOpeURL:'http://localhost:8080/excel-operadores/download/excel',
-    excelGruaURL: 'http://localhost:8080/excel-gruas/download/excel'
+    excelGruaURL: 'http://localhost:8080/excel-gruas/download/excel',
+    apiUrl: 'http://localhost:8080',
+
 
   };

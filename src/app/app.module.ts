@@ -27,6 +27,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { ServiciosModule } from './components/servicios/servicios.module';
 import { RegistroServicioModule } from './components/registro-servicio/registro-servicio.module';
 import { ClienteModule } from './components/cliente/cliente.module';
+import { MessageOperadorComponent } from './Whatsapp/message-operador/message-operador.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ClienteModule } from './components/cliente/cliente.module';
     LayoutComponent,
     LoginComponent,
     DashboardComponent,
+    MessageOperadorComponent,
     
   ],
   imports: [

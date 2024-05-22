@@ -26,6 +26,9 @@ import { MessageService } from 'primeng/api';
 import { VehiculoService } from '../../services/vehiculo.service';
 import { TiposVehiculoService } from '../../services/tipos-vehiculo.service';
 import { TiposVehiculo } from '../../models/tiposVehiculo';
+import { WhatsappApiCloudService } from '../../services/whatsapp-api-cloud.service';
+import { MessageOperador } from '../../Whatsapp/interfaces/message-operador';
+import { COMPONENT_TYPE, MESSAGING_PRODUCT, PARAMETER_TYPE, TEMPLATE_LANGUAGE, TEMPLATE_NAME, TEMPLATE_TYPE } from '../../common/api-resource';
 
 @Component({
   selector: 'app-servicios',
@@ -51,6 +54,8 @@ export class ServiciosComponent implements OnInit {
 
   //vehiculo
   selectedMarca: any;
+  selectedOperador: any;
+  selectedGrua: any;
   modelosFiltrados: any[] = [];
   selectedModelo: any;
   marcas: Marca[] = [];
@@ -91,6 +96,7 @@ export class ServiciosComponent implements OnInit {
     private messageService: MessageService,
     private vehiculoService: VehiculoService,
     private tiposVService: TiposVehiculoService,
+    private whatsappService: WhatsappApiCloudService
 
 
 
@@ -256,6 +262,7 @@ export class ServiciosComponent implements OnInit {
     this.cargarMarcas();
     this.cargarModelos();
     this.cargarTiposVehiculo();
+    //this.editingServicio
   }
 
   ngOnDestroy(): void {
@@ -482,13 +489,16 @@ export class ServiciosComponent implements OnInit {
     this.enaClien = false;
     this.enaVehi = false;
     this.enaSer = false;
-    this.editingServicio = { ...servicio }; // Clonar el operador para evitar modificar el original directamente
+    this.editingServicio = { ...servicio }; // Clonar el operador para evitar modificar el original directamentec
+    console.log('editado' + this.editingServicio.operador.nombre);
     console.log('ll' + servicio.cliente.id);
 
     this.serviceService.detail(servicio.id).subscribe(
       (data) => {
         this.servEdit = data;
         this.selectedMarca = this.servEdit.vehiculo.marca; // para que tenga como primer valor la marca original del servicio
+        this.selectedOperador = this.servEdit.operador;
+        this.selectedGrua = this.servEdit.grua;
         this.selectedModelo = this.servEdit.vehiculo.modelo;// "" modelo original del servicio
         this.filtrarModelosPorMarca(); // filtra los valores de la marca del servicio para no mostrar todos
 
@@ -636,25 +646,25 @@ export class ServiciosComponent implements OnInit {
 
   }
 
-  
+
   updateService() {
     const idSer = this.servEdit.id;
     const formDataServicio = this.servicioForm.value;
-  
+
     // Convertir campos de servicio a mayúsculas
     this.convertirCamposMayusculas(formDataServicio);
-  
+
     const idOperador = this.servEdit.operador.id;//usamos servEdit no editingServicio ya que cambia por el ngmodel
-    console.log('id operador servicio' + idOperador );
+    console.log('id operador servicio' + idOperador);
 
     const idGrua = this.servEdit.grua.noEco;
-  
-    const idOpeCambiado = formDataServicio.operador.id;
-    console.log('id operador servicio cambiado' + idOpeCambiado );
 
-    
+    const idOpeCambiado = formDataServicio.operador.id;
+    console.log('id operador servicio cambiado' + idOpeCambiado);
+
+
     const idGruaCambiada = formDataServicio.grua.noEco;
-  
+
     forkJoin([
       this.obtenerEstatusOperador(idOperador, idOpeCambiado),
       this.obtenerEstatusGrua(idGrua, idGruaCambiada)
@@ -662,17 +672,17 @@ export class ServiciosComponent implements OnInit {
       if (estatusOperador && estatusGrua) {
         // Actualizar el estatus del operador si corresponde
         if (idOperador != idOpeCambiado) {
-          console.log('operadores cambiado de '+ idOpeCambiado +' a '+idOpeCambiado);
+          console.log('operadores cambiado de ' + idOpeCambiado + ' a ' + idOpeCambiado);
           this.cambiarEstatusOperador(idOperador, 'Libre'); // Cambiar el estatus del operador anterior a 'Libre'
           this.cambiarEstatusOperador(idOpeCambiado, 'Ocupado'); // Cambiar el estatus del operador cambiado a 'Ocupado'
         }
-  
+
         // Actualizar el estatus de la grúa si corresponde
         if (idGrua != idGruaCambiada) {
           this.cambiarEstatusGrua(idGrua, 'Libre'); // Cambiar el estatus de la grúa anterior a 'Libre'
           this.cambiarEstatusGrua(idGruaCambiada, 'Ocupada'); // Cambiar el estatus de la grúa cambiada a 'Ocupada'
         }
-  
+
         // Actualizar el servicio después de haber actualizado los estatus de operador y grúa
         const servicio = this.actualizarServicio(formDataServicio);
         this.serviceService.update(idSer, servicio).subscribe(
@@ -690,7 +700,7 @@ export class ServiciosComponent implements OnInit {
       }
     });
   }
-  
+
   convertirCamposMayusculas(formData: any) {
     for (const key of Object.keys(formData)) {
       const value = formData[key];
@@ -699,14 +709,14 @@ export class ServiciosComponent implements OnInit {
       }
     }
   }
-  
+
   obtenerEstatusOperador(idOperador: number, idOpeCambiado: number): Observable<boolean> {
-    console.log('no entra estatus operador' );
-    console.log('id operador' + idOperador );
-    console.log('id operador cambiado' + idOpeCambiado );
+    console.log('no entra estatus operador');
+    console.log('id operador' + idOperador);
+    console.log('id operador cambiado' + idOpeCambiado);
 
     if (idOperador != idOpeCambiado) {
-      console.log('operador diferente' );
+      console.log('operador diferente');
 
       return this.estatusOperador.obtenerEstatusOperador(idOpeCambiado).pipe(
         tap((response) => {
@@ -720,12 +730,12 @@ export class ServiciosComponent implements OnInit {
       return of(true); // No hubo cambios en el operador
     }
   }
-  
+
   obtenerEstatusGrua(idGrua: number, idGruaCambiada: number): Observable<boolean> {
-    console.log('no entra estatus grua' );
+    console.log('no entra estatus grua');
 
     if (idGrua != idGruaCambiada) {
-      console.log('grua diferente' );
+      console.log('grua diferente');
 
       return this.estatusGruaService.obtenerEstatusGrua(idGruaCambiada).pipe(
         tap((response) => {
@@ -739,7 +749,7 @@ export class ServiciosComponent implements OnInit {
       return of(true); // No hubo cambios en la grúa
     }
   }
-  
+
   actualizarServicio(formData: any): Servicio {
     return new Servicio(
       this.editingServicio.folioServicio, this.editingServicio.fecha,
@@ -749,8 +759,8 @@ export class ServiciosComponent implements OnInit {
       this.idUser, 0
     );
   }
-  
-  
+
+
 
 
   // cambia el color del tag
@@ -765,6 +775,94 @@ export class ServiciosComponent implements OnInit {
       default:
         return ''; // Handle other cases, such as returning an empty string
     }
+  }
+
+  enviarMensaje(servicio: Servicio) {
+    const data: MessageOperador = {
+      messaging_product: MESSAGING_PRODUCT.whatsapp,
+      to: '52' + servicio.operador.numTelefono,
+      type: TEMPLATE_TYPE.type,
+      template: {
+        name: TEMPLATE_NAME.messageOperador,
+        language: {
+          code: TEMPLATE_LANGUAGE.es
+        },
+        components: [
+          {
+            type: COMPONENT_TYPE.header,
+            parameters: [
+              {
+                type: PARAMETER_TYPE.text,
+                text: 'GRÚAS VESCO'
+
+              }
+            ]
+
+          },
+          {
+            type: COMPONENT_TYPE.body,
+            parameters: [
+              {
+                type: PARAMETER_TYPE.text,
+                text: servicio.operador.nombre
+
+              },
+              {
+                type: PARAMETER_TYPE.text,
+                text: servicio.ubicacionContacto
+
+              },
+              {
+                type: PARAMETER_TYPE.text,
+                text: 'G0' + servicio.grua.noEco
+
+              },
+              {
+                type: PARAMETER_TYPE.text,
+                text: servicio.vehiculo.marca.nombre
+
+              },
+              {
+                type: PARAMETER_TYPE.text,
+                text: servicio.vehiculo.modelo.nombre
+
+              },
+              {
+                type: PARAMETER_TYPE.text,
+                text: servicio.vehiculo.serie
+
+              },
+              {
+                type: PARAMETER_TYPE.text,
+                text: servicio.vehiculo.placas
+
+              },
+              {
+                type: PARAMETER_TYPE.text,
+                text: servicio.vehiculo.color
+
+              },
+              {
+                type: PARAMETER_TYPE.text,
+                text: servicio.cliente.numTelefono
+
+              }
+            ]
+
+          }
+        ]
+      }
+
+    }
+
+    this.whatsappService.sendMessage(data).subscribe(
+      resp => {
+         console.log('se mando el whatsapp');
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
 

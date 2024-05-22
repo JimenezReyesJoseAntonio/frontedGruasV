@@ -2,53 +2,62 @@
     <p-menubar [model]="items"></p-menubar>
 </div>
 <div *ngIf="router.url === '/principal/servicios'" class="tableServices">
-    <p-table [value]="servicios" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true" [rows]="5">
-        <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
-                Servicios
-            </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th>Folio</th>
-                <th>Ubicación de salida</th>
-                <th>Ubicación de contacto</th>
-                <th>Ubicación de termino</th>
-                <th>Estatus</th>
-                <th>Editar</th>
-                <th>Finalizar</th>
+    <p-card>
 
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-servicio>
-            <tr>
-                <td>{{ servicio?.folioServicio }}</td>
-                <td>{{ servicio?.ubicacionSalida }}</td>
-                <td>{{ servicio?.ubicacionContacto }}</td>
-                <td>{{ servicio?.ubicacionTermino }}</td>
-                <td>
-                    <p-tag [value]="servicio?.estadoServicio"></p-tag>
-                </td>
-                <td>
-                    <div class="flex">
-                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary mr-2"
-                            (click)="editServicio(servicio)"></button>
-                    </div>
-                </td>
-                <td>
-                    <div class="flex">
-                        <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-success mr-2"
-                            (click)="confirmFinishServicio(servicio)"></button>
-                    </div>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">
+        <p-table [value]="servicios" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true" [rows]="5">
+            <ng-template pTemplate="caption">
+                <div class="flex align-items-center justify-content-between">
+                    Servicios
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Folio</th>
+                    <th>Ubicación de salida</th>
+                    <th>Ubicación de contacto</th>
+                    <th>Ubicación de termino</th>
+                    <th>Estatus</th>
+                    <th>Editar</th>
+                    <th>Finalizar</th>
 
-            </div>
-        </ng-template>
-    </p-table>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-servicio>
+                <tr>
+                    <td>{{ servicio?.folioServicio }}</td>
+                    <td>{{ servicio?.ubicacionSalida }}</td>
+                    <td>{{ servicio?.ubicacionContacto }}</td>
+                    <td>{{ servicio?.ubicacionTermino }}</td>
+                    <td>
+                        <p-tag [value]="servicio?.estadoServicio"></p-tag>
+                    </td>
+                    <td>
+                        <div class="flex">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2"
+                                (click)="editServicio(servicio)"></button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex">
+                            <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-primary mr-2"
+                                (click)="confirmFinishServicio(servicio)"></button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex">
+                            <button pButton pRipple icon="pi pi-whatsapp" class="p-button-rounded p-button-success mr-2"
+                               (click)="enviarMensaje(servicio)" ></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+
+                </div>
+            </ng-template>
+        </p-table>
+    </p-card>
 </div>
 
 <p-dialog [(visible)]="updateDialog" [style]="{ width: '900px' }" header="Editar servicio" [modal]="true"
@@ -67,8 +76,7 @@
                         <div class="p-field">
                             <label for="cliente">Seleccione el cliente</label>
                             <p-dropdown [options]="clientes" optionLabel="nombreCliente" formControlName="clienteTipo"
-                                placeholder="Seleccione" [editable]="true"
-                                [(ngModel)]="servEdit?.cliente.clienteTipo">
+                                placeholder="Seleccione" [editable]="true" [(ngModel)]="servEdit?.cliente.clienteTipo">
                             </p-dropdown>
                         </div>
 
@@ -89,19 +97,21 @@
                         <div class="p-field">
                             <label for="tipoV">Tipo de vehiculo</label>
                             <p-dropdown [options]="tiposVehiculo" placeholder="Selecciona" optionLabel="nombre"
-                                formControlName="tipoVehiculo" [editable]="true"  [(ngModel)]="servEdit?.vehiculo.tipoVehiculo">
+                                formControlName="tipoVehiculo" [editable]="true"
+                                [(ngModel)]="servEdit?.vehiculo.tipoVehiculo">
                             </p-dropdown>
                         </div>
                         <div class="p-field">
                             <label for="marca">Marca</label>
-                            <p-dropdown placeholder="Selecciona una Marca" [options]="marcas" optionLabel="nombre" (onChange)="filtrarModelosPorMarca()"
-                                formControlName="marca" [editable]="true" [(ngModel)]="selectedMarca">
+                            <p-dropdown placeholder="Selecciona una Marca" [options]="marcas" optionLabel="nombre"
+                                (onChange)="filtrarModelosPorMarca()" formControlName="marca" [editable]="true"
+                                [(ngModel)]="selectedMarca">
                             </p-dropdown>
                         </div>
                         <div class="p-field">
                             <label for="modelo">Modelo</label>
-                            <p-dropdown placeholder="Selecciona un Modelo" [options]="modelosFiltrados" optionLabel="nombre"
-                                formControlName="modelo" [editable]="true"
+                            <p-dropdown placeholder="Selecciona un Modelo" [options]="modelosFiltrados"
+                                optionLabel="nombre" formControlName="modelo" [editable]="true"
                                 [(ngModel)]="selectedModelo">
                             </p-dropdown>
 
