@@ -26,7 +26,7 @@
 </p-card>
 
 <p-card *ngIf="activeIndex === 1" title="Vertical Grid Form" header="Datos del vehiculo"
-  [style]="{ width: '900px', height: '400px' }" class="car">
+  [style]="{ width: '810px', height: '400px' }" class="car">
   <form [formGroup]="vehicleForm" class="p-formgrid">
     <div class="p-field">
       <label for="tipoV">Tipo de vehiculo</label>
@@ -50,20 +50,24 @@
     <div class="p-field">
 
       <label for="placas">Placas</label>
-      <input type="text" pInputText id="placas" formControlName="placas"  />
+      <input type="text" pInputText id="placas" formControlName="placas"  minlength="6" maxlength="7"/>
     </div>
     <div class="p-field">
       <label for="serie">Serie</label>
-      <input type="email" pInputText id="serie" formControlName="serie"  />
+      <input type="text" pInputText id="serie" formControlName="serie" minlength="17" maxlength="17" pKeyFilter="alphanum" />
     </div>
     <div class="p-field">
       <label for="color">Color</label>
-      <input type="text" pInputText id="color" formControlName="color" />
+      <input type="text" pInputText id="color" formControlName="color" minlength="3" maxlength="10" pKeyFilter="alpha" />
     </div>
     <div class="p-field">
       <label for="ano">Año</label>
       <input type="text" pInputText pKeyFilter="int" id="ano" formControlName="ano"  [maxlength]="4"
         [minlength]="4">
+    </div>
+    <div class="p-field">
+      <label for="poliza">No Poliza</label>
+      <input type="text" pInputText id="poliza" formControlName="poliza" minlength="8" maxlength="10" pKeyFilter="int" />
     </div>
 
   </form>
@@ -81,15 +85,15 @@
   <form [formGroup]="servicioFom" class="p-formgrid">
     <div class="p-field">
       <label for="ubiSalida">Ubicación de salida</label>
-      <input type="text" pInputText id="ubiSalida" formControlName="ubicacionSalida" required />
+      <input type="text" pInputText id="ubiSalida" formControlName="ubicacionSalida" required  minlength="2" maxlength="22" />
     </div>
     <div class="p-field">
       <label for="ubiContact">Ubicación de contacto</label>
-      <input type="text" pInputText id="ubiContact" formControlName="ubicacionContacto" required />
+      <input type="text" pInputText id="ubiContact" formControlName="ubicacionContacto" required minlength="2" maxlength="22" />
     </div>
     <div class="p-field">
       <label for="ubiTermino">Ubicación de termino</label>
-      <input type="text" pInputText id="ano" formControlName="ubicacionTermino" required />
+      <input type="text" pInputText id="ano" formControlName="ubicacionTermino" required  minlength="2" maxlength="22"/>
     </div>
     <div class="p-field">
       <label for="monto">Monto cobrado</label>

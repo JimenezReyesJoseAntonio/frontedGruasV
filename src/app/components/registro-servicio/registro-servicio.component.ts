@@ -112,6 +112,7 @@ export class RegistroServicioComponent implements OnInit {
       modelo: [''],
       placas: [''],
       serie: [''],
+      poliza: [''],
       color: [''],
       ano: [''],
     });
@@ -447,7 +448,7 @@ export class RegistroServicioComponent implements OnInit {
           }
         }
         console.log('pv'+this.vehicleForm.value);
-        const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca?.id, formDataVehiculo.modelo?.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
+        const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca?.id, formDataVehiculo.modelo?.id, formDataVehiculo.placas, formDataVehiculo.serie,formDataVehiculo.poliza, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
 
         const formDataServicio = this.servicioFom.value;
         // Convertir campos de servicio a mayúsculas
@@ -472,7 +473,7 @@ export class RegistroServicioComponent implements OnInit {
         const cliente = new Cliente(formDataCliente.numTelefono, formDataCliente.clienteTipo, 0);
 
         const formDataVehiculo = this.vehicleForm.value;
-        const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
+        const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie,formDataVehiculo.poliza, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
 
         const formDataServicio = this.servicioFom.value;
         const fechaActual = new Date();

@@ -81,13 +81,13 @@
                         <!-- Primera columna -->
                         <div class="p-col-6">
                             <div class="field">
-                                <label for="placa">Placa</label>
+                                <label for="placa">Placa<span class="required-asterisk">*</span></label>
                                 <input type="text" pInputText id="placa" formControlName="placa" required autofocus minlength="5" maxlength="10" />
                                 <small *ngIf="submitted && !grua.placa " style="color: red;">Placa es requerido.</small>
 
                             </div>
                             <div class="field">
-                                <label for="serie">Serie</label>
+                                <label for="serie">Serie<span class="required-asterisk">*</span></label>
                                 <input type="text" pInputText id="serie" formControlName="serie" required required minlength="17" maxlength="17" pattern="^[A-Za-z0-9]+$" />
                                 <small *ngIf="submitted && !grua.serie " style="color: red;">Serie es requerido.</small>
                                 <small *ngIf="submitted && gruaForm.controls['serie'].errors?.['pattern']" style="color: red;">La serie no debe contener puntos,comas o espacios.</small>
@@ -95,7 +95,7 @@
 
                             </div>
                             <div class="field">
-                                <label for="permiso">No Permiso</label>
+                                <label for="permiso">No Permiso <span class="required-asterisk">*</span></label>
                                 <input type="text" pInputText id="permiso" formControlName="noPermiso" required minlength="24" maxlength="25" pattern="^[A-Za-z0-9]+$" />
                                 <small *ngIf="submitted && !grua.noPermiso " style="color: red;">No Permiso es requerido.</small>
                                 <small *ngIf="submitted && gruaForm.controls['noPermiso'].errors?.['pattern']" style="color: red;">El No permiso no debe contener puntos,comas o espacios.</small>
@@ -120,14 +120,14 @@
                         <div class="p-col-6">
                             
                             <div class="field">
-                                <label for="año">Año</label>
+                                <label for="año">Año<span class="required-asterisk">*</span></label>
                                 <p-inputNumber id="año" formControlName="ano" [maxlength]="4"
                                     [minlength]="4" [useGrouping]="false"></p-inputNumber>
                                 <small *ngIf="submitted && !grua.ano " style="color: red;">Año es requerido.</small>
 
                             </div>
                             <div class="field">
-                                <label for="salida">Kilometraje</label>
+                                <label for="salida">Kilometraje<span class="required-asterisk">*</span></label>
                                 <p-inputNumber id="salida" formControlName="kilometraje" [maxlength]="6"
                                     [minlength]="6" [useGrouping]="false"></p-inputNumber>
                                 <small *ngIf="submitted && !grua.kilometraje " style="color: red;">Kilometraje es requerido.</small>

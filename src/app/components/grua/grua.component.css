@@ -5,3 +5,6 @@
 .iconDelete{
     margin-left: 170px;
 }
+.required-asterisk {
+    color: red;
+}

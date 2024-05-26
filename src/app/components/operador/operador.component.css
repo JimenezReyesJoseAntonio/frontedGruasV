@@ -10,3 +10,7 @@
     display: flex;
     justify-content: center;
 }
+
+.required-asterisk {
+    color: red;
+}

@@ -120,17 +120,17 @@
 
                             <label for="placas">Placas</label>
                             <input type="text" pInputText id="placas" formControlName="placas" required
-                                [(ngModel)]="servEdit?.vehiculo.placas" />
+                                [(ngModel)]="servEdit?.vehiculo.placas"  minlength="6" maxlength="7"/>
                         </div>
                         <div class="p-field">
                             <label for="serie">Serie</label>
                             <input type="email" pInputText id="serie" formControlName="serie" required
-                                [(ngModel)]="servEdit?.vehiculo.serie" />
+                                [(ngModel)]="servEdit?.vehiculo.serie" minlength="17" maxlength="17" pKeyFilter="alphanum" />
                         </div>
                         <div class="p-field">
                             <label for="color">Color</label>
                             <input type="text" pInputText id="color" formControlName="color"
-                                [(ngModel)]="servEdit?.vehiculo.color" />
+                                [(ngModel)]="servEdit?.vehiculo.color"  minlength="3" maxlength="10" pKeyFilter="alpha"/>
                         </div>
                         <div class="p-field">
                             <label for="ano">Año</label>
@@ -139,7 +139,12 @@
                                 [useGrouping]="false"></p-inputNumber>
 
                         </div>
-
+                        <div class="p-field">
+                            <label for="poliza">No Poliza</label>
+                            <input type="text" pInputText id="serie" formControlName="poliza" required
+                                [(ngModel)]="servEdit?.vehiculo.poliza" minlength="8" maxlength="10" pKeyFilter="int" />
+                        </div>
+                       
                     </form>
 
                 </div>
@@ -158,17 +163,17 @@
                         <div class="p-field">
                             <label for="ubiSalida">Ubicación de salida</label>
                             <input type="text" pInputText id="ubiSalida" formControlName="ubicacionSalida" required
-                                [(ngModel)]="editingServicio.ubicacionSalida" />
+                                [(ngModel)]="editingServicio.ubicacionSalida"  minlength="2" maxlength="22" />
                         </div>
                         <div class="p-field">
                             <label for="ubiContact">Ubicación de contacto</label>
                             <input type="text" pInputText id="ubiContact" formControlName="ubicacionContacto"
-                                [(ngModel)]="editingServicio.ubicacionContacto" required />
+                                [(ngModel)]="editingServicio.ubicacionContacto" required   minlength="2" maxlength="22"/>
                         </div>
                         <div class="p-field">
                             <label for="ubiTermino">Ubicación de termino</label>
                             <input type="text" pInputText id="ano" formControlName="ubicacionTermino" required
-                                [(ngModel)]="editingServicio.ubicacionTermino" />
+                                [(ngModel)]="editingServicio.ubicacionTermino"  minlength="2" maxlength="22"/>
                         </div>
                         <div class="p-field">
                             <label for="monto">Monto cobrado</label>

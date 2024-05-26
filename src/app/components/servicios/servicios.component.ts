@@ -112,6 +112,7 @@ export class ServiciosComponent implements OnInit {
       modelo: ['', Validators.required],
       placas: ['', Validators.required],
       serie: ['', Validators.required],
+      poliza:['', Validators.required],
       color: ['', Validators.required],
       ano: ['', Validators.required],
     });
@@ -143,14 +144,14 @@ export class ServiciosComponent implements OnInit {
             }
           },
           {
-            label: 'Delete',
+            label: 'Eliminar',
             icon: 'pi pi-fw pi-trash'
           },
           {
             separator: true
           },
           {
-            label: 'Export',
+            label: 'Exportar',
             icon: 'pi pi-fw pi-external-link'
           }
         ]
@@ -182,7 +183,7 @@ export class ServiciosComponent implements OnInit {
         icon: 'pi pi-fw pi-user',
         items: [
           {
-            label: 'New',
+            label: 'Nuevo',
             icon: 'pi pi-fw pi-user-plus',
             command: () => {
               this.navigateToClient(); // Llama a un método para navegar a la ruta
@@ -215,22 +216,12 @@ export class ServiciosComponent implements OnInit {
         ]
       },
       {
-        label: 'Events',
-        icon: 'pi pi-fw pi-calendar',
+        label: 'Vehiculos',
+        icon: 'pi pi-fw pi-car',
         items: [
           {
-            label: 'Edit',
-            icon: 'pi pi-fw pi-pencil',
-            items: [
-              {
-                label: 'Save',
-                icon: 'pi pi-fw pi-calendar-plus'
-              },
-              {
-                label: 'Delete',
-                icon: 'pi pi-fw pi-calendar-minus'
-              }
-            ]
+            label: 'Nuevo',
+            icon: 'pi pi-fw pi-car'  
           },
           {
             label: 'Archieve',
@@ -243,10 +234,6 @@ export class ServiciosComponent implements OnInit {
             ]
           }
         ]
-      },
-      {
-        label: 'Quit',
-        icon: 'pi pi-fw pi-power-off'
       }
     ];
 
@@ -629,7 +616,7 @@ export class ServiciosComponent implements OnInit {
         formDataVehiculo[key] = value.toUpperCase();
       }
     }
-    const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
+    const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.poliza,formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
 
     this.vehiculoService.update(idVehi, vehiculo).subscribe(
       () => {
