@@ -28,6 +28,7 @@ import { ServiciosModule } from './components/servicios/servicios.module';
 import { RegistroServicioModule } from './components/registro-servicio/registro-servicio.module';
 import { ClienteModule } from './components/cliente/cliente.module';
 import { MessageOperadorComponent } from './Whatsapp/message-operador/message-operador.component';
+import { VehiculoModule } from './components/vehiculo/vehiculo.module';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { MessageOperadorComponent } from './Whatsapp/message-operador/message-op
     InputIconModule,
     ServiciosModule,
     RegistroServicioModule,
-    ClienteModule
+    ClienteModule,
+    VehiculoModule
   ],
   providers: [
 

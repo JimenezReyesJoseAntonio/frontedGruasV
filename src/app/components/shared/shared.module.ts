@@ -17,6 +17,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { StepsModule } from 'primeng/steps';
 import { CardModule } from 'primeng/card';
 import { AccordionModule } from 'primeng/accordion';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   declarations: [],
@@ -44,7 +45,8 @@ import { AccordionModule } from 'primeng/accordion';
     MenubarModule,
     StepsModule,
     CardModule,
-    AccordionModule
+    AccordionModule,
+    TabViewModule
   ]
 })
 export class SharedModule { }

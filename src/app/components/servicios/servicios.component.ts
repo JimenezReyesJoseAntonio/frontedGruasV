@@ -221,7 +221,10 @@ export class ServiciosComponent implements OnInit {
         items: [
           {
             label: 'Nuevo',
-            icon: 'pi pi-fw pi-car'  
+            icon: 'pi pi-fw pi-car',
+            command: () => {
+              this.navigateToVehicle(); // Llama a un método para navegar a la ruta
+            } 
           },
           {
             label: 'Archieve',
@@ -469,6 +472,11 @@ export class ServiciosComponent implements OnInit {
   navigateToClient() {
     this.router.navigate(['/principal/servicios/cliente']); // Navega a la ruta '/principal/dashboard'
 
+
+  }
+
+  navigateToVehicle(){
+    this.router.navigate(['/principal/servicios/vehiculo']); // Navega a la ruta '/principal/dashboard'
 
   }
 

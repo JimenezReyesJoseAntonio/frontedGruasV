@@ -16,5 +16,10 @@ export class ModeloService {
   public lista(): Observable<Modelo[]> {
     return this.httpClient.get<Modelo[]>(`${this.modeloURL}`);
   }
+
+  public save(modelo: Modelo): Observable<any> {
+    return this.httpClient.post<any>(`${this.modeloURL}`, modelo);
+  }
+
 }
 

@@ -1,0 +1,46 @@
+<p-card title="Vertical Grid Form" [style]="{ width: '600px', height: '400px' }" class="car">
+
+    <p-tabView>
+        <p-tabPanel header="Marca">
+            <form [formGroup]="marcaForm" class="p-formgrid">
+                <div class="p-col-12">
+                    <label for="marca">Nombre de la marca</label>
+                    <div class="p-field">
+                        <input type="text" formControlName="nombre" pInputText id="marca" required />
+                    </div>
+                    <div class="boton">
+                        <button (click)="registrarMarca()" type="button" pButton>Registrar</button>
+                    </div>
+                    <p-toast position="top-center"></p-toast>
+
+                </div>
+
+            </form>
+        </p-tabPanel>
+        <p-tabPanel header="Modelo">
+            <form [formGroup]="modeloForm" class="p-formgrid">
+                <div class="p-field">
+                    <label for="marcas">Marcas</label>
+                    <p-dropdown [options]="marcas" placeholder="Selecciona" optionLabel="nombre"
+                        formControlName="marcaId" [editable]="true">
+                    </p-dropdown>
+                </div>
+                <div class="p-field">
+
+                    <label for="modelo">Modelo</label>
+                    <input type="text" pInputText id="modelo" formControlName="nombre" minlength="2" maxlength="12" />
+                </div>
+
+
+            </form>
+            <div class="p-field">
+
+                <button (click)="registrarModelo()" type="button" pButton>Registrar</button>
+                <p-toast position="top-center"></p-toast>
+            </div>
+        </p-tabPanel>
+
+    </p-tabView>
+
+
+</p-card>

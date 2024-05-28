@@ -17,4 +17,8 @@ export class MarcaService {
     return this.httpClient.get<Marca[]>(`${this.marcaURL}`);
   }
 
+  public save(marca: Marca): Observable<any> {
+    return this.httpClient.post<any>(`${this.marcaURL}`, marca);
+  }
+
 }
