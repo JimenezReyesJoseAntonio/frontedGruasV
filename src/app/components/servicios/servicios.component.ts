@@ -152,7 +152,11 @@ export class ServiciosComponent implements OnInit {
           },
           {
             label: 'Exportar',
-            icon: 'pi pi-fw pi-external-link'
+            icon: 'pi pi-fw pi-external-link',
+            command: () => {
+              this.navigateToExport();
+              // Llama a un método para navegar a la ruta
+            }
           }
         ]
       },
@@ -478,6 +482,10 @@ export class ServiciosComponent implements OnInit {
   navigateToVehicle(){
     this.router.navigate(['/principal/servicios/vehiculo']); // Navega a la ruta '/principal/dashboard'
 
+  }
+
+  navigateToExport(){
+    this.router.navigate(['/principal/servicios/exportar-servicios']); // Navega a la ruta '/principal/dashboard'
   }
 
   editServicio(servicio: Servicio) {

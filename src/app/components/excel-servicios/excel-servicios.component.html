@@ -1,0 +1,42 @@
+<p-card title="Vertical Grid Form" header="Reportes" [style]="{ width: '600px', height: '400px' }" class="car">
+  <p-divider />
+
+  <div>
+
+    <div>
+
+      <h4> Reporte diario</h4>
+
+      <label for="dia">Fecha dia</label>
+      <input type="date" [(ngModel)]="day" id="dia" placeholder="Fecha específica" class="styled-date-input">
+
+    </div>
+    <div class="boton">
+      <p-button label="Exportar" icon="pi pi-file-export" (onClick)="exportarExcel(day)"
+        styleClass="p-button-secondary"></p-button>
+    </div>
+
+  </div>
+  
+  <h4> Reporte por rango de fechas</h4>
+
+  <div class="p-formgrid">
+
+
+    <div>
+      <label for="inicio">Fecha inicio</label>
+      <input type="date" [(ngModel)]="startDate" id="inicio" placeholder="Fecha de inicio" class="styled-date-input">
+    </div>
+    <div>
+      <label for="fin">Fecha fin</label>
+      <input type="date" [(ngModel)]="endDate" id="fin" placeholder="Fecha de fin" class="styled-date-input">
+    </div>
+
+  </div>
+  <div class="boton">
+    <p-button label="Exportar" icon="pi pi-file-export" (onClick)="exportarExcel(null, startDate, endDate)"
+      styleClass="p-button-secondary"></p-button>
+      <p-toast position="top-center"></p-toast>
+
+  </div>
+</p-card>

@@ -29,6 +29,7 @@ import { RegistroServicioModule } from './components/registro-servicio/registro-
 import { ClienteModule } from './components/cliente/cliente.module';
 import { MessageOperadorComponent } from './Whatsapp/message-operador/message-operador.component';
 import { VehiculoModule } from './components/vehiculo/vehiculo.module';
+import { ExcelServiciosModule } from './components/excel-servicios/excel-servicios.module';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { VehiculoModule } from './components/vehiculo/vehiculo.module';
     ServiciosModule,
     RegistroServicioModule,
     ClienteModule,
-    VehiculoModule
+    VehiculoModule,
+    ExcelServiciosModule
   ],
   providers: [
 

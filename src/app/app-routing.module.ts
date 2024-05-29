@@ -10,6 +10,7 @@ import { ServiciosComponent } from './components/servicios/servicios.component';
 import { RegistroServicioComponent } from './components/registro-servicio/registro-servicio.component';
 import { ClienteComponent } from './components/cliente/cliente.component';
 import { VehiculoComponent } from './components/vehiculo/vehiculo.component';
+import { ExcelServiciosComponent } from './components/excel-servicios/excel-servicios.component';
 
 
 const routes: Routes = [
@@ -50,6 +51,11 @@ const routes: Routes = [
         {
           path: 'cliente',
           component: ClienteComponent
+        },
+        {
+          path: 'exportar-servicios',
+          component: ExcelServiciosComponent
+
         },
         {
           path: 'vehiculo',
