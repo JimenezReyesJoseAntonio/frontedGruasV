@@ -860,9 +860,12 @@ export class ServiciosComponent implements OnInit {
 
     this.whatsappService.sendMessage(data).subscribe(
       resp => {
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Mensaje enviado exitosamente' });
          console.log('se mando el whatsapp');
       },
       error => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al mandar mensaje' });
+
         console.log(error);
       }
     )

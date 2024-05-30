@@ -27,6 +27,7 @@ import { TransaccionService } from '../../services/transaccion.service';
 import { TransaccionData } from '../../models/transaccionData';
 import { TiposVehiculo } from '../../models/tiposVehiculo';
 import { TiposVehiculoService } from '../../services/tipos-vehiculo.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-registro-servicio',
@@ -460,6 +461,7 @@ export class RegistroServicioComponent implements OnInit {
         }
 
         const fechaActual = new Date();
+        console.log(fechaActual);
         const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
         servicio.folioServicio = 'OS00' + folio; // Asignas el folio al objeto servicio
 

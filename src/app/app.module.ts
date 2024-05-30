@@ -20,7 +20,6 @@ import { LoginComponent } from './components/login/login.component';
 import { HttpClientModule, HttpClient, provideHttpClient, withFetch, HTTP_INTERCEPTORS  } from '@angular/common/http';
 import { OperadorModule } from './components/operador/operador.module';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { GruaModule } from './components/grua/grua.module';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -30,6 +29,7 @@ import { ClienteModule } from './components/cliente/cliente.module';
 import { MessageOperadorComponent } from './Whatsapp/message-operador/message-operador.component';
 import { VehiculoModule } from './components/vehiculo/vehiculo.module';
 import { ExcelServiciosModule } from './components/excel-servicios/excel-servicios.module';
+import { DashboardModule } from './components/dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,6 @@ import { ExcelServiciosModule } from './components/excel-servicios/excel-servici
     SidenavComponent,
     LayoutComponent,
     LoginComponent,
-    DashboardComponent,
     MessageOperadorComponent,
     
   ],
@@ -65,7 +64,8 @@ import { ExcelServiciosModule } from './components/excel-servicios/excel-servici
     RegistroServicioModule,
     ClienteModule,
     VehiculoModule,
-    ExcelServiciosModule
+    ExcelServiciosModule,
+    DashboardModule
   ],
   providers: [
 

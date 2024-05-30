@@ -59,6 +59,8 @@
         </p-table>
     </p-card>
 </div>
+<p-toast position="top-center"></p-toast>
+
 
 <p-dialog [(visible)]="updateDialog" [style]="{ width: '900px' }" header="Editar servicio" [modal]="true"
     class="p-fluid">
@@ -151,7 +153,6 @@
                 <div class="custom-button">
                     <p-button label="Actualizar" icon="pi pi-check" [disabled]="!vehicleForm.valid"
                         styleClass="custom-button" (onClick)="updateVehiculo()" [disabled]="enaVehi"></p-button>
-                    <p-toast position="top-center"></p-toast>
 
 
                 </div>
@@ -202,7 +203,6 @@
                 <div class="custom-button">
                     <p-button label="Actualizar" icon="pi pi-check" [disabled]="!servicioForm.valid"
                         styleClass="custom-button" (onClick)="updateService()" [disabled]="enaSer"></p-button>
-                    <p-toast position="top-center"></p-toast>
 
 
                 </div>
