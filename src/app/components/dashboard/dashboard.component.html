@@ -22,7 +22,7 @@
             <div class="flex justify-content-between mb-3">
                 <div>
                     <span class="block text-500 font-medium mb-3">Ganancias diarias</span>
-                    <div class="text-900 font-medium text-xl">$2.100</div>
+                    <div class="text-900 font-medium text-xl">${{gananciasDiarias}}</div>
                 </div>
                 <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
                     [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
@@ -38,8 +38,8 @@
         <div class="card mb-0">
             <div class="flex justify-content-between mb-3">
                 <div>
-                    <span class="block text-500 font-medium mb-3">Operadores ocupados</span>
-                    <div class="text-900 font-medium text-xl">28441</div>
+                    <span class="block text-500 font-medium mb-3">Operadores libres</span>
+                    <div class="text-900 font-medium text-xl">{{operadoresLibres.length}}</div>
                 </div>
                 <div class="flex align-items-center justify-content-center bg-cyan-100 border-round"
                     [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
@@ -47,16 +47,16 @@
                     text-cyan-500 text-xl"></i>
                 </div>
             </div>
-            <span class="text-green-500 font-medium">520 </span>
-            <span class="text-500">newly registered</span>
+            <span class="text-green-500 font-medium">{{operadoresOcupados.length}} </span>
+            <span class="text-500">operador en servicio</span>
         </div>
     </div>
     <div class="col-12 lg:col-6 xl:col-3">
         <div class="card mb-0">
             <div class="flex justify-content-between mb-3">
                 <div>
-                    <span class="block text-500 font-medium mb-3">Gruas ocupadas</span>
-                    <div class="text-900 font-medium text-xl">152 Unread</div>
+                    <span class="block text-500 font-medium mb-3">Gruas libres</span>
+                    <div class="text-900 font-medium text-xl">{{gruasLibres.length}}</div>
                 </div>
                 <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
                     [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
@@ -64,8 +64,8 @@
                     text-purple-500 text-xl"></i>
                 </div>
             </div>
-            <span class="text-green-500 font-medium">85 </span>
-            <span class="text-500">responded</span>
+            <span class="text-green-500 font-medium">{{gruasOcupadas.length}} </span>
+            <span class="text-500">grua en servicio</span>
         </div>
     </div>
 

@@ -40,7 +40,7 @@ export class RegistroServicioComponent implements OnInit {
   activeIndex = 0;
   vehicleForm: FormGroup;
   clientForm: FormGroup;
-  servicioFom: FormGroup;
+  servicioForm: FormGroup;
 
   personalInfoForm: FormGroup;
   contactDetailsForm: FormGroup;
@@ -118,7 +118,7 @@ export class RegistroServicioComponent implements OnInit {
       ano: [''],
     });
 
-    this.servicioFom = this.fb.group({
+    this.servicioForm = this.fb.group({
       ubicacionSalida: ['', Validators.required],
       ubicacionContacto: ['', Validators.required],
       montoCobrado: ['', Validators.required],
@@ -262,12 +262,12 @@ export class RegistroServicioComponent implements OnInit {
   onServiceInfoSubmit() {
     this.enaService = false;
     // Procesar los datos del primer formulario si es válido
-    if (this.servicioFom.valid) {
-      this.servicio = this.servicioFom.value;
-      console.log('ser sub'+this.servicioFom.value.operador);
+    if (this.servicioForm.valid) {
+      this.servicio = this.servicioForm.value;
+      console.log('ser sub'+this.servicioForm.value.operador);
       console.log(this.servicio.grua);
 
-      this.operadorService.detail(this.servicioFom.value.operador).subscribe(
+      this.operadorService.detail(this.servicioForm.value.operador).subscribe(
         (operador: Operador) => {
           this.operadorSeleccionado = operador;
           console.log('Operador:', this.operadorSeleccionado.nombre);
@@ -277,7 +277,7 @@ export class RegistroServicioComponent implements OnInit {
         }
       );
 
-      this.gruaService.detail(this.servicioFom.value.grua).subscribe(
+      this.gruaService.detail(this.servicioForm.value.grua).subscribe(
         (grua: Grua) => {
           this.gruaSeleccionada = grua;
           console.log('Grua:', this.gruaSeleccionada.noEco);
@@ -451,7 +451,7 @@ export class RegistroServicioComponent implements OnInit {
         console.log('pv'+this.vehicleForm.value);
         const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca?.id, formDataVehiculo.modelo?.id, formDataVehiculo.placas, formDataVehiculo.serie,formDataVehiculo.poliza, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
 
-        const formDataServicio = this.servicioFom.value;
+        const formDataServicio = this.servicioForm.value;
         // Convertir campos de servicio a mayúsculas
         for (const key of Object.keys(formDataServicio)) {
           const value = formDataServicio[key];
@@ -460,7 +460,13 @@ export class RegistroServicioComponent implements OnInit {
           }
         }
 
-        const fechaActual = new Date();
+        const fechaActual = new Date()
+       // console.log('Fecha actual en UTC:', fechaActual.toISOString());        //const fechaActual = moment.utc().toDate();
+        //const fechaActual = moment().utc().format();
+        console.log('fecha'+fechaActual);
+
+        console.log('veri date'+new Date().getTimezoneOffset()); // Debería ser el mismo en ambos lugares
+
         console.log(fechaActual);
         const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
         servicio.folioServicio = 'OS00' + folio; // Asignas el folio al objeto servicio
@@ -477,8 +483,8 @@ export class RegistroServicioComponent implements OnInit {
         const formDataVehiculo = this.vehicleForm.value;
         const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie,formDataVehiculo.poliza, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
 
-        const formDataServicio = this.servicioFom.value;
-        const fechaActual = new Date();
+        const formDataServicio = this.servicioForm.value;
+        const fechaActual = new Date(); // Formato ISO 8601
         const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
         servicio.folioServicio = 'OS00' + 1; // primer folio si no hyay nada
 

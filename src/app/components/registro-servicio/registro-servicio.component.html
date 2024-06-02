@@ -5,18 +5,17 @@
 
 <p-card *ngIf="activeIndex === 0" title="Vertical Grid Form" header="Datos del cliente"
   [style]="{ width: '600px', height: '400px' }" class="car">
-  <form [formGroup]="clientForm" class="p-formgrid">
-    <div class="p-field">
-      <label for="tipoVehiculo">Número de teléfono</label>
-      <input type="text" pInputText pKeyFilter="int" id="tipoVehiculo" formControlName="numTelefono" required
+  <form [formGroup]="clientForm" class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12">
+      <label for="numTe">Número de teléfono</label>
+      <input type="text" pInputText pKeyFilter="int" id="numTe" formControlName="numTelefono" required
         maxlength="10" minlength="10" />
     </div>
-    <div class="p-field">
-      <label for="marca">Seleccione el cliente</label>
+    <div class="p-field p-col-12">
+      <label for="cliente">Seleccione el cliente</label>
       <p-dropdown [options]="clientes" optionLabel="nombreCliente" [(ngModel)]="selectedClient"
         formControlName="clienteTipo" placeholder="Seleccione" [editable]="true">
       </p-dropdown>
-
     </div>
   </form>
   <ng-template pTemplate="footer">
@@ -27,91 +26,82 @@
 
 <p-card *ngIf="activeIndex === 1" title="Vertical Grid Form" header="Datos del vehiculo"
   [style]="{ width: '810px', height: '400px' }" class="car">
-  <form [formGroup]="vehicleForm" class="p-formgrid">
-    <div class="p-field">
+  <form [formGroup]="vehicleForm" class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12 p-md-6">
       <label for="tipoV">Tipo de vehiculo</label>
       <p-dropdown [options]="tiposVehiculo" placeholder="Selecciona" optionLabel="nombre" formControlName="tipoVehiculo"
         [editable]="true">
       </p-dropdown>
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-12 p-md-6">
       <label for="marca">Marca</label>
       <p-dropdown [options]="marcas" [(ngModel)]="selectedMarca" (onChange)="filtrarModelosPorMarca()"
         placeholder="Selecciona una Marca" optionLabel="nombre" formControlName="marca" [editable]="true">
       </p-dropdown>
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-12 p-md-6">
       <label for="modelo">Modelo</label>
       <p-dropdown [options]="modelosFiltrados" [(ngModel)]="selectedModelo" placeholder="Selecciona un Modelo"
         optionLabel="nombre" formControlName="modelo" [editable]="true">
       </p-dropdown>
-
     </div>
-    <div class="p-field">
-
+    <div class="p-field p-col-12 p-md-6">
       <label for="placas">Placas</label>
-      <input type="text" pInputText id="placas" formControlName="placas"  minlength="6" maxlength="7"/>
+      <input type="text" pInputText id="placas" formControlName="placas" minlength="6" maxlength="7" />
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-12 p-md-6">
       <label for="serie">Serie</label>
       <input type="text" pInputText id="serie" formControlName="serie" minlength="17" maxlength="17" pKeyFilter="alphanum" />
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-12 p-md-6">
       <label for="color">Color</label>
       <input type="text" pInputText id="color" formControlName="color" minlength="3" maxlength="10" pKeyFilter="alpha" />
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-12 p-md-6">
       <label for="ano">Año</label>
-      <input type="text" pInputText pKeyFilter="int" id="ano" formControlName="ano"  [maxlength]="4"
-        [minlength]="4">
+      <input type="text" pInputText pKeyFilter="int" id="ano" formControlName="ano" maxlength="4" minlength="4" />
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-12 p-md-6">
       <label for="poliza">No Poliza</label>
       <input type="text" pInputText id="poliza" formControlName="poliza" minlength="8" maxlength="10" pKeyFilter="int" />
     </div>
-
   </form>
   <ng-template pTemplate="footer">
     <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()"
       styleClass="p-button-secondary"></p-button>
     <p-button label="Guardar" icon="pi pi-check" (onClick)="onVehicleInfoSubmit()" [disabled]="!vehicleForm.valid"
       [style]="{ 'margin-left': '.5em' }"></p-button>
-
   </ng-template>
 </p-card>
 
 <p-card *ngIf="activeIndex === 2" title="Vertical Grid Form" header="Datos del servicio"
   [style]="{ width: '900px', height: '430px' }" class="car">
-  <form [formGroup]="servicioFom" class="p-formgrid">
-    <div class="p-field">
+  <form [formGroup]="servicioForm" class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12 p-md-4">
       <label for="ubiSalida">Ubicación de salida</label>
-      <input type="text" pInputText id="ubiSalida" formControlName="ubicacionSalida" required  minlength="2" maxlength="22" />
+      <input type="text" pInputText id="ubiSalida" formControlName="ubicacionSalida" required minlength="2" maxlength="22" />
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-12 p-md-4">
       <label for="ubiContact">Ubicación de contacto</label>
       <input type="text" pInputText id="ubiContact" formControlName="ubicacionContacto" required minlength="2" maxlength="22" />
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-12 p-md-4">
       <label for="ubiTermino">Ubicación de termino</label>
-      <input type="text" pInputText id="ano" formControlName="ubicacionTermino" required  minlength="2" maxlength="22"/>
+      <input type="text" pInputText id="ubiTermino" formControlName="ubicacionTermino" required minlength="2" maxlength="22" />
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-12 p-md-4">
       <label for="monto">Monto cobrado</label>
       <input type="number" pInputText id="monto" formControlName="montoCobrado" required />
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-12 p-md-4">
       <label for="operador">Seleccione el operador</label>
-      <p-dropdown optionValue="value" [options]="operadorDropdown" placeholder="Seleccione" formControlName="operador"
-        [editable]="true">
-      </p-dropdown>
+      <p-dropdown [options]="operadorDropdown" placeholder="Seleccione" formControlName="operador" [editable]="true"></p-dropdown>
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-12 p-md-4">
       <label for="grua">Seleccione la grua</label>
-      <p-dropdown optionValue="value" [options]="gruaDropdown" formControlName="grua" placeholder="Seleccione"
-        [editable]="true">
-      </p-dropdown>
+      <p-dropdown [options]="gruaDropdown" formControlName="grua" placeholder="Seleccione" [editable]="true"></p-dropdown>
     </div>
-    <div class="p-field">
+    <div class="p-field p-col-12">
       <label for="observaciones">Observaciones</label>
       <textarea id="observaciones" pInputTextarea formControlName="observaciones" rows="2" cols="50"></textarea>
     </div>
@@ -119,15 +109,13 @@
   <ng-template pTemplate="footer">
     <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()"
       styleClass="p-button-secondary"></p-button>
-    <p-button label="Guardar" icon="pi pi-check" (onClick)="onServiceInfoSubmit()" [disabled]="!servicioFom.valid"
+    <p-button label="Guardar" icon="pi pi-check" (onClick)="onServiceInfoSubmit()" [disabled]="!servicioForm.valid"
       [style]="{ 'margin-left': '.5em' }"></p-button>
-
   </ng-template>
 </p-card>
 
-
 <p-card *ngIf="activeIndex === 3" title="Vertical Grid Form" header="Confirmación"
-  [style]="{ width: '1080px', height: '700px' }" class="car">
+  [style]="{ width: '900px', height: '550px' }" class="car">
   <p>Revise y confirme la información ingresada:</p>
 
   <div class="contenedor">
@@ -177,4 +165,5 @@
       [disabled]="enaService"></p-button>
 
   </ng-template>
+
 </p-card>

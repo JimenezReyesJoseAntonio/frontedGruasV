@@ -10,7 +10,7 @@ import { MessageService } from 'primeng/api';
   providers: [MessageService]
 
 })
-export class ExcelServiciosComponent implements OnInit  {
+export class ExcelServiciosComponent implements OnInit {
   form: FormGroup;
   startDate: string;
   endDate: string;
@@ -19,9 +19,9 @@ export class ExcelServiciosComponent implements OnInit  {
 
   constructor(
     private fb: FormBuilder,
-     private excelService: ExcelServiciosService,
-     private messageService: MessageService,
-    ) {
+    private excelService: ExcelServiciosService,
+    private messageService: MessageService,
+  ) {
     this.form = this.fb.group({
       dateOption: ['day'],
       day: [''],
@@ -51,6 +51,9 @@ export class ExcelServiciosComponent implements OnInit  {
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
+      this.day = '';
+      this.startDate = '';
+      this.endDate = '';
     }, error => {
       console.error('Error downloading the file', error);
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ingrese la fecha' });
