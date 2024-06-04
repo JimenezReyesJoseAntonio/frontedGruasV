@@ -85,6 +85,7 @@ export class VehiculoComponent implements OnInit {
           // Operador registrado exitosamente
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Marca registrada exitosamente' });
           this.marcaForm.reset();
+          this.cargarMarcas();
 
         },
         error => {

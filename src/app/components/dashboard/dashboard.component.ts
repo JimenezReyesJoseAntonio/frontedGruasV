@@ -8,6 +8,7 @@ import { OperadorService } from '../../services/operador.service';
 import { GruaService } from '../../services/grua.service';
 import { EstatusOperadorService } from '../../services/estatus-operador.service';
 import { EstatusGruaService } from '../../services/estatus-grua.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-dashboard',
@@ -46,17 +47,22 @@ export class DashboardComponent implements OnInit {
   }
 
   cargarServicios(): void {
-    const hoy = new Date().toISOString().split('T')[0]; // Obtiene la fecha en formato 'YYYY-MM-DD'
+    const hoy = moment().startOf('day').format('YYYY-MM-DD');
+    console.log('Hoy:', hoy);
 
     this.serviceService.lista().subscribe(
       (data) => {
-        this.servicios = data.filter(serv => {//cantidad de servicios finalizados
-          const fechaServicio = new Date(serv.fecha).toISOString().split('T')[0]; // Convierte la fecha del servicio a 'YYYY-MM-DD'
+        console.log('Data recibida:', data);
+
+        this.servicios = data.filter(serv => {
+          const fechaServicio = moment(serv.fecha).startOf('day').format('YYYY-MM-DD');
+          console.log('Fecha del servicio:', fechaServicio, 'Estado:', serv.estadoServicio);
           return fechaServicio === hoy && serv.estadoServicio === 'FINALIZADO';
         });
 
         this.serviciosRecientes = data.filter(serv => {
-          const fechaServicio = new Date(serv.fecha).toISOString().split('T')[0]; // Convierte la fecha del servicio a 'YYYY-MM-DD'
+          const fechaServicio = moment(serv.fecha).startOf('day').format('YYYY-MM-DD');
+          console.log('Fecha del servicio reciente:', fechaServicio, 'Estado:', serv.estadoServicio);
           return fechaServicio === hoy && serv.estadoServicio !== 'FINALIZADO';
         });
 
@@ -64,12 +70,10 @@ export class DashboardComponent implements OnInit {
 
         this.servicios.forEach(ser => {
           this.gananciasDiarias += ser.montoCobrado;
-
         });
 
-
-
         console.log('Servicios cargados:', this.servicios.length);
+        console.log('Servicios recientes cargados:', this.serviciosRecientes.length);
         this.listaVacia = undefined;
       },
       (err) => {
