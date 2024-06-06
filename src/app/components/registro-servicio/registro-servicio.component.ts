@@ -460,7 +460,7 @@ export class RegistroServicioComponent implements OnInit {
           }
         }
 
-        const fechaActual = new Date()
+        const fechaActual = new Date();
        // console.log('Fecha actual en UTC:', fechaActual.toISOString());        //const fechaActual = moment.utc().toDate();
         //const fechaActual = moment().utc().format();
         console.log('fecha'+fechaActual);

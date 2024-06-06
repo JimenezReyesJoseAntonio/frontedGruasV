@@ -1,37 +1,48 @@
-<p-card title="Vertical Grid Form" header="Reportes" [style]="{ width: '600px', height: '500px' }" class="car p-p-3">
-  <p-divider></p-divider>
+<p-card title="Vertical Grid Form" header="Reportes" [style]="{ width: '600px', height: '430px' }" class="car p-p-3">
 
-  <div class="p-grid p-dir-col p-align-center p-justify-start">
+  <p-tabView>
 
-    <div class="p-col p-mb-3">
-      <h4>Reporte diario</h4>
-      <label for="dia">Fecha día</label>
-      <input type="date" [(ngModel)]="day" id="dia" placeholder="Fecha específica" class="p-inputtext">
-    </div>
+    <p-tabPanel header="Fecha día">
+      <div class="p-grid p-dir-col p-align-center p-justify-start">
+  
+        <div class="p-col p-mb-3">
+          <h5>Seleccione la fecha</h5>
+          <label for="dia">Fecha día</label>
+          <input type="date" [(ngModel)]="day" id="dia" placeholder="Fecha específica" class="p-inputtext">
+        </div>
+  
+        <div class="p-col p-d-flex p-jc-center p-mb-3 mt-3">
+          <p-button label="Exportar" icon="pi pi-file-export" (onClick)="exportarExcel(day)" styleClass="p-button-secondary"></p-button>
+        </div>
+  
+      </div>
+    </p-tabPanel>
+  
+    <p-tabPanel header="Rango de fechas">
+      <div class="p-grid p-dir-col p-align-center p-justify-start">
+  
+        <div class="p-col p-mb-3">
+          <h5>Seleccione el rango de fechas</h5>
+        </div>
+  
+        <div class="p-col-12 p-md-6 p-mb-3">
+          <label for="inicio">Fecha inicio</label>
+          <input type="date" [(ngModel)]="startDate" id="inicio" placeholder="Fecha de inicio" class="p-inputtext">
+        </div>
+  
+        <div class="p-col-12 p-md-6 p-mb-3 mt-3">
+          <label for="fin">Fecha fin</label>
+          <input type="date" [(ngModel)]="endDate" id="fin" placeholder="Fecha de fin" class="p-inputtext">
+        </div>
+  
+        <div class="p-col p-d-flex p-jc-center p-mb-3 mt-3">
+          <p-button label="Exportar" icon="pi pi-file-export" (onClick)="exportarExcel(null, startDate, endDate)" styleClass="p-button-secondary"></p-button>
+        </div>
+  
+      </div>
+    </p-tabPanel>
+    <p-toast position="top-center"></p-toast>
 
-    <div class="p-col p-d-flex p-jc-center p-mb-3 mt-3 ">
-      <p-button label="Exportar" icon="pi pi-file-export" (onClick)="exportarExcel(day)"
-        styleClass="p-button-secondary"></p-button>
-    </div>
+  </p-tabView>
 
-    <div class="p-col p-mb-3">
-      <h4>Reporte por rango de fechas</h4>
-    </div>
-
-    <div class="p-col-12 p-md-6 p-mb-3">
-      <label for="inicio">Fecha inicio</label>
-      <input type="date" [(ngModel)]="startDate" id="inicio" placeholder="Fecha de inicio" class="p-inputtext">
-    </div>
-    <div class="p-col-12 p-md-6 p-mb-3 mt-3	">
-      <label for="fin">Fecha fin       </label>
-      <input type="date" [(ngModel)]="endDate" id="fin" placeholder="Fecha de fin" class="p-inputtext">
-    </div>
-
-    <div class="p-col p-d-flex p-jc-center p-mb-3 mt-3	">
-      <p-button label="Exportar" icon="pi pi-file-export" (onClick)="exportarExcel(null, startDate, endDate)"
-        styleClass="p-button-secondary"></p-button>
-      <p-toast position="top-center"></p-toast>
-    </div>
-
-  </div>
 </p-card>

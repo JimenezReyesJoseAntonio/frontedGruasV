@@ -144,8 +144,8 @@ export class ServiciosComponent implements OnInit {
             }
           },
           {
-            label: 'Eliminar',
-            icon: 'pi pi-fw pi-trash'
+            label: 'Buscar',
+            icon: 'pi pi-fw pi-search'
           },
           {
             separator: true
@@ -161,63 +161,21 @@ export class ServiciosComponent implements OnInit {
         ]
       },
       {
-        label: 'Edit',
-        icon: 'pi pi-fw pi-pencil',
+        label: 'Cotizaciones',
+        icon: 'pi pi-fw pi-book',
         items: [
           {
-            label: 'Left',
-            icon: 'pi pi-fw pi-align-left'
+            label: 'Nueva',
+            icon: 'pi pi-fw pi-plus'
           },
-          {
-            label: 'Right',
-            icon: 'pi pi-fw pi-align-right'
-          },
-          {
-            label: 'Center',
-            icon: 'pi pi-fw pi-align-center'
-          },
-          {
-            label: 'Justify',
-            icon: 'pi pi-fw pi-align-justify'
-          }
         ]
       },
       {
         label: 'Clientes',
         icon: 'pi pi-fw pi-user',
-        items: [
-          {
-            label: 'Nuevo',
-            icon: 'pi pi-fw pi-user-plus',
-            command: () => {
-              this.navigateToClient(); // Llama a un método para navegar a la ruta
-            }
-          },
-          {
-            label: 'Delete',
-            icon: 'pi pi-fw pi-user-minus'
-          },
-          {
-            label: 'Search',
-            icon: 'pi pi-fw pi-users',
-            items: [
-              {
-                label: 'Filter',
-                icon: 'pi pi-fw pi-filter',
-                items: [
-                  {
-                    label: 'Print',
-                    icon: 'pi pi-fw pi-print'
-                  }
-                ]
-              },
-              {
-                icon: 'pi pi-fw pi-bars',
-                label: 'List'
-              }
-            ]
-          }
-        ]
+        command: () => {
+          this.navigateToClient(); // Llama a un método para navegar a la ruta
+        }
       },
       {
         label: 'Vehiculos',
@@ -231,14 +189,9 @@ export class ServiciosComponent implements OnInit {
             } 
           },
           {
-            label: 'Archieve',
-            icon: 'pi pi-fw pi-calendar-times',
-            items: [
-              {
-                label: 'Remove',
-                icon: 'pi pi-fw pi-calendar-minus'
-              }
-            ]
+            label: 'Eliminar',
+            icon: 'pi pi-fw pi-trash',
+           
           }
         ]
       }
