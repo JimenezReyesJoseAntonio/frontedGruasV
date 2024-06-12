@@ -37,5 +37,9 @@ export class ServicioService {
     return this.httpClient.delete<any>(`${this.servicioURL}${id}`);
   }
 
+  public getServiciosPorClienteTipo(): Observable<any> {
+    return this.httpClient.get<any>(`${this.servicioURL}por-cliente-tipo`);
+  }
+
 
 }

@@ -28,7 +28,9 @@ export class DashboardComponent implements OnInit {
   nombreUsuario: string;
   idUser: number;
   gananciasDiarias: number = 0; // Inicializa la variable
-
+  data: any;
+  options: any;
+  
   constructor(
     private tokenService: TokenService,
     private serviceService: ServicioService,
@@ -44,7 +46,47 @@ export class DashboardComponent implements OnInit {
     this.cargarServicios();
     this.cargarOperadores();
     this.cargarGruas();
+    this.cargarChart();
   }
+
+  cargarChart(){
+    const colors = [
+      '#FF5733', // Color 1
+      '#33FFC7', // Color 2
+      '#FF33F9', // Color 3
+      // Agrega más colores según la cantidad de clientes que tengas
+    ];
+    this.serviceService.getServiciosPorClienteTipo().subscribe(
+      (response: any) => {
+        this.data = {
+          labels: response.data.map((item: any) => item.clienteTipoNombre),
+          datasets: [
+            {
+              data: response.data.map((item: any) => parseInt(item.cantidad)), // Convertir a números
+              backgroundColor: response.data.map((item: any, index: number) => colors[index % colors.length]), // Asignar colores
+              hoverBackgroundColor: response.data.map((item: any, index: number) => colors[index % colors.length]) // Asignar colores
+            }
+          ]
+        };
+      },
+      error => {
+        console.error('Error al obtener datos:', error);
+      }
+    );
+
+    
+    this.options = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+        
+          }
+        }
+      }
+    };
+  }
+  
 
   cargarServicios(): void {
     const hoy = moment().startOf('day').format('YYYY-MM-DD');

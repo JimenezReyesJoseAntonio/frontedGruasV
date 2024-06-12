@@ -253,7 +253,7 @@ export class RegistroServicioComponent implements OnInit {
     if (this.vehicleForm.valid) {
       this.vehiculo = this.vehicleForm.value;
       //console.log('modelo' + this.vehicleForm.value.modelo.id);
-     // console.log('marca' + this.vehicleForm.value.marca.id);
+      console.log( this.vehicleForm.value);
 
       this.activeIndex++; // Avanzar al siguiente paso
     }
@@ -441,6 +441,8 @@ export class RegistroServicioComponent implements OnInit {
         const cliente = new Cliente(formDataCliente.numTelefono, formDataCliente.clienteTipo, 0);
 
         const formDataVehiculo = this.vehicleForm.value;
+        console.log(this.vehicleForm);
+
         // Convertir campos de vehiculo a mayúsculas
         for (const key of Object.keys(formDataVehiculo)) {
           const value = formDataVehiculo[key];
