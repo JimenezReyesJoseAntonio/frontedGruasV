@@ -1,18 +1,18 @@
-export interface WhatsappCloudAPIRequest {
+export interface MessageCliente {
     messaging_product: string;
-    to:                string;
-    type:              string;
-    template:          Template;
+    to: string;
+    type: string;
+    template: Template;
 }
 
 export interface Template {
-    name:       string;
-    language:   Language;
-    components: Component[];
+    name: string;
+    language: Language;
+    components: Component[]; // Hacemos que components sea opcional
 }
 
 export interface Component {
-    type:       string;
+    type: string;
     parameters?: Parameter[];
 }
 

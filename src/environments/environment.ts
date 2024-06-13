@@ -18,7 +18,7 @@ export const environment = {
     excelOpeURL:'http://localhost:8080/excel-operadores/download/excel',
     excelGruaURL: 'http://localhost:8080/excel-gruas/download/excel',
     apiUrl: 'http://localhost:8080',
-    excelServicios: 'http://localhost:8080/excel-servicios/servicios'
-
+    excelServicios: 'http://localhost:8080/excel-servicios/servicios',
+    pdfUrl: 'http://localhost:8080/pdf-carta/generate/'
 
   };

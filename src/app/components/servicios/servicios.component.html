@@ -20,6 +20,7 @@
                     <th>Editar</th>
                     <th>Finalizar</th>
                     <th>Mensaje</th>
+                    <th>Carta Porte</th>
 
                 </tr>
             </ng-template>
@@ -47,7 +48,13 @@
                     <td>
                         <div class="flex">
                             <button pButton pRipple icon="pi pi-whatsapp" class="p-button-rounded p-button-success mr-2"
-                               (click)="enviarMensaje(servicio)" ></button>
+                              (click)="enviarMensaje(servicio)" ></button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex">
+                            <button pButton pRipple icon="pi pi-download" class="p-button-rounded p-button-success mr-2"
+                            [ngStyle]="{backgroundColor:'var(--teal-500)'}"   (click)="generarCartaPorte(servicio)" ></button>
                         </div>
                     </td>
                 </tr>

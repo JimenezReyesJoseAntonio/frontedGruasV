@@ -28,6 +28,10 @@ import { TransaccionData } from '../../models/transaccionData';
 import { TiposVehiculo } from '../../models/tiposVehiculo';
 import { TiposVehiculoService } from '../../services/tipos-vehiculo.service';
 import moment from 'moment';
+import { WhatsappApiCloudService } from '../../services/whatsapp-api-cloud.service';
+import { MessageOperador } from '../../Whatsapp/interfaces/message-operador';
+import { COMPONENT_TYPE, MESSAGING_PRODUCT, TEMPLATE_LANGUAGE, TEMPLATE_NAME, TEMPLATE_TYPE } from '../../common/api-resource';
+import { MessageCliente } from '../../Whatsapp/interfaces/message-cliente';
 
 @Component({
   selector: 'app-registro-servicio',
@@ -98,7 +102,9 @@ export class RegistroServicioComponent implements OnInit {
     private marcaService: MarcaService,
     private modeloService: ModeloService,
     private transaccionService: TransaccionService,
-    private tiposVService: TiposVehiculoService
+    private tiposVService: TiposVehiculoService,
+    private whatsappService: WhatsappApiCloudService
+
 
 
   ) {
@@ -244,6 +250,7 @@ export class RegistroServicioComponent implements OnInit {
           console.error('Error al buscar cliente por ID:', error);
         }
       );
+      this.enviarMensaje(this.cliente);
       this.activeIndex++; // Avanzar al siguiente paso
     }
   }
@@ -592,4 +599,44 @@ export class RegistroServicioComponent implements OnInit {
   formatoDropdownGr(noEco: Grua[]): any[] {
     return noEco.map((item) => ({ label: item.noEco, value: item.noEco }));
   }
+
+  enviarMensaje(cliente: Cliente) {
+    const data: MessageCliente = {
+      messaging_product: MESSAGING_PRODUCT.whatsapp,
+      to: '52' + cliente.numTelefono,
+      type: TEMPLATE_TYPE.type,
+      template: {
+        name: TEMPLATE_NAME.cliente,
+        language: {
+          code: TEMPLATE_LANGUAGE.es
+        },
+        components: [
+          {
+            type: COMPONENT_TYPE.header,
+          },
+          {
+            type: COMPONENT_TYPE.body,
+
+          }
+        ]
+      }
+
+    }
+
+    this.whatsappService.sendMessage(data).subscribe(
+      resp => {
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Mensaje enviado exitosamente' });
+         console.log('se mando el whatsapp');
+      },
+      error => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al mandar mensaje' });
+
+        console.log(error);
+      }
+    )
+  }
+
 }
+
+
+

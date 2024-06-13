@@ -29,6 +29,8 @@ import { TiposVehiculo } from '../../models/tiposVehiculo';
 import { WhatsappApiCloudService } from '../../services/whatsapp-api-cloud.service';
 import { MessageOperador } from '../../Whatsapp/interfaces/message-operador';
 import { COMPONENT_TYPE, MESSAGING_PRODUCT, PARAMETER_TYPE, TEMPLATE_LANGUAGE, TEMPLATE_NAME, TEMPLATE_TYPE } from '../../common/api-resource';
+import { PdfService } from '../../services/pdf.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-servicios',
@@ -96,7 +98,8 @@ export class ServiciosComponent implements OnInit {
     private messageService: MessageService,
     private vehiculoService: VehiculoService,
     private tiposVService: TiposVehiculoService,
-    private whatsappService: WhatsappApiCloudService
+    private whatsappService: WhatsappApiCloudService,
+    private pdfservice: PdfService
 
 
 
@@ -112,7 +115,7 @@ export class ServiciosComponent implements OnInit {
       modelo: ['', Validators.required],
       placas: ['', Validators.required],
       serie: ['', Validators.required],
-      poliza:['', Validators.required],
+      poliza: ['', Validators.required],
       color: ['', Validators.required],
       ano: ['', Validators.required],
     });
@@ -186,12 +189,12 @@ export class ServiciosComponent implements OnInit {
             icon: 'pi pi-fw pi-car',
             command: () => {
               this.navigateToVehicle(); // Llama a un método para navegar a la ruta
-            } 
+            }
           },
           {
             label: 'Eliminar',
             icon: 'pi pi-fw pi-trash',
-           
+
           }
         ]
       }
@@ -378,8 +381,6 @@ export class ServiciosComponent implements OnInit {
 
   //obtenemos el estado del operador por separado
   getEstadoOperador(id: number): void {
-
-
   }
 
   cargarGruas(): void {
@@ -432,12 +433,12 @@ export class ServiciosComponent implements OnInit {
 
   }
 
-  navigateToVehicle(){
+  navigateToVehicle() {
     this.router.navigate(['/principal/servicios/vehiculo']); // Navega a la ruta '/principal/dashboard'
 
   }
 
-  navigateToExport(){
+  navigateToExport() {
     this.router.navigate(['/principal/servicios/exportar-servicios']); // Navega a la ruta '/principal/dashboard'
   }
 
@@ -585,7 +586,7 @@ export class ServiciosComponent implements OnInit {
         formDataVehiculo[key] = value.toUpperCase();
       }
     }
-    const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.poliza,formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
+    const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie, formDataVehiculo.poliza, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
 
     this.vehiculoService.update(idVehi, vehiculo).subscribe(
       () => {
@@ -814,7 +815,7 @@ export class ServiciosComponent implements OnInit {
     this.whatsappService.sendMessage(data).subscribe(
       resp => {
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Mensaje enviado exitosamente' });
-         console.log('se mando el whatsapp');
+        console.log('se mando el whatsapp');
       },
       error => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al mandar mensaje' });
@@ -824,5 +825,33 @@ export class ServiciosComponent implements OnInit {
     )
   }
 
+
+  generarCartaPorte(servicio: Servicio) {
+    console.log(servicio.id);
+    this.pdfservice.generatePdf(servicio.id).subscribe(
+      (response: HttpResponse<Blob>) => {
+        const blob = new Blob([response.body], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        // Asignar nombre al archivo basado en los parámetros
+        let filename = `servicio_${servicio.folioServicio}.pdf`;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      (error) => {
+        // Manejo de errores y mostrar mensaje
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo generar el PDF. Por favor, intente nuevamente.',
+        });
+        console.error('Error al generar el PDF', error);
+      }
+    );
+  }
 
 }

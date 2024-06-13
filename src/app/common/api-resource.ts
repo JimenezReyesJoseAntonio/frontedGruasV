@@ -8,7 +8,8 @@ export const MESSAGING_PRODUCT = {
 
 export const TEMPLATE_NAME = {
     messageOperador : 'asignacion_servicio',
-    holaMundo : 'hello_world'
+    holaMundo : 'hello_world',
+    cliente: 'clientes_message'
 }
 
 export const COMPONENT_TYPE = {
