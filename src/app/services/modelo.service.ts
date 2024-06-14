@@ -21,5 +21,13 @@ export class ModeloService {
     return this.httpClient.post<any>(`${this.modeloURL}`, modelo);
   }
 
+  public update(id: number, cliente: Modelo): Observable<any> {
+    return this.httpClient.put<any>(`${this.modeloURL}${id}`, cliente);
+  }
+
+  public delete(id: number): Observable<any> {
+    return this.httpClient.delete<any>(`${this.modeloURL}${id}`);
+  }
+
 }
 

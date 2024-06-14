@@ -1,47 +1,189 @@
-<p-card title="Vertical Grid Form" [style]="{ width: '600px', height: '400px' }" class="car">
+<p-tabView>
+  <p-tabPanel header="Marca">
+    <div class="p-d-flex p-jc-center p-mb-2 mb-6">
+      <p-button label="Agregar" (click)="showDialog()" class="p-mr-3" />
+    </div>
+    <div class="p-d-flex p-jc-center">
+      <div style="width: 50%;">
+        <p-table [scrollable]="true" scrollHeight="450px" [tableStyle]="{ 'min-width': '10rem'}" [rows]="3"
+          [value]="marcas">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
 
-    <p-tabView>
-        <p-tabPanel header="Marca">
-            <form [formGroup]="marcaForm" class="p-formgrid">
-                <div class="p-col-12">
-                    <label for="marca">Nombre de la marca</label>
-                    <div class="p-field">
-                        <input type="text" formControlName="nombre" pInputText id="marca" required />
-                    </div>
-                    <div class="boton">
-                        <button (click)="registrarMarca()" type="button" pButton>Registrar</button>
-                    </div>
-                    <p-toast position="top-center"></p-toast>
-
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-marca>
+            <tr>
+              <td>{{marca.id}}</td>
+              <td>{{marca.nombre}}</td>
+              <td>
+                <div class="flex">
+                  <button pButton pRipple icon="pi pi-pencil" (click)="updateMarca(marca)"
+                    class="p-button-rounded p-button-success mr-2" ></button>
                 </div>
-
-            </form>
-        </p-tabPanel>
-        <p-tabPanel header="Modelo">
-            <form [formGroup]="modeloForm" class="p-formgrid">
-                <div class="p-field">
-                    <label for="marcas">Marcas</label>
-                    <p-dropdown [options]="marcas" placeholder="Selecciona" optionLabel="nombre"
-                        formControlName="marcaId" [editable]="true">
-                    </p-dropdown>
+              </td>
+              <td>
+                <div class="flex">
+                  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteMarca(marca)"></button>
                 </div>
-                <div class="p-field">
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </p-tabPanel>
 
-                    <label for="modelo">Modelo</label>
-                    <input type="text" pInputText id="modelo" formControlName="nombre" minlength="2" maxlength="12" />
+  <p-tabPanel header="Modelo">
+    <div class="p-d-flex p-jc-center p-mb-2 mb-6">
+      <p-button label="Agregar" (click)="showDialogMo()" class="p-mr-3" />
+    </div>
+    <div class="p-d-flex p-jc-center">
+      <div style="width: 50%;">
+        <p-table [scrollable]="true" scrollHeight="450px" [tableStyle]="{ 'min-width': '10rem'}" [rows]="3" [value]="modelos">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
+
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-modelo>
+            <tr>
+              <td>{{modelo.id}}</td>
+              <td>{{modelo.nombre}}</td>
+              <td>
+                <div class="flex">
+                  <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                    (click)="updateModelo(modelo)"></button>
                 </div>
+              </td>
+              <td>
+                <div class="flex">
+                  <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteModelo(modelo)"></button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </p-tabPanel>
+</p-tabView>
 
 
-            </form>
-            <div class="p-field">
+<p-dialog [(visible)]="marcaDialog" header="Nueva marca" [modal]="true" [style]="{ width: '25rem' }" class="p-fluid">
+  <ng-template pTemplate="content">
 
-                <button (click)="registrarModelo()" type="button" pButton>Registrar</button>
-                <p-toast position="top-center"></p-toast>
-            </div>
-        </p-tabPanel>
+    <form [formGroup]="marcaForm" class="p-formgrid">
+      <div class="p-field">
+        <label for="name">Nombre marca</label>
+        <input type="text" formControlName="nombre" pInputText id="name" required />
+      </div>
+    </form>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Registrar" icon="pi pi-check" class="p-button-text"
+      (click)="registrarMarca()"></button>
+  </ng-template>
+</p-dialog>
 
-    </p-tabView>
+<p-dialog [(visible)]="updatemarcaDialog" header="Actualizar marca" [modal]="true" [style]="{ width: '25rem' }"
+  class="p-fluid">
+  <ng-template pTemplate="content">
+    <form [formGroup]="marcaForm" class="p-formgrid">
+      <div class="p-field">
+        <label for="namemarca">Nombre marca</label>
+        <input type="text" [(ngModel)]="marcaUp.nombre" formControlName="nombre" pInputText id="namemarca" required />
+      </div>
+    </form>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+      (click)="updatemarcaDialog = false"></button>
+    <button pButton pRipple label="Actualizar" icon="pi pi-check" class="p-button-text"
+      (click)="updateMarcaConfirm()"></button>
+  </ng-template>
+</p-dialog>
 
+<p-dialog [(visible)]="deleteMarcaDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+  <div class="flex align-items-center justify-content-center">
+    <div class="iconDelete">
+      <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+    </div>
+    <span *ngIf="marcaDel">Esta seguro que quiere eliminar a <b>{{marcaDel.nombre}}</b>?</span>
 
-</p-card>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+      (click)="deleteMarcaDialog = false"></button>
+    <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+      (click)="confirmDeleteMarca()"></button>
+  </ng-template>
+</p-dialog>
 
+<p-dialog [(visible)]="modeloDialog" header="Nuevo modelo" [modal]="true" [style]="{ width: '25rem' }" class="p-fluid">
+  <ng-template pTemplate="content">
+    <form [formGroup]="modeloForm" class="p-formgrid">
+      <div class="p-field">
+          <label for="marcas">Marcas</label>
+          <p-dropdown [options]="marcas" placeholder="Selecciona" optionLabel="nombre"
+              formControlName="marcaId" [editable]="true">
+          </p-dropdown>
+      </div>
+      <div class="p-field">
+
+          <label for="modelo">Modelo</label>
+          <input type="text" pInputText id="modelo" formControlName="nombre" minlength="2" maxlength="12" />
+      </div>
+  </form>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialogMo()"></button>
+    <button pButton pRipple label="Registrar" icon="pi pi-check" class="p-button-text"
+    (click)="registrarModelo()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="updatemodeloDialog" header="Actualizar modelo" [modal]="true" [style]="{ width: '25rem' }"
+  class="p-fluid">
+  <ng-template pTemplate="content">
+    <form [formGroup]="modeloForm" class="p-formgrid">
+      <div class="p-field">
+        <label for="namemodelo">Nombre modelo</label>
+        <input type="text" [(ngModel)]="modeloUp.nombre" formControlName="nombre" pInputText id="namemodelo" required />
+      </div>
+    </form>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+      (click)="updatemodeloDialog = false"></button>
+    <button pButton pRipple label="Actualizar" icon="pi pi-check" class="p-button-text"
+      (click)="updateModeloConfirm()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="deleteModeloDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+  <div class="flex align-items-center justify-content-center">
+    <div class="iconDelete">
+      <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+    </div>
+    <span *ngIf="modeloDel">Esta seguro que quiere eliminar a <b>{{modeloDel.nombre}}</b>?</span>
+
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+      (click)="deleteModeloDialog = false"></button>
+    <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+      (click)="confirmDeleteModelo()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-toast position="top-center"></p-toast>

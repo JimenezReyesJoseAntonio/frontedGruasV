@@ -21,4 +21,12 @@ export class MarcaService {
     return this.httpClient.post<any>(`${this.marcaURL}`, marca);
   }
 
+  public update(id: number, cliente: Marca): Observable<any> {
+    return this.httpClient.put<any>(`${this.marcaURL}${id}`, cliente);
+  }
+
+  public delete(id: number): Observable<any> {
+    return this.httpClient.delete<any>(`${this.marcaURL}${id}`);
+  }
+
 }

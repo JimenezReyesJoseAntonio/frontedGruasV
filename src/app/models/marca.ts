@@ -3,13 +3,13 @@ import { Modelo } from "./modelo";
 export class Marca{
     id: number;
     nombre: string;
-    marcaId: number;
+    eliminado: number;
 
-    constructor(id:number, nombre:string,  marcaId: number
+    constructor( nombre:string,eliminado: number
+
     ){
-        this.id = id;
         this.nombre = nombre;
-        this.marcaId = marcaId;
+        this.eliminado= eliminado;
 
     }
 

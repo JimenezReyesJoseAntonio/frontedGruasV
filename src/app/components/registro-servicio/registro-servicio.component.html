@@ -8,8 +8,8 @@
   <form [formGroup]="clientForm" class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col-12">
       <label for="numTe">Número de teléfono</label>
-      <input type="text" pInputText pKeyFilter="int" id="numTe" formControlName="numTelefono" required
-        maxlength="10" minlength="10" />
+      <input type="text" pInputText pKeyFilter="int" id="numTe" formControlName="numTelefono" required maxlength="10"
+        minlength="10" />
     </div>
     <div class="p-field p-col-12">
       <label for="cliente">Seleccione el cliente</label>
@@ -19,8 +19,13 @@
     </div>
   </form>
   <ng-template pTemplate="footer">
-    <p-button label="Guardar" icon="pi pi-check" (click)="onClientInfoSubmit()"
-      [disabled]="!clientForm.valid"></p-button>
+    <div class="flex justify-content-between align-items-center">
+      <div class="flex">
+        <p-button label="Guardar" icon="pi pi-check" (click)="onClientInfoSubmit()"
+          [disabled]="!clientForm.valid" class="mr-2"></p-button>
+        <button pButton pRipple icon="pi pi-whatsapp" class="p-button-rounded p-button-success"></button>
+      </div>
+    </div>
   </ng-template>
 </p-card>
 
@@ -51,11 +56,13 @@
     </div>
     <div class="p-field p-col-12 p-md-6">
       <label for="serie">Serie</label>
-      <input type="text" pInputText id="serie" formControlName="serie" minlength="17" maxlength="17" pKeyFilter="alphanum" />
+      <input type="text" pInputText id="serie" formControlName="serie" minlength="17" maxlength="17"
+        pKeyFilter="alphanum" />
     </div>
     <div class="p-field p-col-12 p-md-6">
       <label for="color">Color</label>
-      <input type="text" pInputText id="color" formControlName="color" minlength="3" maxlength="10" pKeyFilter="alpha" />
+      <input type="text" pInputText id="color" formControlName="color" minlength="3" maxlength="10"
+        pKeyFilter="alpha" />
     </div>
     <div class="p-field p-col-12 p-md-6">
       <label for="ano">Año</label>
@@ -63,7 +70,8 @@
     </div>
     <div class="p-field p-col-12 p-md-6">
       <label for="poliza">No Poliza</label>
-      <input type="text" pInputText id="poliza" formControlName="poliza" minlength="8" maxlength="10" pKeyFilter="int" />
+      <input type="text" pInputText id="poliza" formControlName="poliza" minlength="8" maxlength="10"
+        pKeyFilter="int" />
     </div>
   </form>
   <ng-template pTemplate="footer">
@@ -79,11 +87,13 @@
   <form [formGroup]="servicioForm" class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col-12 p-md-4">
       <label for="ubiSalida">Ubicación de salida</label>
-      <input type="text" pInputText id="ubiSalida" formControlName="ubicacionSalida" required minlength="2" maxlength="22" />
+      <input type="text" pInputText id="ubiSalida" formControlName="ubicacionSalida" required minlength="2"
+        maxlength="22" />
     </div>
     <div class="p-field p-col-12 p-md-4">
       <label for="ubiContact">Ubicación de contacto</label>
-      <input type="text" pInputText id="ubiContact" formControlName="ubicacionContacto" required minlength="2" maxlength="22" />
+      <input type="text" pInputText id="ubiContact" formControlName="ubicacionContacto" required minlength="2"
+        maxlength="22" />
     </div>
     <div class="p-field p-col-12 p-md-4">
       <label for="ubiTermino">Ubicación de termino</label>
@@ -95,11 +105,13 @@
     </div>
     <div class="p-field p-col-12 p-md-4">
       <label for="operador">Seleccione el operador</label>
-      <p-dropdown [options]="operadorDropdown" placeholder="Seleccione" formControlName="operador" [editable]="true"></p-dropdown>
+      <p-dropdown [options]="operadorDropdown" placeholder="Seleccione" formControlName="operador"
+        [editable]="true"></p-dropdown>
     </div>
     <div class="p-field p-col-12 p-md-4">
       <label for="grua">Seleccione la grua</label>
-      <p-dropdown [options]="gruaDropdown" formControlName="grua" placeholder="Seleccione" [editable]="true"></p-dropdown>
+      <p-dropdown [options]="gruaDropdown" formControlName="grua" placeholder="Seleccione"
+        [editable]="true"></p-dropdown>
     </div>
     <div class="p-field p-col-12">
       <label for="observaciones">Observaciones</label>
