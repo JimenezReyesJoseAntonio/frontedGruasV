@@ -37,7 +37,7 @@ import { MessageCliente } from '../../Whatsapp/interfaces/message-cliente';
   selector: 'app-registro-servicio',
   templateUrl: './registro-servicio.component.html',
   styleUrl: './registro-servicio.component.css',
-  providers: [MessageService],
+  providers: [ConfirmationService,MessageService],
 })
 export class RegistroServicioComponent implements OnInit {
 
@@ -103,8 +103,8 @@ export class RegistroServicioComponent implements OnInit {
     private modeloService: ModeloService,
     private transaccionService: TransaccionService,
     private tiposVService: TiposVehiculoService,
-    private whatsappService: WhatsappApiCloudService
-
+    private whatsappService: WhatsappApiCloudService,
+    private confirmationService: ConfirmationService
 
 
   ) {
@@ -250,7 +250,6 @@ export class RegistroServicioComponent implements OnInit {
           console.error('Error al buscar cliente por ID:', error);
         }
       );
-      this.enviarMensaje(this.cliente);
       this.activeIndex++; // Avanzar al siguiente paso
     }
   }
@@ -635,6 +634,27 @@ export class RegistroServicioComponent implements OnInit {
       }
     )
   }
+
+  confirmMessage(event: Event){
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Estas seguro de continuar?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon:"none",
+      rejectIcon:"none",
+      rejectButtonStyleClass:"p-button-text",
+      accept: () => {
+        this.cliente = this.clientForm.value;
+        this.enviarMensaje(this.cliente);
+
+      },
+      reject: () => {
+      }
+  });
+
+  }
+
 
 }
 

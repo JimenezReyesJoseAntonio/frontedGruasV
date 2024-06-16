@@ -183,20 +183,9 @@ export class ServiciosComponent implements OnInit {
       {
         label: 'Vehiculos',
         icon: 'pi pi-fw pi-car',
-        items: [
-          {
-            label: 'Nuevo',
-            icon: 'pi pi-fw pi-car',
-            command: () => {
+         command: () => {
               this.navigateToVehicle(); // Llama a un método para navegar a la ruta
             }
-          },
-          {
-            label: 'Eliminar',
-            icon: 'pi pi-fw pi-trash',
-
-          }
-        ]
       }
     ];
 
