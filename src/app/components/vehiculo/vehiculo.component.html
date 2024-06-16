@@ -5,8 +5,12 @@
     </div>
     <div class="p-d-flex p-jc-center">
       <div style="width: 50%;">
+        <div class="p-inputgroup mb-3">
+          <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+          <input type="text" pInputText placeholder="Buscar marca por nombre" (input)="applyFilterGlobal($event, dtMarca)">
+        </div>
         <p-table [scrollable]="true" scrollHeight="450px" [tableStyle]="{ 'min-width': '10rem'}" [rows]="3"
-          [value]="marcas">
+          [value]="marcas" #dtMarca dataKey="id" [loading]="loading" [globalFilterFields]="['nombre']">
           <ng-template pTemplate="header">
             <tr>
               <th>ID</th>
@@ -44,7 +48,12 @@
     </div>
     <div class="p-d-flex p-jc-center">
       <div style="width: 50%;">
-        <p-table [scrollable]="true" scrollHeight="450px" [tableStyle]="{ 'min-width': '10rem'}" [rows]="3" [value]="modelos">
+        <div class="p-inputgroup mb-3">
+          <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+          <input type="text" pInputText placeholder="Buscar modelo por nombre" (input)="applyFilterGlobal($event, dtModelo)">
+        </div>
+        <p-table [scrollable]="true" scrollHeight="450px" [tableStyle]="{ 'min-width': '10rem'}" [rows]="3" 
+        [value]="modelos" #dtModelo dataKey="id" [loading]="loading" [globalFilterFields]="['nombre']">
           <ng-template pTemplate="header">
             <tr>
               <th>ID</th>

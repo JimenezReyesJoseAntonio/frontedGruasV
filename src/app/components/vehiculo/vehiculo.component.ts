@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { MarcaService } from '../../services/marca.service';
 import { ModeloService } from '../../services/modelo.service';
 import { Marca } from '../../models/marca';
 import { Modelo } from '../../models/modelo';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-vehiculo',
@@ -31,13 +32,16 @@ export class VehiculoComponent implements OnInit {
   deleteModeloDialog:boolean = false;
   marcaForm: FormGroup;
   modeloForm:FormGroup;
+  loading: boolean = false;
 
 
   ngOnInit(): void {
 
   }
 
-  
+  @ViewChild('dtMarca') dtMarca!: Table;
+  @ViewChild('dtModelo') dtModelo!: Table;
+
   constructor(
     private messageService: MessageService,
     private marcaService: MarcaService,
@@ -372,5 +376,12 @@ export class VehiculoComponent implements OnInit {
       );
     }
   }
+
+ applyFilterGlobal(event: Event, dt: Table) {
+  const inputElement = event.target as HTMLInputElement;
+  dt.filterGlobal(inputElement.value, 'contains');
+}
+
+
 
 }
