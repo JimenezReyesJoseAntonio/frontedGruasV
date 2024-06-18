@@ -641,6 +641,7 @@ export class RegistroServicioComponent implements OnInit {
       message: 'Estas seguro de continuar?',
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
       acceptIcon:"none",
       rejectIcon:"none",
       rejectButtonStyleClass:"p-button-text",

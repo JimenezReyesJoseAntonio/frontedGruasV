@@ -41,10 +41,13 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class ServiciosComponent implements OnInit {
   items: MenuItem[] | undefined;
+  itemsMessage: MenuItem[] | undefined;
+
   servicios: Servicio[] = [];
   listaVacia: string | undefined;
   servicio: Servicio | null = null;
   servEdit: Servicio | null = null;
+  servMessage: Servicio | null = null;
   editingServicio: Servicio | null = null;
   updateDialog: boolean = false;
   deleteServicioDialog: boolean = false;
@@ -148,7 +151,11 @@ export class ServiciosComponent implements OnInit {
           },
           {
             label: 'Buscar',
-            icon: 'pi pi-fw pi-search'
+            icon: 'pi pi-fw pi-search',
+            command: () => {
+              this.navigateToBuscar();
+              // Llama a un método para navegar a la ruta
+            }
           },
           {
             separator: true
@@ -189,6 +196,7 @@ export class ServiciosComponent implements OnInit {
       }
     ];
 
+
     this.cargarServicios();
     this.eventoServicioCreadoSubscription = this.eventService.servicioCreado$.subscribe(() => {
       this.cargarServicios(); // Actualizar la lista de servicios
@@ -209,6 +217,13 @@ export class ServiciosComponent implements OnInit {
       this.eventoServicioCreadoSubscription.unsubscribe();
     }
   }
+
+  saveServicio(servicio:Servicio){
+     this.servMessage = servicio;
+     console.log('servicio',this.servMessage);
+  }
+
+
   cargarServicios(): void {
 
     this.serviceService.lista().subscribe(
@@ -425,6 +440,10 @@ export class ServiciosComponent implements OnInit {
   navigateToVehicle() {
     this.router.navigate(['/principal/servicios/vehiculo']); // Navega a la ruta '/principal/dashboard'
 
+  }
+
+  navigateToBuscar() {
+    this.router.navigate(['/principal/servicios/buscar']); // Navega a la ruta '/principal/dashboard'
   }
 
   navigateToExport() {

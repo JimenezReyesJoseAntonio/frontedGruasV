@@ -11,6 +11,7 @@ import { RegistroServicioComponent } from './components/registro-servicio/regist
 import { ClienteComponent } from './components/cliente/cliente.component';
 import { VehiculoComponent } from './components/vehiculo/vehiculo.component';
 import { ExcelServiciosComponent } from './components/excel-servicios/excel-servicios.component';
+import { BusquedaServicioComponent } from './components/busqueda-servicio/busqueda-servicio.component';
 
 
 const routes: Routes = [
@@ -60,6 +61,10 @@ const routes: Routes = [
         {
           path: 'vehiculo',
           component: VehiculoComponent
+        },
+        {
+          path: 'buscar',
+          component: BusquedaServicioComponent
         }
         // Agrega más rutas hijas para otros componentes dentro de "servicios" si es necesario
       ]

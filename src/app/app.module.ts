@@ -11,7 +11,6 @@ import { CardModule } from 'primeng/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { TableModule } from 'primeng/table';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
@@ -30,6 +29,7 @@ import { MessageOperadorComponent } from './Whatsapp/message-operador/message-op
 import { VehiculoModule } from './components/vehiculo/vehiculo.module';
 import { ExcelServiciosModule } from './components/excel-servicios/excel-servicios.module';
 import { DashboardModule } from './components/dashboard/dashboard.module';
+import { BusquedaServicioModule } from './components/busqueda-servicio/busqueda-servicio.module';
 
 @NgModule({
   declarations: [
@@ -55,7 +55,6 @@ import { DashboardModule } from './components/dashboard/dashboard.module';
     ReactiveFormsModule,
     ToastModule,
     ToolbarModule,
-    TableModule,
     OperadorModule,
     GruaModule,
     IconFieldModule,
@@ -65,7 +64,8 @@ import { DashboardModule } from './components/dashboard/dashboard.module';
     ClienteModule,
     VehiculoModule,
     ExcelServiciosModule,
-    DashboardModule
+    DashboardModule,
+    BusquedaServicioModule
   ],
   providers: [
 

@@ -20,6 +20,10 @@ export class ServicioService {
     return this.httpClient.get<Servicio>(`${this.servicioURL}${id}`);
   }
 
+  public detailByFolio(folio: string): Observable<Servicio> {
+    return this.httpClient.get<Servicio>(`${this.servicioURL}${folio}`);
+  }
+
   public save(vehiculo: Servicio): Observable<any> {
     return this.httpClient.post<any>(`${this.servicioURL}`, vehiculo);
   }
