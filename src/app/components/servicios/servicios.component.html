@@ -19,7 +19,8 @@
                     <th>Estatus</th>
                     <th>Editar</th>
                     <th>Finalizar</th>
-                    <th>Mensaje</th>
+                    <th>Datos Servicio</th>
+                    <th>Enviar Carta</th>
                      <th>Carta Porte</th>
 
                 </tr>
@@ -31,7 +32,7 @@
                     <td>{{ servicio?.ubicacionContacto }}</td>
                     <td>{{ servicio?.ubicacionTermino }}</td>
                     <td>
-                        <p-tag [value]="servicio?.estadoServicio"></p-tag>
+                        <p-tag [value]="servicio?.estadoServicio" [severity]="getSeverity(servicio?.estadoServicio)"></p-tag>
                     </td>
                     <td>
                         <div class="flex">
@@ -49,6 +50,12 @@
                         <div class="flex">
                             <button pButton pRipple icon="pi pi-whatsapp" class="p-button-rounded p-button-success mr-2"
                               (click)="enviarMensaje(servicio)" ></button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex">
+                            <button pButton pRipple icon="pi pi-whatsapp" class="p-button-rounded p-button-success mr-2"
+                              (click)="enviarMensajeOperador(servicio)" ></button>
                         </div>
                     </td>
                     <td>

@@ -154,6 +154,8 @@ export class GruaComponent implements OnInit {
         }
       }
 
+      this.grua = formData;
+      this.grua.eliminado = 0;
       //const formData = this.gruaForm.value;
       this.gruaService.save(formData).subscribe(
         (response) => {

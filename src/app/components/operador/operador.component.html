@@ -117,7 +117,7 @@
                             </div>
                             <div class="field">
                                 <label for="rfc">RFC</label>
-                                <input type="text" pInputText id="rfc" formControlName="rfc" required
+                                <input type="text" pInputText id="rfc" formControlName="rfc" required 
                                     pKeyFilter="alphanum" minlength="13" maxlength="13"
                                     pattern="^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$" />
                                 <small *ngIf="submitted && !operador.rfc " style="color: red;">RFC es requerido.</small>
@@ -137,7 +137,7 @@
                             <div class="field">
                                 <label for="nss">NSS</label>
                                 <input type="text" pInputText id="nss" formControlName="nss" required />
-                                <small *ngIf="submitted && !operador.nss " style="color: red;">NSS es requerido.</small>
+<small *ngIf="submitted && !operador.nss " style="color: red;">NSS es requerido.</small>
 
                             </div>
                             <div class="field">
@@ -182,7 +182,7 @@
 
 
         <p-dialog [(visible)]="deleteOperadorDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
+            <div class="flex flex-column align-items-center justify-content-center">
                 <div class="iconDelete">
                     <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
                 </div>
@@ -253,7 +253,7 @@
                                     [(ngModel)]="editingOperador.rfc" required pKeyFilter="alphanum" minlength="13"
                                     maxlength="13"
                                     pattern="^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$" />
-                                <small *ngIf="submitted && !editingOperador.rfc " style="color: red;">RFC es
+<small *ngIf="submitted && !editingOperador.rfc " style="color: red;">RFC es
                                     requerido.</small>
                                 <small *ngIf="submitted && operadorForm.controls['rfc'].errors?.['pattern']"
                                     style="color: red;">El RFC no es válido.</small>
@@ -274,7 +274,7 @@
                                 <label for="nss">NSS</label>
                                 <input type="text" pInputText id="nss" formControlName="nss"
                                     [(ngModel)]="editingOperador.nss" required />
-                                <small *ngIf="submitted && !editingOperador.nss " style="color: red;">NSS es
+                               <small *ngIf="submitted && !editingOperador.nss " style="color: red;">NSS es
                                     requerido.</small>
                             </div>
                             <div class="field">

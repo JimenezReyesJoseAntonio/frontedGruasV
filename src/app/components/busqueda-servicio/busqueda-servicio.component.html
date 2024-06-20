@@ -6,9 +6,11 @@
             <div class="p-toolbar-group-start">
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
-                    <input pInputText placeholder="Buscar por folio" [(ngModel)]="folio" />
+                    <input pInputText placeholder="Buscar por folio"
+                        [(ngModel)]="folio" />
                 </span>
-                <p-button label="Buscar" class="mr-2"  (click)="buscarServicio()"  />
+                <p-button class="ml-5" label="Buscar"
+                    (click)="buscarServicio()" />
 
             </div>
 
@@ -18,9 +20,11 @@
     <div>
         <p-card>
 
-            <p-table *ngIf="servicio != null" [value]="servicios" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true" [rows]="5">
+            <p-table *ngIf="servicio != null" [value]="servicios"
+                [tableStyle]="{ 'min-width': '60rem' }">
                 <ng-template pTemplate="caption">
-                    <div class="flex align-items-center justify-content-between">
+                    <div
+                        class="flex align-items-center justify-content-between">
                         Servicios
                     </div>
                 </ng-template>
@@ -31,11 +35,9 @@
                         <th>Ubicación de contacto</th>
                         <th>Ubicación de termino</th>
                         <th>Estatus</th>
-                        <th>Editar</th>
-                        <th>Finalizar</th>
-                        <th>Mensaje</th>
-                         <th>Carta Porte</th>
-    
+                        <th>Operador</th>
+                        <th>Grua</th>
+                        <th>Ver</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-servicio>
@@ -45,41 +47,87 @@
                         <td>{{ servicio?.ubicacionContacto }}</td>
                         <td>{{ servicio?.ubicacionTermino }}</td>
                         <td>
-                            <p-tag [value]="servicio?.estadoServicio"></p-tag>
+                            <p-tag [value]="servicio?.estadoServicio" [severity]="getSeverity(servicio?.estadoServicio)"></p-tag>
                         </td>
+                        <td>{{ servicio?.operador?.nombre }}</td>
+                        <td>{{ servicio?.grua?.noEco }}</td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2"
-                                    ></button>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex">
-                                <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-primary mr-2"
-                                    ></button>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex">
-                                <button pButton pRipple icon="pi pi-whatsapp" class="p-button-rounded p-button-success mr-2"
-                                   ></button>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex">
-                                <button pButton pRipple icon="pi pi-download" class="p-button-rounded p-button-success mr-2"
-                                [ngStyle]="{backgroundColor:'var(--teal-500)'}"    ></button>
+                                <button pButton pRipple icon="pi pi-eye"
+                                    class="p-button-rounded p-button-warning mr-2"
+                                    (click)="abrirDialog()"></button>
                             </div>
                         </td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
-                    <div class="flex align-items-center justify-content-between">
-    
+                    <div
+                        class="flex align-items-center justify-content-between">
+
                     </div>
                 </ng-template>
             </p-table>
         </p-card>
     </div>
 
+    <div class=" ml-8  justify-content-center	">
+
+        <p-card *ngIf="verDialog && servicio != null" title="Vertical Grid Form"
+            header="Datos del servicio"
+            [style]="{ width: '900px', height: '550px' }" class="car ml-8	">
+            <div class="grid">
+                <!-- Datos del cliente -->
+                <div class="col-12 md:col-6">
+                    <h4>Datos del Cliente</h4>
+                    <ul>
+                        <li>Cliente: {{
+                            servicio?.cliente?.clienteTipo?.nombreCliente
+                            }}</li>
+                        <li>Numero de telefono:
+                            {{servicio?.cliente?.numTelefono}}</li>
+                        <!-- Agrega más detalles del cliente según sea necesario -->
+                    </ul>
+
+                    <!-- Datos del vehículo -->
+                    <h4>Datos del Vehículo</h4>
+                    <ul>
+                        <li>Tipo de vehículo:
+                            {{servicio?.vehiculo?.tipoVehiculo?.nombre}}</li>
+                        <li>Marca: {{ servicio?.vehiculo?.marca?.nombre }}</li>
+                        <li>Modelo: {{ servicio?.vehiculo?.modelo?.nombre}}</li>
+                        <li>Serie: {{ servicio?.vehiculo?.serie }}</li>
+                        <li>Color: {{ servicio?.vehiculo?.color }}</li>
+                        <li>Año: {{ servicio?.vehiculo?.ano}}</li>
+                        <!-- Agrega más detalles del vehículo según sea necesario -->
+                    </ul>
+                </div>
+
+                <!-- Datos del servicio -->
+                <div class="col-12 md:col-6">
+                    <h4>Datos del Servicio</h4>
+                    <ul>
+                        <li>Ubicación de salida: {{ servicio.ubicacionSalida
+                            }}</li>
+                        <li>Ubicación de contacto: {{ servicio.ubicacionContacto
+                            }}</li>
+                        <li>Ubicación de termino: {{ servicio.ubicacionTermino
+                            }}</li>
+                        <li>Monto cobrado: {{ servicio.montoCobrado }}</li>
+                        <li>Operador: {{ servicio?.operador?.nombre }}</li>
+                        <li>Grua: {{ servicio?.grua?.noEco}}</li>
+                        <li>observaciones: {{ servicio.observaciones }}</li>
+                    </ul>
+                </div>
+            </div>
+            <ng-template pTemplate="footer">
+                <p-button label="Cerrrar" icon="pi pi-check"
+                    (click)="cerrarDialog()"
+                    [style]="{ 'margin-left': '.5em' }"></p-button>
+
+            </ng-template>
+
+        </p-card>
+    </div>
+
 </div>
+<p-toast position="top-center"></p-toast>

@@ -19,8 +19,15 @@ export interface Component {
 export interface Parameter {
     type: string;
     text: string;
+    document?:  Document;
 }
 
 export interface Language {
     code: string;
 }
+
+
+export interface Document {
+    link: string;
+    filename: string;
+  }

@@ -468,7 +468,7 @@ export class RegistroServicioComponent implements OnInit {
           }
         }
 
-        const fechaActual = new Date();
+        const fechaActual = moment().format();
        // console.log('Fecha actual en UTC:', fechaActual.toISOString());        //const fechaActual = moment.utc().toDate();
         //const fechaActual = moment().utc().format();
         console.log('fecha'+fechaActual);
@@ -492,7 +492,7 @@ export class RegistroServicioComponent implements OnInit {
         const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie,formDataVehiculo.poliza, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
 
         const formDataServicio = this.servicioForm.value;
-        const fechaActual = new Date(); // Formato ISO 8601
+        const fechaActual = moment().format();
         const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
         servicio.folioServicio = 'OS00' + 1; // primer folio si no hyay nada
 

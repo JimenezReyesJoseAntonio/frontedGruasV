@@ -139,6 +139,9 @@ export class OperadorComponent implements OnInit {
         }
       }
 
+      this.operador = formData;
+      this.operador.eliminado = 0;
+
       this.operadorService.save(formData).subscribe(
         (response) => {
           // Operador registrado exitosamente
@@ -147,7 +150,7 @@ export class OperadorComponent implements OnInit {
             summary: 'Éxito',
             detail: 'Operador registrado exitosamente',
           });
-
+ 
           this.idOperador = response;
           console.log('idOpe' + this.idOperador)
           // Asignar el estado "Libre" al operador utilizando el servicio de estatus

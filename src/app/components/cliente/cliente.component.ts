@@ -37,6 +37,7 @@ export class ClienteComponent implements OnInit {
   ) {
     this.clientForm = this.fb.group({
       nombreCliente: [null, [Validators.required]],
+      rfc: [null, [Validators.required]]
     });
   }
 
@@ -82,6 +83,9 @@ export class ClienteComponent implements OnInit {
           formValues[key] = value.toUpperCase();
         }
       }
+
+      this.cliente =  formValues;
+      this.cliente.eliminado = 0;
       
       this.clienteService.save(formValues).subscribe(
         () => {
@@ -168,7 +172,7 @@ export class ClienteComponent implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: 'Éxito',
-              detail: 'Operador actualizado exitosamente',
+              detail: 'Cliente actualizado exitosamente',
             });
             this.clientForm.reset();
             this.updateDialog = false; // Cerrar el diálogo de edición
@@ -200,6 +204,7 @@ export class ClienteComponent implements OnInit {
   }
 
   showDialog() {
+    this.clientForm.reset();
     this.clienteDialog = true;
   }
 

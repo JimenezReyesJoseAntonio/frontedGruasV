@@ -31,6 +31,7 @@ import { MessageOperador } from '../../Whatsapp/interfaces/message-operador';
 import { COMPONENT_TYPE, MESSAGING_PRODUCT, PARAMETER_TYPE, TEMPLATE_LANGUAGE, TEMPLATE_NAME, TEMPLATE_TYPE } from '../../common/api-resource';
 import { PdfService } from '../../services/pdf.service';
 import { HttpResponse } from '@angular/common/http';
+import { MessageCarta } from '../../Whatsapp/interfaces/message-carta';
 
 @Component({
   selector: 'app-servicios',
@@ -80,6 +81,7 @@ export class ServiciosComponent implements OnInit {
   enaSer: boolean = true;
   estatusOpe: string;
   estatusGrua: string;
+  cartaUrl:string='';
 
 
   private eventoServicioCreadoSubscription: Subscription | undefined;
@@ -457,10 +459,11 @@ export class ServiciosComponent implements OnInit {
     this.editingServicio = { ...servicio }; // Clonar el operador para evitar modificar el original directamentec
     console.log('editado' + this.editingServicio.operador.nombre);
     console.log('ll' + servicio.cliente.id);
-
+ // reviasar esto servedit y servediting
     this.serviceService.detail(servicio.id).subscribe(
       (data) => {
         this.servEdit = data;
+        console.log('servedit'+this.servEdit);
         this.selectedMarca = this.servEdit.vehiculo.marca; // para que tenga como primer valor la marca original del servicio
         this.selectedOperador = this.servEdit.operador;
         this.selectedGrua = this.servEdit.grua;
@@ -833,6 +836,63 @@ export class ServiciosComponent implements OnInit {
     )
   }
 
+
+  enviarMensajeOperador(servicio: Servicio): void {
+    this.pdfservice.generatePdfCarta(servicio.id).subscribe(
+      response => {
+        const cartaUrl = response.url;
+
+        const data: MessageCarta = {
+          messaging_product: MESSAGING_PRODUCT.whatsapp,
+          to: '52' + servicio.operador.numTelefono,
+          type: TEMPLATE_TYPE.type,
+          template: {
+            name: TEMPLATE_NAME.operador,
+            language: {
+              code: TEMPLATE_LANGUAGE.es
+            },
+            components: [
+              {
+                type: COMPONENT_TYPE.header,
+                parameters: [
+                  {
+                    type: PARAMETER_TYPE.document,
+                    document: {
+                      link: cartaUrl,
+                      filename: servicio.folioServicio
+                    }
+                  }
+                ]
+              },
+              {
+                type: COMPONENT_TYPE.body,
+                parameters: [
+                  {
+                    type: PARAMETER_TYPE.text,
+                    text: servicio.folioServicio
+                  }
+                ]
+              }
+            ]
+          }
+        };
+
+        this.whatsappService.sendMessage(data).subscribe(
+          resp => {
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Mensaje enviado exitosamente' });
+            console.log('se mandó el WhatsApp');
+          },
+          error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al mandar mensaje' });
+            console.log(error);
+          }
+        );
+      },
+      error => {
+        console.error('Error al generar el PDF:', error);
+      }
+    );
+  }
 
   generarCartaPorte(servicio: Servicio) {
     console.log(servicio.id);

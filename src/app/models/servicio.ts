@@ -6,7 +6,7 @@ import { Vehiculo } from "./vehiculo";
 export class Servicio {
     id:number;
     folioServicio?: string;
-    fecha: Date;
+    fecha: string;
     ubicacionSalida: string;
     ubicacionContacto: string;
     montoCobrado: number;
@@ -20,7 +20,7 @@ export class Servicio {
     usuario: number;
     eliminado: number;
 
-    constructor(folioServicio: string, fecha: Date, ubicacionSalida: string, ubicacionContacto: string,
+    constructor(folioServicio: string, fecha: string, ubicacionSalida: string, ubicacionContacto: string,
         montoCobrado: number, observaciones: string, ubicacionTermino: string, estadoServicio: string, cliente: Cliente,
         vehiculo: Vehiculo, operador: Operador, grua: Grua, usuario: number, eliminado: number
     ) {

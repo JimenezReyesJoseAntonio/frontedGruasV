@@ -9,7 +9,8 @@ export const MESSAGING_PRODUCT = {
 export const TEMPLATE_NAME = {
     messageOperador : 'asignacion_servicio',
     holaMundo : 'hello_world',
-    cliente: 'clientes_message'
+    cliente: 'clientes_message',
+    operador: 'carta_porte_operador'
 }
 
 export const COMPONENT_TYPE = {

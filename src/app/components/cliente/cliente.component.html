@@ -58,6 +58,10 @@
             <label for="nameClient">Nombre del cliente</label>
             <input type="text" formControlName="nombreCliente" pInputText id="nameClient" required />
           </div>
+          <div class="p-field">
+            <label for="rfc">RFC</label>
+            <input type="text" formControlName="rfc" pInputText id="rfc" required minlength="12" maxlength="13" />
+          </div>
         </form>
       </ng-template>
       <ng-template pTemplate="footer">
@@ -92,6 +96,10 @@
           <div class="p-field">
             <label for="nameClient">Nombre del cliente</label>
             <input type="text" [(ngModel)]="clienteUp.nombreCliente" formControlName="nombreCliente" pInputText id="nameClient" required />
+          </div>
+          <div class="p-field">
+            <label for="rfc">RFC</label>
+            <input type="text" [(ngModel)]="clienteUp.rfc" formControlName="rfc" pInputText id="rfc" required minlength="12" maxlength="13"/>
           </div>
         </form>
       </ng-template>

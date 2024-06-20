@@ -12,11 +12,19 @@ export class PdfService {
   constructor(private http: HttpClient) { }
 
   generatePdf(id: number): Observable<HttpResponse<Blob>> {
-    const url = this.pdflURL+`${id}`;
-    console.log(url);
+    const url = this.pdflURL+'generate/'+`${id}`;
+    console.log('dowload'+url);
 
     return this.http.get(url, {
       responseType: 'blob',
       observe: 'response'
     });
-  }}
+  }
+
+
+  generatePdfCarta(id: number): Observable<{ url: string }> {
+    return this.http.get<{ url: string }>(`${this.pdflURL}generatepdf/${id}`);
+  }
+
+}
+

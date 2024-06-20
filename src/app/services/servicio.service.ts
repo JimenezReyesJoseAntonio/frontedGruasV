@@ -21,7 +21,7 @@ export class ServicioService {
   }
 
   public detailByFolio(folio: string): Observable<Servicio> {
-    return this.httpClient.get<Servicio>(`${this.servicioURL}${folio}`);
+    return this.httpClient.get<Servicio>(`${this.servicioURL+'folio/'}${folio}`);
   }
 
   public save(vehiculo: Servicio): Observable<any> {

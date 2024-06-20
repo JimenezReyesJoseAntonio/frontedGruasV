@@ -151,9 +151,9 @@
 
 
         <p-dialog [(visible)]="deleteGruaDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
+            <div class="flex flex-column align-items-center justify-content-center">
                 <div class="iconDelete">
-                    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                    <i class="pi pi-exclamation-triangle " style="font-size: 2rem"></i>
                 </div>
                 <span *ngIf="grua">Esta seguro que quiere eliminar a <b>{{grua.placa}}</b>?</span>
 

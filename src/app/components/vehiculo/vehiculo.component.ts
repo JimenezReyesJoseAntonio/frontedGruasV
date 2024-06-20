@@ -108,7 +108,7 @@ export class VehiculoComponent implements OnInit {
       this.convertirCamposMayusculas(formData);
       this.marca = new Marca(formData.nombre,0);
       //const formData = this.gruaForm.value;
-      this.marcaService.save(formData).subscribe(
+      this.marcaService.save(this.marca).subscribe(
         () => {
           // Operador registrado exitosamente
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Marca registrada exitosamente' });

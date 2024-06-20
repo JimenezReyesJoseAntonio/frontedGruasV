@@ -1,4 +1,4 @@
-export interface WhatsappCloudAPIRequest {
+export interface MessageCarta {
     messaging_product: string;
     to:                string;
     type:              string;
@@ -13,7 +13,7 @@ export interface Template {
 
 export interface Component {
     type:       string;
-    parameters?: Parameter[];
+    parameters: Parameter[];
 }
 
 export interface Parameter {
@@ -22,12 +22,12 @@ export interface Parameter {
     document?:  Document;
 }
 
-export interface Document {
-    link: string;
-    filename: string;
-  }
-
 export interface Language {
     code: string;
 }
 
+
+export interface Document {
+    link: string;
+    filename: string;
+  }
