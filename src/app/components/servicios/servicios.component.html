@@ -18,10 +18,11 @@
                     <th>Ubicación de termino</th>
                     <th>Estatus</th>
                     <th>Editar</th>
-                    <th>Finalizar</th>
                     <th>Datos Servicio</th>
                     <th>Enviar Carta</th>
                      <th>Carta Porte</th>
+                     <th>Finalizar</th>
+
 
                 </tr>
             </ng-template>
@@ -42,12 +43,6 @@
                     </td>
                     <td>
                         <div class="flex">
-                            <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-primary mr-2"
-                                (click)="confirmFinishServicio(servicio)"></button>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="flex">
                             <button pButton pRipple icon="pi pi-whatsapp" class="p-button-rounded p-button-success mr-2"
                               (click)="enviarMensaje(servicio)" ></button>
                         </div>
@@ -62,6 +57,12 @@
                         <div class="flex">
                             <button pButton pRipple icon="pi pi-download" class="p-button-rounded p-button-success mr-2"
                             [ngStyle]="{backgroundColor:'var(--teal-500)'}"   (click)="generarCartaPorte(servicio)" ></button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex">
+                            <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-primary mr-2"
+                                (click)="confirmFinishServicio(servicio)"></button>
                         </div>
                     </td>
                 </tr>
@@ -106,11 +107,11 @@
 
 
             </p-accordionTab>
-            <p-accordionTab header="Datos del vehiculo">
+            <p-accordionTab header="Datos del vehículo">
                 <div class="car">
                     <form [formGroup]="vehicleForm" class="p-formgrid">
                         <div class="p-field">
-                            <label for="tipoV">Tipo de vehiculo</label>
+                            <label for="tipoV">Tipo de vehículo</label>
                             <p-dropdown [options]="tiposVehiculo" placeholder="Selecciona" optionLabel="nombre"
                                 formControlName="tipoVehiculo" [editable]="true"
                                 [(ngModel)]="servEdit?.vehiculo.tipoVehiculo">
@@ -191,7 +192,7 @@
                         </div>
                         <div class="p-field">
                             <label for="monto">Monto cobrado</label>
-                            <input type="number" pInputText id="monto" formControlName="montoCobrado" required
+                            <input type="number" pInputText id="monto" formControlName="montoCobrado" 
                                 [(ngModel)]="editingServicio.montoCobrado" />
                         </div>
                         <div class="p-field">
@@ -201,7 +202,7 @@
                             </p-dropdown>
                         </div>
                         <div class="p-field">
-                            <label for="grua">Seleccione la grua</label>
+                            <label for="grua">Seleccione la grúa</label>
                             <p-dropdown [options]="gruas" optionLabel="noEco" formControlName="grua"
                                 placeholder="Seleccione" [editable]="true" [(ngModel)]="editingServicio.grua">
                             </p-dropdown>
@@ -234,7 +235,7 @@
 
 <p-dialog [(visible)]="deleteServicioDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
     <div class="flex align-items-center justify-content-center">
-        <span *ngIf="servicioFinalizado">Esta seguro que quiere finalizar el servicio ?</span>
+        <span *ngIf="servicioFinalizado">Está seguro que quiere finalizar el servicio ?</span>
 
     </div>
     <ng-template pTemplate="footer">
@@ -244,5 +245,37 @@
     </ng-template>
 </p-dialog>
 
+
+<p-dialog [(visible)]="confirmMessageDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <div class="iconDelete">
+            <i class="pi pi-exclamation-triangle " style="font-size: 2rem"></i>
+        </div>
+        <span >Está seguro de continuar ?</span>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="confirmMessageDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+            (click)="confirmMessage()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="confirmCartaDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <div class="iconDelete">
+            <i class="pi pi-exclamation-triangle " style="font-size: 2rem"></i>
+        </div>
+        <span >Está seguro de continuar ?</span>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="confirmCartaDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+            (click)="confirmMessageCarta()"></button>
+    </ng-template>
+</p-dialog>
 
 <router-outlet></router-outlet>

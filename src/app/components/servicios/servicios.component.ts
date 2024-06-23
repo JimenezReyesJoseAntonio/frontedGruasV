@@ -83,6 +83,8 @@ export class ServiciosComponent implements OnInit {
   estatusGrua: string;
   cartaUrl:string='';
 
+  confirmMessageDialog : boolean = false;
+  confirmCartaDialog : boolean = false;
 
   private eventoServicioCreadoSubscription: Subscription | undefined;
 
@@ -745,7 +747,21 @@ export class ServiciosComponent implements OnInit {
     }
   }
 
-  enviarMensaje(servicio: Servicio) {
+  
+
+  enviarMensaje(servicio:Servicio){
+    this.confirmMessageDialog = true;
+    this.servicio = servicio;
+  }
+
+  enviarMensajeOperador(servicio:Servicio){
+    this.confirmCartaDialog = true;
+    this.servicio = servicio;
+
+  }
+
+  confirmMessage() {
+    const servicio = this.servicio;
     const data: MessageOperador = {
       messaging_product: MESSAGING_PRODUCT.whatsapp,
       to: '52' + servicio.operador.numTelefono,
@@ -814,7 +830,8 @@ export class ServiciosComponent implements OnInit {
                 type: PARAMETER_TYPE.text,
                 text: servicio.cliente.numTelefono
 
-              }
+              },
+              
             ]
 
           }
@@ -825,7 +842,9 @@ export class ServiciosComponent implements OnInit {
 
     this.whatsappService.sendMessage(data).subscribe(
       resp => {
+        this.confirmMessageDialog = false;
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Mensaje enviado exitosamente' });
+        this.servicio = null;
         console.log('se mando el whatsapp');
       },
       error => {
@@ -837,7 +856,8 @@ export class ServiciosComponent implements OnInit {
   }
 
 
-  enviarMensajeOperador(servicio: Servicio): void {
+  confirmMessageCarta(): void {
+    const servicio = this.servicio;
     this.pdfservice.generatePdfCarta(servicio.id).subscribe(
       response => {
         const cartaUrl = response.url;
@@ -879,8 +899,10 @@ export class ServiciosComponent implements OnInit {
 
         this.whatsappService.sendMessage(data).subscribe(
           resp => {
+            this.confirmCartaDialog = false;
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Mensaje enviado exitosamente' });
             console.log('se mandó el WhatsApp');
+            this.servicio = null;
           },
           error => {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al mandar mensaje' });

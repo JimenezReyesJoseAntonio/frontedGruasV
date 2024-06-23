@@ -127,11 +127,11 @@ export class RegistroServicioComponent implements OnInit {
     this.servicioForm = this.fb.group({
       ubicacionSalida: ['', Validators.required],
       ubicacionContacto: ['', Validators.required],
-      montoCobrado: ['', Validators.required],
+      montoCobrado: [''],
       observaciones: [''],
       ubicacionTermino: [''],
-      operador: ['', Validators.required],
-      grua: ['', Validators.required],
+      operador: [''],
+      grua: [''],
     });
 
 
@@ -468,8 +468,8 @@ export class RegistroServicioComponent implements OnInit {
           }
         }
 
-        const fechaActual = moment().format();
-       // console.log('Fecha actual en UTC:', fechaActual.toISOString());        //const fechaActual = moment.utc().toDate();
+        const fechaActual = moment().format('YYYY-MM-DD'); // Solo fecha sin hora
+        // console.log('Fecha actual en UTC:', fechaActual.toISOString());        //const fechaActual = moment.utc().toDate();
         //const fechaActual = moment().utc().format();
         console.log('fecha'+fechaActual);
 
@@ -489,11 +489,17 @@ export class RegistroServicioComponent implements OnInit {
         const cliente = new Cliente(formDataCliente.numTelefono, formDataCliente.clienteTipo, 0);
 
         const formDataVehiculo = this.vehicleForm.value;
-        const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie,formDataVehiculo.poliza, formDataVehiculo.color, formDataVehiculo.ano, 1, 0);
+        //asignamos el valor de 0 por defecto si no se puso año
+        const ano = formDataVehiculo.ano !== '' ? parseInt(formDataVehiculo.ano, 10) : 0;
+  
+        const vehiculo = new Vehiculo(formDataVehiculo.tipoVehiculo, formDataVehiculo.marca.id, formDataVehiculo.modelo.id, formDataVehiculo.placas, formDataVehiculo.serie,formDataVehiculo.poliza, formDataVehiculo.color, ano, 1, 0);
 
         const formDataServicio = this.servicioForm.value;
-        const fechaActual = moment().format();
-        const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
+      //asignamos el valor de 0 por defecto si no se puso monto
+        const montoCobrado = formDataServicio.montoCobrado !== '' ? parseFloat(formDataServicio.montoCobrado) : 0;
+
+        const fechaActual = moment().format('YYYY-MM-DD'); // Solo fecha sin hora
+        const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
         servicio.folioServicio = 'OS00' + 1; // primer folio si no hyay nada
 
         this.crearServicio(cliente, vehiculo, servicio, formDataServicio);

@@ -34,7 +34,7 @@
   [style]="{ width: '810px', height: '400px' }" class="car">
   <form [formGroup]="vehicleForm" class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col-12 p-md-6">
-      <label for="tipoV">Tipo de vehiculo</label>
+      <label for="tipoV">Tipo de vehículo</label>
       <p-dropdown [options]="tiposVehiculo" placeholder="Selecciona" optionLabel="nombre" formControlName="tipoVehiculo"
         [editable]="true">
       </p-dropdown>
@@ -102,7 +102,7 @@
     </div>
     <div class="p-field p-col-12 p-md-4">
       <label for="monto">Monto cobrado</label>
-      <input type="number" pInputText id="monto" formControlName="montoCobrado" required />
+      <input type="number" pInputText id="monto" formControlName="montoCobrado"  />
     </div>
     <div class="p-field p-col-12 p-md-4">
       <label for="operador">Seleccione el operador</label>
@@ -110,7 +110,7 @@
         [editable]="true"></p-dropdown>
     </div>
     <div class="p-field p-col-12 p-md-4">
-      <label for="grua">Seleccione la grua</label>
+      <label for="grua">Seleccione la grúa</label>
       <p-dropdown [options]="gruaDropdown" formControlName="grua" placeholder="Seleccione"
         [editable]="true"></p-dropdown>
     </div>
@@ -164,7 +164,7 @@
         <li>Ubicación de termino: {{ servicio.ubicacionTermino }}</li>
         <li>Monto cobrado: {{ servicio.montoCobrado }}</li>
         <li>Operador: {{ operadorSeleccionado?.nombre }}</li>
-        <li>Grua: {{ gruaSeleccionada?.noEco }}</li>
+        <li>Grúa: {{ gruaSeleccionada?.noEco }}</li>
         <li>observaciones: {{ servicio.observaciones }}</li>
 
       </ul>
@@ -172,11 +172,17 @@
 
   </div>
   <ng-template pTemplate="footer">
-    <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()"
-      styleClass="p-button-secondary"></p-button>
-    <p-button label="Confirmar" icon="pi pi-check" (click)="onConfirm()" [style]="{ 'margin-left': '.5em' }"
-      [disabled]="enaService"></p-button>
+    <div class="flex justify-content-between w-full">
+      <div>
+          <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"></p-button>
+          <p-button label="Confirmar" icon="pi pi-check" (click)="onConfirm()" [style]="{ 'margin-left': '.5em' }" [disabled]="enaService"></p-button>
+      </div>
+      <div>
+          <p-button label="Cotización" severity="warning" icon="pi pi-clipboard" [disabled]="enaService"></p-button>
+      </div>
+  </div>
 
   </ng-template>
 
 </p-card>
+
