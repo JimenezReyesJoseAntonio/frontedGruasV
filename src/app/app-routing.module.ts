@@ -12,6 +12,7 @@ import { ClienteComponent } from './components/cliente/cliente.component';
 import { VehiculoComponent } from './components/vehiculo/vehiculo.component';
 import { ExcelServiciosComponent } from './components/excel-servicios/excel-servicios.component';
 import { BusquedaServicioComponent } from './components/busqueda-servicio/busqueda-servicio.component';
+import { CotizacionesComponent } from './components/cotizaciones/cotizaciones.component';
 
 
 const routes: Routes = [
@@ -65,6 +66,10 @@ const routes: Routes = [
         {
           path: 'buscar',
           component: BusquedaServicioComponent
+        },
+        {
+          path: 'cotizacion',
+          component: CotizacionesComponent
         }
         // Agrega más rutas hijas para otros componentes dentro de "servicios" si es necesario
       ]

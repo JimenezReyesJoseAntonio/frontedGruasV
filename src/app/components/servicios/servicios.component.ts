@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from './MenuItem';
 import { Router } from '@angular/router';
 import { ServicioService } from '../../services/servicio.service';
@@ -32,6 +32,7 @@ import { COMPONENT_TYPE, MESSAGING_PRODUCT, PARAMETER_TYPE, TEMPLATE_LANGUAGE, T
 import { PdfService } from '../../services/pdf.service';
 import { HttpResponse } from '@angular/common/http';
 import { MessageCarta } from '../../Whatsapp/interfaces/message-carta';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-servicios',
@@ -82,6 +83,9 @@ export class ServiciosComponent implements OnInit {
   estatusOpe: string;
   estatusGrua: string;
   cartaUrl:string='';
+
+  loading: boolean = false;
+
 
   confirmMessageDialog : boolean = false;
   confirmCartaDialog : boolean = false;
@@ -140,6 +144,8 @@ export class ServiciosComponent implements OnInit {
 
   }
 
+  @ViewChild('dtServicio') dtModelo!: Table;
+
   ngOnInit(): void {
     this.items = [
       {
@@ -177,12 +183,9 @@ export class ServiciosComponent implements OnInit {
       {
         label: 'Cotizaciones',
         icon: 'pi pi-fw pi-book',
-        items: [
-          {
-            label: 'Nueva',
-            icon: 'pi pi-fw pi-plus'
-          },
-        ]
+        command: () => {
+          this.navigateToCotizaciones(); // Llama a un método para navegar a la ruta
+        }
       },
       {
         label: 'Clientes',
@@ -454,6 +457,10 @@ export class ServiciosComponent implements OnInit {
     this.router.navigate(['/principal/servicios/exportar-servicios']); // Navega a la ruta '/principal/dashboard'
   }
 
+  navigateToCotizaciones(){
+    this.router.navigate(['/principal/servicios/cotizacion']); // Navega a la ruta '/principal/dashboard'
+  }
+
   editServicio(servicio: Servicio) {
     this.enaClien = false;
     this.enaVehi = false;
@@ -623,6 +630,7 @@ export class ServiciosComponent implements OnInit {
 
     // Convertir campos de servicio a mayúsculas
     this.convertirCamposMayusculas(formDataServicio);
+    formDataServicio.observaciones.toLowerCase();
 
     const idOperador = this.servEdit.operador.id;//usamos servEdit no editingServicio ya que cambia por el ngmodel
     console.log('id operador servicio' + idOperador);
@@ -767,7 +775,7 @@ export class ServiciosComponent implements OnInit {
       to: '52' + servicio.operador.numTelefono,
       type: TEMPLATE_TYPE.type,
       template: {
-        name: TEMPLATE_NAME.messageOperador,
+        name: TEMPLATE_NAME.datosServicio,
         language: {
           code: TEMPLATE_LANGUAGE.es
         },
@@ -831,7 +839,11 @@ export class ServiciosComponent implements OnInit {
                 text: servicio.cliente.numTelefono
 
               },
-              
+              {
+                type: PARAMETER_TYPE.text,
+                text: servicio.observaciones
+
+              },
             ]
 
           }
@@ -942,6 +954,11 @@ export class ServiciosComponent implements OnInit {
         console.error('Error al generar el PDF', error);
       }
     );
+  }
+
+  applyFilterGlobal(event: Event, dt: Table) {
+    const inputElement = event.target as HTMLInputElement;
+    dt.filterGlobal(inputElement.value, 'contains');
   }
 
 }

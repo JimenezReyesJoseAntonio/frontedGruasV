@@ -3,8 +3,12 @@
 </div>
 <div *ngIf="router.url === '/principal/servicios'" class="tableServices">
     <p-card>
-
-        <p-table [value]="servicios" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true" [rows]="5">
+        <div class="p-inputgroup mb-3" style="max-width: 300px; ">
+            <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+            <input type="text" pInputText placeholder="Buscar servicio por folio " (input)="applyFilterGlobal($event, dtServicio)">
+        </div>
+        <p-table [value]="servicios" [tableStyle]="{ 'min-width': '60rem' }"
+        #dtServicio dataKey="id" [loading]="loading" [globalFilterFields]="['folioServicio']" [paginator]="true" [rows]="5">
             <ng-template pTemplate="caption">
                 <div class="flex align-items-center justify-content-between">
                     Servicios

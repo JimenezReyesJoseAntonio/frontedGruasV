@@ -1,0 +1,36 @@
+
+.car{
+  
+    margin-top: 40px;
+    display: flex;
+      justify-content: center;
+      
+  }
+  
+  
+  .p-formgrid {
+    display: grid;
+    grid-template-columns: repeat(3,  minmax(250px, 1fr)); /* Tres columnas de igual ancho */
+    gap: 15px;
+  }
+  
+  .container{
+    display: flex;
+    justify-content: center;
+  
+  }
+  
+  .contenedor {
+    display: flex;
+    justify-content: space-between; /* Para que los divs se separen a los extremos */
+    padding-right: 100px;
+  }
+  
+  .izquierdo {
+    /* Estilos adicionales para el div izquierdo si es necesario */
+  }
+  
+  .derecho {
+    /* Estilos adicionales para el div derecho si es necesario */
+  }
+  

@@ -30,6 +30,7 @@ import { VehiculoModule } from './components/vehiculo/vehiculo.module';
 import { ExcelServiciosModule } from './components/excel-servicios/excel-servicios.module';
 import { DashboardModule } from './components/dashboard/dashboard.module';
 import { BusquedaServicioModule } from './components/busqueda-servicio/busqueda-servicio.module';
+import { CotizacionesModule } from './components/cotizaciones/cotizaciones.module';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { BusquedaServicioModule } from './components/busqueda-servicio/busqueda-
     VehiculoModule,
     ExcelServiciosModule,
     DashboardModule,
-    BusquedaServicioModule
+    BusquedaServicioModule,
+    CotizacionesModule
   ],
   providers: [
 

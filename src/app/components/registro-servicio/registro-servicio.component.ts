@@ -468,6 +468,9 @@ export class RegistroServicioComponent implements OnInit {
           }
         }
 
+        //minuscula por si se manda el link
+        formDataServicio.observaciones.toLowerCase();
+
         const fechaActual = moment().format('YYYY-MM-DD'); // Solo fecha sin hora
         // console.log('Fecha actual en UTC:', fechaActual.toISOString());        //const fechaActual = moment.utc().toDate();
         //const fechaActual = moment().utc().format();

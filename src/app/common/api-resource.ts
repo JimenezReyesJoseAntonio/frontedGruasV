@@ -10,7 +10,8 @@ export const TEMPLATE_NAME = {
     messageOperador : 'asignacion_servicio',
     holaMundo : 'hello_world',
     cliente: 'clientes_message',
-    operador: 'carta_porte_operador'
+    operador: 'carta_porte_operador',
+    datosServicio: 'datos_servicio'
 }
 
 export const COMPONENT_TYPE = {
