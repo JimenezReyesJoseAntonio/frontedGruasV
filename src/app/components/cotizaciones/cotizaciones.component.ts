@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TiposVehiculoService } from '../../services/tipos-vehiculo.service';
 import { MarcaService } from '../../services/marca.service';
@@ -14,6 +14,7 @@ import { Vehiculo } from '../../models/vehiculo';
 import moment from 'moment';
 import { TokenService } from '../../services/token.service';
 import { Router } from '@angular/router';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-cotizaciones',
@@ -35,8 +36,10 @@ export class CotizacionesComponent implements OnInit {
   listaVacia: string | undefined;
   tiposVehiculo: TiposVehiculo[] = [];
   cotizacion: Cotizacion | null = null;
-
+  cotizacionFinish: Cotizacion | null = null;
   cotizacionDialog: boolean = false;
+  finishCotizacionDialog: boolean = false;
+  confirmacionServicioDialog: boolean = false;
   idUser: number;
 
 
@@ -69,6 +72,10 @@ export class CotizacionesComponent implements OnInit {
     });
 
   }
+
+  @ViewChild('dtCotizacion') dtModelo!: Table;
+
+  
   ngOnInit(): void {
     this.cargarMarcas();
     this.cargarModelos();
@@ -90,7 +97,7 @@ export class CotizacionesComponent implements OnInit {
       (data) => {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.cotizaciones = data;
-        //this.clientes = this.clientes.filter(est => est.eliminado === 0);
+        this.cotizaciones = this.cotizaciones.filter(coti => coti.estado != 'CANCELADO');
         console.log(data);
       },
       (err) => {
@@ -242,5 +249,60 @@ export class CotizacionesComponent implements OnInit {
 
   }
 
+  applyFilterGlobal(event: Event, dt: Table) {
+    const inputElement = event.target as HTMLInputElement;
+    dt.filterGlobal(inputElement.value, 'contains');
+  }
+
+  confirmFinishCotizacion(cotizacion: Cotizacion) {
+    this.finishCotizacionDialog = true; // Mostrar el diálogo de edición
+    this.cotizacionFinish = { ...cotizacion }; // Clonar el servicio para evitar modificar el original directamente
+
+  }
+
+  confirmServicio(){
+    this.confirmacionServicioDialog =true;
+
+  }
+
+  finCotizacion() {
+    const cotizacion = this.cotizacionFinish;
+    const idcotizacion = cotizacion.id;
+    console.log(idcotizacion);
+
+    //cambia el estatus del servicio a finalizado para liberar a los operadores y grua
+    this.cotizacionService.detail(idcotizacion).subscribe(
+      (data) => {
+
+        const idCoti = data.id;
+        this.cambiarEstatusCotizacion(idCoti, 'estado', 'CANCELADO');
+        console.log('llega aqui' + cotizacion);
+
+      },
+      (err) => {
+        if (err && err.error && err.error.message) {
+          this.listaVacia = err.error.message;
+        } else {
+          this.listaVacia = 'Error al cargar el servicio';
+        }
+      }
+    );
+  }
+
+  cambiarEstatusCotizacion(id: number, campo: string, nuevoValor: any) {
+    this.cotizacionService.upadateEstatus(id, campo, nuevoValor).subscribe(
+      () => {
+        console.log('Estado asignado correctamente a la cotizacion');
+        //al finalizar un servicio cargamos nuevamente los servicios
+        this.cargarCotizaciones();
+        this.finishCotizacionDialog = false; // Mostrar el diálogo de edición
+
+      },
+      (error) => {
+        console.error('Error al asignar estado a la cotizacion:', error);
+      }
+    );
+
+  }
 
 }

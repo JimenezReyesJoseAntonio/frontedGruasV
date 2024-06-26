@@ -32,4 +32,9 @@ export class CotizacionesService {
   public delete(id: number): Observable<any> {
     return this.httpClient.delete<any>(`${this.cotizacionUrl}${id}`);
   }
+
+  public upadateEstatus(id: number, campo: string, nuevoValor: any) {
+    const url = `${this.cotizacionUrl}${id}/${campo}`;
+    return this.httpClient.put(url, { valor: nuevoValor });
+  }
 }

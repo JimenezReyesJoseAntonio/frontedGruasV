@@ -21,13 +21,13 @@
 <p-card>
     <div class="p-inputgroup mb-3" style="max-width: 300px; ">
         <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
-        <input type="text" pInputText placeholder="Buscar servicio por folio " >
+        <input type="text" pInputText placeholder="Buscar cotizacion por ID " (input)="applyFilterGlobal($event, dtCotizacion)">
     </div>
     <p-table [value]="cotizaciones" [tableStyle]="{ 'min-width': '40rem' }"
-    #dtServicio dataKey="id" [globalFilterFields]="['folioServicio']" [paginator]="true" [rows]="5">
+    #dtCotizacion dataKey="id" [globalFilterFields]="['id']" [paginator]="true" [rows]="5">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
-                Servicios
+                Cotizaciones
             </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -38,7 +38,7 @@
                 <th>Estatus</th>
                  <th>Enviar cotizacion</th>
                  <th>Completar</th>
-
+                 <th>Eliminar</th>
 
             </tr>
         </ng-template>
@@ -58,7 +58,13 @@
                 <td>
                     <div class="flex">
                         <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-primary mr-2"
-                       (click)="navigateToServicio()" ></button>
+                       (click)="confirmServicio()" ></button>
+                    </div>
+                </td>
+                <td>
+                    <div class="flex">
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-secondary mr-2"
+                       (click)="confirmFinishCotizacion(cotizacion)" ></button>
                     </div>
                 </td>
             </tr>
@@ -134,6 +140,39 @@
     </ng-template>
 </p-dialog>
 
+
+<p-dialog [(visible)]="finishCotizacionDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <div class="iconDelete">
+            <i class="pi pi-exclamation-triangle " style="font-size: 2rem"></i>
+        </div>
+        <span >Está seguro de continuar ?</span>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="finishCotizacionDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+            (click)="finCotizacion()"></button>
+    </ng-template>
+</p-dialog>
+
+
+<p-dialog [(visible)]="confirmacionServicioDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <div class="iconDelete">
+            <i class="pi pi-exclamation-triangle " style="font-size: 2rem"></i>
+        </div>
+        <span >Está seguro de continuar ?</span>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="confirmacionServicioDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+            (click)="navigateToServicio()"></button>
+    </ng-template>
+</p-dialog>
 
 
 </div>
