@@ -83,6 +83,7 @@ export class ServiciosComponent implements OnInit {
   estatusOpe: string;
   estatusGrua: string;
   cartaUrl:string='';
+  kilometrajeTermino:number | null = null; // Inicialmente null para representar que no hay valor ingresado
 
   loading: boolean = false;
 
@@ -515,10 +516,18 @@ export class ServiciosComponent implements OnInit {
         const idSer = data.id;
         console.log(idOpe);
         console.log(idGrua);
-        this.cambiarEstatusOperador(idOpe, 'Libre');
-        this.cambiarEstatusGrua(idGrua, 'Libre');
-        this.cambiarEstatusServicio(idSer, 'estadoServicio', 'FINALIZADO');
-
+        
+        if(data.grua.kilometraje<this.kilometrajeTermino){
+          this.actualizarKmGrua(idGrua,'kilometraje',this.kilometrajeTermino);
+          this.cambiarEstatusOperador(idOpe, 'Libre');
+          this.cambiarEstatusGrua(idGrua, 'Libre');
+          this.cambiarEstatusServicio(idSer, 'estadoServicio', 'FINALIZADO');
+          this.actualizarKmServicio(idSer,'kmEntrada',this.kilometrajeTermino);
+          this.kilometrajeTermino = null;
+        }else{
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El kilometraje de termino debe ser mayor que el de inicio' });
+          this.kilometrajeTermino = null;
+        }
         //servicio.estadoServicio = 'Completado';
         console.log('llega aqui' + servicio);
 
@@ -568,6 +577,32 @@ export class ServiciosComponent implements OnInit {
       },
       (error) => {
         console.error('Error al asignar estado al servicio:', error);
+      }
+    );
+
+  }
+
+  actualizarKmGrua(id: number, campo: string, nuevoValor: any) {
+    this.gruaService.upadateKmGrua(id, campo, nuevoValor).subscribe(
+      () => {
+        console.log('Kilometraje asignado correctamente a la grua');
+
+      },
+      (error) => {
+        console.error('Error al actualizar km a la grua:', error);
+      }
+    );
+
+  }
+
+  actualizarKmServicio(id: number, campo: string, nuevoValor: any) {
+    this.serviceService.upadatekmTermino(id, campo, nuevoValor).subscribe(
+      () => {
+
+        console.log('Kilometraje asignado correctamente al servicio');
+      },
+      (error) => {
+        console.error('Error al asignar kilometraje al servicio:', error);
       }
     );
 
@@ -770,6 +805,7 @@ export class ServiciosComponent implements OnInit {
 
   confirmMessage() {
     const servicio = this.servicio;
+    console.log('id'+servicio.id);
     const data: MessageOperador = {
       messaging_product: MESSAGING_PRODUCT.whatsapp,
       to: '52' + servicio.operador.numTelefono,
@@ -856,7 +892,7 @@ export class ServiciosComponent implements OnInit {
       resp => {
         this.confirmMessageDialog = false;
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Mensaje enviado exitosamente' });
-        this.servicio = null;
+        this.servicio = null; //revisar esto marca error en otro mensaje
         console.log('se mando el whatsapp');
       },
       error => {

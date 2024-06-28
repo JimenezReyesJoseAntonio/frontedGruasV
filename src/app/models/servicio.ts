@@ -18,11 +18,14 @@ export class Servicio {
     operador:Operador ;
     grua: Grua;
     usuario: number;
+    kmSalida?: number;
+    kmEntrada?: number;
     eliminado: number;
+
 
     constructor(folioServicio: string, fecha: string, ubicacionSalida: string, ubicacionContacto: string,
         montoCobrado: number, observaciones: string, ubicacionTermino: string, estadoServicio: string, cliente: Cliente,
-        vehiculo: Vehiculo, operador: Operador, grua: Grua, usuario: number, eliminado: number
+        vehiculo: Vehiculo, operador: Operador, grua: Grua, usuario: number,eliminado: number, kmSalida?: number, kmEntrada?: number, 
     ) {
 
         this.folioServicio = folioServicio;
@@ -38,6 +41,8 @@ export class Servicio {
         this.operador = operador;
         this.grua = grua;
         this.usuario = usuario;
+        this.kmSalida = kmSalida;
+        this.kmEntrada = kmEntrada;
         this.eliminado = eliminado;
     }
 }

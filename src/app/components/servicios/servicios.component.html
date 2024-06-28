@@ -240,14 +240,17 @@
 <p-dialog [(visible)]="deleteServicioDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">
     <div class="flex align-items-center justify-content-center">
         <span *ngIf="servicioFinalizado">Está seguro que quiere finalizar el servicio ?</span>
-
+    </div>
+    <div class="flex flex-column align-items-center justify-content-center mt-4">
+        <label for="salida" class="mb-2">Kilometraje de termino de la grua</label>
+        <p-inputNumber id="salida" [(ngModel)]="kilometrajeTermino" [maxlength]="6" [minlength]="3" [useGrouping]="false"></p-inputNumber>
     </div>
     <ng-template pTemplate="footer">
-        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
-            (click)="deleteServicioDialog = false"></button>
-        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="finServicio()"></button>
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteServicioDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" [disabled]="kilometrajeTermino === null" (click)="finServicio()"></button>
     </ng-template>
 </p-dialog>
+
 
 
 <p-dialog [(visible)]="confirmMessageDialog" header="Confirmación" [modal]="true" [style]="{width:'450px'}">

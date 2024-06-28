@@ -15,6 +15,10 @@ import moment from 'moment';
 import { TokenService } from '../../services/token.service';
 import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
+import { WhatsappApiCloudService } from '../../services/whatsapp-api-cloud.service';
+import { CotizacionPdfService } from '../../services/cotizacion-pdf.service';
+import { MessageCarta } from '../../Whatsapp/interfaces/message-carta';
+import { COMPONENT_TYPE, MESSAGING_PRODUCT, PARAMETER_TYPE, TEMPLATE_LANGUAGE, TEMPLATE_NAME, TEMPLATE_TYPE } from '../../common/api-resource';
 
 @Component({
   selector: 'app-cotizaciones',
@@ -37,10 +41,16 @@ export class CotizacionesComponent implements OnInit {
   tiposVehiculo: TiposVehiculo[] = [];
   cotizacion: Cotizacion | null = null;
   cotizacionFinish: Cotizacion | null = null;
+  cotizacionMessage: Cotizacion | null = null;
+  cotizacionServicio:Cotizacion | null = null;
   cotizacionDialog: boolean = false;
   finishCotizacionDialog: boolean = false;
   confirmacionServicioDialog: boolean = false;
+  confirmacionMessageDialog: boolean =false;
+
   idUser: number;
+  cotizacionUrl:string='';
+
 
 
   constructor(
@@ -53,6 +63,9 @@ export class CotizacionesComponent implements OnInit {
     private messageService: MessageService,
     private vehiculoService: VehiculoService,
     private tokenService: TokenService,
+    private whatsappService: WhatsappApiCloudService,
+    private cotizacionPdf:CotizacionPdfService
+
 
   ){
 
@@ -244,8 +257,33 @@ export class CotizacionesComponent implements OnInit {
     }
   }
 
+  seguirServicio(){
+    const cotizacion = this.cotizacionServicio;
+    const idcotizacion = cotizacion.id;
+    console.log(idcotizacion);
+
+    //cambia el estatus de la cotizacion
+    this.cotizacionService.detail(idcotizacion).subscribe(
+      (data) => {
+
+        const idCoti = data.id;
+        this.cambiarEstatusCotizacion(idCoti, 'estado', 'ACEPTADO');
+        console.log('llega aqui' + cotizacion);
+        this.navigateToServicio();
+
+      },
+      (err) => {
+        if (err && err.error && err.error.message) {
+          this.listaVacia = err.error.message;
+        } else {
+          this.listaVacia = 'Error al cargar el servicio';
+        }
+      }
+    );
+  }
+
   navigateToServicio() {
-    this.router.navigate(['/principal/servicios/nuevo']); // Navega a la ruta '/principal/dashboard'
+    this.router.navigate(['/principal/servicios/nuevo']); 
 
   }
 
@@ -255,14 +293,20 @@ export class CotizacionesComponent implements OnInit {
   }
 
   confirmFinishCotizacion(cotizacion: Cotizacion) {
-    this.finishCotizacionDialog = true; // Mostrar el diálogo de edición
-    this.cotizacionFinish = { ...cotizacion }; // Clonar el servicio para evitar modificar el original directamente
+    this.finishCotizacionDialog = true; 
+    this.cotizacionFinish = { ...cotizacion }; // Clonar  para evitar modificar el original directamente
 
   }
 
-  confirmServicio(){
+  confirmServicio(cotizacion:Cotizacion){
     this.confirmacionServicioDialog =true;
+    this.cotizacionServicio = { ...cotizacion }; // Clonar  para evitar modificar el original directamente
 
+  }
+
+  confirmMensaje(cotizacion:Cotizacion){
+    this.confirmacionMessageDialog =true;
+    this.cotizacionMessage = { ...cotizacion }; // Clonar  para evitar modificar el original directamente
   }
 
   finCotizacion() {
@@ -283,7 +327,7 @@ export class CotizacionesComponent implements OnInit {
         if (err && err.error && err.error.message) {
           this.listaVacia = err.error.message;
         } else {
-          this.listaVacia = 'Error al cargar el servicio';
+          this.listaVacia = 'Error al cargar el cotizacion';
         }
       }
     );
@@ -303,6 +347,57 @@ export class CotizacionesComponent implements OnInit {
       }
     );
 
+  }
+
+  enviarMensajeCotizacion(){
+    const cotizacion = this.cotizacionMessage;
+    this.cotizacionPdf.generatePdfCotizacion(cotizacion.id).subscribe(
+      response => {
+        const cotizacionUrl = response.url;
+
+        const data: MessageCarta = {
+          messaging_product: MESSAGING_PRODUCT.whatsapp,
+          to: '52' + cotizacion.numTelefono,
+          type: TEMPLATE_TYPE.type,
+          template: {
+            name: TEMPLATE_NAME.operador,
+            language: {
+              code: TEMPLATE_LANGUAGE.es
+            },
+            components: [
+              {
+                type: COMPONENT_TYPE.header,
+                parameters: [
+                  {
+                    type: PARAMETER_TYPE.document,
+                    document: {
+                      link: cotizacionUrl,
+                      filename: 'Cotizacion'+cotizacion.id
+                    }
+                  }
+                ]
+              },
+            ]
+          }
+        };
+
+        this.whatsappService.sendMessage(data).subscribe(
+          resp => {
+            this.confirmacionMessageDialog = false;
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Mensaje enviado exitosamente' });
+            console.log('se mandó el WhatsApp');
+            this.cotizacionMessage = null;
+          },
+          error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al mandar mensaje' });
+            console.log(error);
+          }
+        );
+      },
+      error => {
+        console.error('Error al generar el PDF:', error);
+      }
+    );
   }
 
 }

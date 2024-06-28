@@ -20,6 +20,7 @@ export const environment = {
     apiUrl: 'http://localhost:8080',
     excelServicios: 'http://localhost:8080/excel-servicios/servicios',
     pdfUrl: 'http://localhost:8080/pdf-carta/generate/',
-    cotizacionUrl:'http://localhost:8080/cotizaciones/'
+    cotizacionUrl:'http://localhost:8080/cotizaciones/',
+    pdfCotizacion: 'http://localhost:8080/pdf-cotizacion/'
 
   };

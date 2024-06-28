@@ -129,7 +129,7 @@
                             <div class="field">
                                 <label for="salida">Kilometraje<span class="required-asterisk">*</span></label>
                                 <p-inputNumber id="salida" formControlName="kilometraje" [maxlength]="6"
-                                    [minlength]="6" [useGrouping]="false"></p-inputNumber>
+                                    [minlength]="3" [useGrouping]="false"></p-inputNumber>
                                 <small *ngIf="submitted && !grua.kilometraje " style="color: red;">Kilometraje es requerido.</small>
                             </div>
                         </div>
@@ -223,7 +223,7 @@
                             <div class="field">
                                 <label for="salida">Kilometraje</label>
                                 <p-inputNumber id="salida" formControlName="kilometraje" [maxlength]="6"
-                                    [minlength]="6" [useGrouping]="false" [(ngModel)]="editingGrua.kilometraje"></p-inputNumber>
+                                    [minlength]="3" [useGrouping]="false" [(ngModel)]="editingGrua.kilometraje"></p-inputNumber>
                                 <small *ngIf="submitted && !editingGrua.kilometraje " style="color: red;">Kilometraje es requerido.</small>
                             </div>
                     

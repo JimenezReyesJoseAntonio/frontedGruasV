@@ -121,13 +121,13 @@ export class RegistroServicioComponent implements OnInit {
       serie: [''],
       poliza: [''],
       color: [''],
-      ano: [''],
+      ano: [0],
     });
 
     this.servicioForm = this.fb.group({
       ubicacionSalida: ['', Validators.required],
       ubicacionContacto: ['', Validators.required],
-      montoCobrado: [''],
+      montoCobrado: [0],
       observaciones: [''],
       ubicacionTermino: [''],
       operador: [''],
@@ -479,7 +479,9 @@ export class RegistroServicioComponent implements OnInit {
         console.log('veri date'+new Date().getTimezoneOffset()); // Debería ser el mismo en ambos lugares
 
         console.log(fechaActual);
-        const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
+        console.log('kilometraje'+this.gruaSeleccionada.kilometraje);
+
+        const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, formDataServicio.montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser,0,this.gruaSeleccionada.kilometraje,0);
         servicio.folioServicio = 'OS00' + folio; // Asignas el folio al objeto servicio
 
         this.crearServicio(cliente, vehiculo, servicio, formDataServicio);
@@ -502,7 +504,7 @@ export class RegistroServicioComponent implements OnInit {
         const montoCobrado = formDataServicio.montoCobrado !== '' ? parseFloat(formDataServicio.montoCobrado) : 0;
 
         const fechaActual = moment().format('YYYY-MM-DD'); // Solo fecha sin hora
-        const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0);
+        const servicio = new Servicio('0000', fechaActual, formDataServicio.ubicacionSalida, formDataServicio.ubicacionContacto, montoCobrado, formDataServicio.observaciones, formDataServicio.ubicacionTermino, 'EN CURSO', cliente, vehiculo, formDataServicio.operador, formDataServicio.grua, this.idUser, 0,this.gruaSeleccionada.kilometraje,0);
         servicio.folioServicio = 'OS00' + 1; // primer folio si no hyay nada
 
         this.crearServicio(cliente, vehiculo, servicio, formDataServicio);

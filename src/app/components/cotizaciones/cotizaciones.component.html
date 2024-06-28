@@ -52,13 +52,13 @@
                 <td>
                     <div class="flex">
                         <button pButton pRipple icon="pi pi-whatsapp" class="p-button-rounded p-button-success mr-2"
-                           ></button>
+                        (click)="confirmMensaje(cotizacion)"   ></button>
                     </div>
                 </td>
                 <td>
                     <div class="flex">
                         <button pButton pRipple icon="pi pi-check" class="p-button-rounded p-button-primary mr-2"
-                       (click)="confirmServicio()" ></button>
+                       (click)="confirmServicio(cotizacion)" ></button>
                     </div>
                 </td>
                 <td>
@@ -146,7 +146,7 @@
         <div class="iconDelete">
             <i class="pi pi-exclamation-triangle " style="font-size: 2rem"></i>
         </div>
-        <span >Está seguro de continuar ?</span>
+        <span >Está seguro de cancelar la cotizacion ?</span>
 
     </div>
     <ng-template pTemplate="footer">
@@ -170,7 +170,23 @@
         <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
             (click)="confirmacionServicioDialog = false"></button>
         <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
-            (click)="navigateToServicio()"></button>
+            (click)="seguirServicio()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="confirmacionMessageDialog" header="Confirmación mensaje" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <div class="iconDelete">
+            <i class="pi pi-exclamation-triangle " style="font-size: 2rem"></i>
+        </div>
+        <span >Está seguro de continuar ?</span>
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+            (click)="confirmacionMessageDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si"
+            (click)="enviarMensajeCotizacion()"></button>
     </ng-template>
 </p-dialog>
 

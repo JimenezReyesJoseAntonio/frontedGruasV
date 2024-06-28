@@ -37,6 +37,12 @@ export class ServicioService {
     return this.httpClient.put(url, { valor: nuevoValor });
   }
 
+  public upadatekmTermino(id: number, campo: string, nuevoValor: any) {
+    const url = `${this.servicioURL}updatekm/${id}/${campo}`;
+    console.log('updkm'+url);
+    return this.httpClient.put(url, { valor: nuevoValor });
+  }
+
   public delete(id: number): Observable<any> {
     return this.httpClient.delete<any>(`${this.servicioURL}${id}`);
   }

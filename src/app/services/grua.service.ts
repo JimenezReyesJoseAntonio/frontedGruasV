@@ -32,4 +32,10 @@ export class GruaService {
   public delete(id: number): Observable<any> {
     return this.httpClient.delete<any>(`${this.gruaURL}${id}`);
   }
+
+  public upadateKmGrua(id: number, campo: string, nuevoValor: any) {
+    const url = `${this.gruaURL}${id}/${campo}`;
+    return this.httpClient.put(url, { valor: nuevoValor });
+  }
+
 }

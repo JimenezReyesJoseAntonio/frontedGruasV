@@ -84,7 +84,7 @@
 </p-card>
 
 <p-card *ngIf="activeIndex === 2" title="Vertical Grid Form" header="Datos del servicio"
-  [style]="{ width: '900px', height: '430px' }" class="car">
+  [style]="{ width: '900px', height: '500px' }" class="car">
   <form [formGroup]="servicioForm" class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col-12 p-md-4">
       <label for="ubiSalida">Ubicación de salida</label>
@@ -176,9 +176,6 @@
       <div>
           <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="onBackButtonClick()" styleClass="p-button-secondary"></p-button>
           <p-button label="Confirmar" icon="pi pi-check" (click)="onConfirm()" [style]="{ 'margin-left': '.5em' }" [disabled]="enaService"></p-button>
-      </div>
-      <div>
-          <p-button label="Cotización" severity="warning" icon="pi pi-clipboard" [disabled]="enaService"></p-button>
       </div>
   </div>
 

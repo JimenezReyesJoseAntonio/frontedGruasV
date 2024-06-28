@@ -11,7 +11,8 @@ export const TEMPLATE_NAME = {
     holaMundo : 'hello_world',
     cliente: 'clientes_message',
     operador: 'carta_porte_operador',
-    datosServicio: 'datos_servicio'
+    datosServicio: 'datos_servicio',
+    cotizacionMessage: 'cotizacion_cliente'
 }
 
 export const COMPONENT_TYPE = {
