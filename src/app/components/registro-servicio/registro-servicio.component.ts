@@ -130,8 +130,8 @@ export class RegistroServicioComponent implements OnInit {
       montoCobrado: [0],
       observaciones: [''],
       ubicacionTermino: [''],
-      operador: [''],
-      grua: [''],
+      operador: ['',Validators.required],
+      grua: ['',Validators.required],
     });
 
 
@@ -270,6 +270,7 @@ export class RegistroServicioComponent implements OnInit {
     // Procesar los datos del primer formulario si es válido
     if (this.servicioForm.valid) {
       this.servicio = this.servicioForm.value;
+      console.log(this.servicioForm.value);
       console.log('ser sub'+this.servicioForm.value.operador);
       console.log(this.servicio.grua);
 

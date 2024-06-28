@@ -110,7 +110,7 @@ export class CotizacionesComponent implements OnInit {
       (data) => {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.cotizaciones = data;
-        this.cotizaciones = this.cotizaciones.filter(coti => coti.estado != 'CANCELADO');
+        this.cotizaciones = this.cotizaciones.filter(coti => coti.estado != 'CANCELADO' && coti.estado != 'ACEPTADO');
         console.log(data);
       },
       (err) => {
@@ -399,5 +399,19 @@ export class CotizacionesComponent implements OnInit {
       }
     );
   }
+
+    // cambia el color del tag
+    getSeverity(status: string) {
+      switch (status) {
+        case 'CREADO':
+          return 'success';
+        case 'ACEPTADO':
+          return 'warning';
+        case 'CANCELADO':
+          return 'danger';
+        default:
+          return ''; // Handle other cases, such as returning an empty string
+      }
+    }
 
 }

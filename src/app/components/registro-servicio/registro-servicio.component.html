@@ -7,12 +7,12 @@
   [style]="{ width: '600px', height: '400px' }" class="car">
   <form [formGroup]="clientForm" class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col-12">
-      <label for="numTe">Número de teléfono</label>
+      <label for="numTe">Número de teléfono<span class="required-asterisk">*</span></label>
       <input type="text" pInputText pKeyFilter="int" id="numTe" formControlName="numTelefono" required maxlength="10"
         minlength="10" />
     </div>
     <div class="p-field p-col-12">
-      <label for="cliente">Seleccione el cliente</label>
+      <label for="cliente">Seleccione el cliente<span class="required-asterisk">*</span></label>
       <p-dropdown [options]="clientes" optionLabel="nombreCliente" [(ngModel)]="selectedClient"
         formControlName="clienteTipo" placeholder="Seleccione" [editable]="true">
       </p-dropdown>
@@ -34,7 +34,7 @@
   [style]="{ width: '810px', height: '400px' }" class="car">
   <form [formGroup]="vehicleForm" class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col-12 p-md-6">
-      <label for="tipoV">Tipo de vehículo</label>
+      <label for="tipoV">Tipo de vehículo<span class="required-asterisk">*</span></label>
       <p-dropdown [options]="tiposVehiculo" placeholder="Selecciona" optionLabel="nombre" formControlName="tipoVehiculo"
         [editable]="true">
       </p-dropdown>
@@ -87,12 +87,12 @@
   [style]="{ width: '900px', height: '500px' }" class="car">
   <form [formGroup]="servicioForm" class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col-12 p-md-4">
-      <label for="ubiSalida">Ubicación de salida</label>
+      <label for="ubiSalida">Ubicación de salida<span class="required-asterisk">*</span></label>
       <input type="text" pInputText id="ubiSalida" formControlName="ubicacionSalida" required minlength="2"
         maxlength="22" />
     </div>
     <div class="p-field p-col-12 p-md-4">
-      <label for="ubiContact">Ubicación de contacto</label>
+      <label for="ubiContact">Ubicación de contacto<span class="required-asterisk">*</span></label>
       <input type="text" pInputText id="ubiContact" formControlName="ubicacionContacto" required minlength="2"
         maxlength="22" />
     </div>
@@ -101,16 +101,16 @@
       <input type="text" pInputText id="ubiTermino" formControlName="ubicacionTermino" minlength="2" maxlength="22" />
     </div>
     <div class="p-field p-col-12 p-md-4">
-      <label for="monto">Monto cobrado</label>
+      <label for="monto">Monto a cobrar</label>
       <input type="number" pInputText id="monto" formControlName="montoCobrado"  />
     </div>
     <div class="p-field p-col-12 p-md-4">
-      <label for="operador">Seleccione el operador</label>
+      <label for="operador">Seleccione el operador<span class="required-asterisk">*</span></label>
       <p-dropdown [options]="operadorDropdown" placeholder="Seleccione" formControlName="operador"
         [editable]="true"></p-dropdown>
     </div>
     <div class="p-field p-col-12 p-md-4">
-      <label for="grua">Seleccione la grúa</label>
+      <label for="grua">Seleccione la grúa<span class="required-asterisk">*</span></label>
       <p-dropdown [options]="gruaDropdown" formControlName="grua" placeholder="Seleccione"
         [editable]="true"></p-dropdown>
     </div>

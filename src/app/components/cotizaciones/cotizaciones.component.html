@@ -11,10 +11,6 @@
 
             </div>
         </ng-template>
-
-        <ng-template pTemplate="right">
-            <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help" ></button>
-        </ng-template>
     </p-toolbar>
 </div>
 
@@ -47,7 +43,10 @@
                 <td>{{cotizacion.id}}</td>
                 <td>{{cotizacion.ubicacionContacto}}</td>
                 <td>{{cotizacion.ubicacionTermino}}</td>
-                <td>{{cotizacion.estado}}</td>
+                <td>
+                    <p-tag [value]="cotizacion.estado" [severity]="getSeverity(cotizacion.estado)"></p-tag>
+
+                </td>
 
                 <td>
                     <div class="flex">
@@ -82,23 +81,23 @@
         <div class="p-fluid">
             <form [formGroup]="cotizacionForm" class="p-fluid p-formgrid p-grid">
                 <div class="p-field p-col-12 p-md-6">
-                    <label for="ubiContact">Ubicación de contacto</label>
+                    <label for="ubiContact">Ubicación de contacto<span class="required-asterisk">*</span></label>
                     <input type="text" pInputText id="ubiContact" formControlName="ubicacionContacto" required minlength="2" maxlength="22" />
                 </div>
                 <div class="p-field p-col-12 p-md-6">
-                    <label for="ubiTermino">Ubicación de termino</label>
+                    <label for="ubiTermino">Ubicación de termino<span class="required-asterisk">*</span></label>
                     <input type="text" pInputText id="ubiTermino" formControlName="ubicacionTermino" minlength="2" maxlength="22" />
                 </div>
                 <div class="p-field p-col-12 p-md-6">
-                    <label for="monto">Monto a cobrar</label>
+                    <label for="monto">Monto a cobrar<span class="required-asterisk">*</span></label>
                     <input type="number" pInputText id="monto" formControlName="monto" />
                 </div>
                 <div class="p-field p-col-12 p-md-6">
-                    <label for="numTe">Número de teléfono</label>
+                    <label for="numTe">Número de teléfono<span class="required-asterisk">*</span></label>
                     <input type="text" pInputText pKeyFilter="int" id="numTe" formControlName="numTelefono" required maxlength="10" minlength="10" />
                 </div>
                 <div class="p-field p-col-12 p-md-6">
-                    <label for="tipoV">Tipo de vehículo</label>
+                    <label for="tipoV">Tipo de vehículo<span class="required-asterisk">*</span></label>
                     <p-dropdown [options]="tiposVehiculo" placeholder="Selecciona" optionLabel="nombre" formControlName="tipoVehiculo" [editable]="true"></p-dropdown>
                 </div>
                 <div class="p-field p-col-12 p-md-6">
@@ -136,7 +135,7 @@
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="cotizacionDialog = false"></button>
-        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="onConfirmCotizacion()" ></button>
+        <button [disabled]="!cotizacionForm.valid" pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="onConfirmCotizacion()" ></button>
     </ng-template>
 </p-dialog>
 

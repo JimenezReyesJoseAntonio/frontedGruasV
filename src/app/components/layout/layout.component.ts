@@ -8,12 +8,13 @@ import { Router } from '@angular/router';
   styleUrl: './layout.component.css'
 })
 export class LayoutComponent  implements OnInit{
+  isAdmin: boolean = false;
 
   constructor(
     private tokenService: TokenService,
     private router: Router
   ){
-    
+    this.isAdmin = this.tokenService.isAdmin();
   } 
   
   ngOnInit(): void {

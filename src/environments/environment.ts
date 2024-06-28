@@ -19,7 +19,7 @@ export const environment = {
     excelGruaURL: 'http://localhost:8080/excel-gruas/download/excel',
     apiUrl: 'http://localhost:8080',
     excelServicios: 'http://localhost:8080/excel-servicios/servicios',
-    pdfUrl: 'http://localhost:8080/pdf-carta/generate/',
+    pdfUrl: 'http://localhost:8080/pdf-carta/',
     cotizacionUrl:'http://localhost:8080/cotizaciones/',
     pdfCotizacion: 'http://localhost:8080/pdf-cotizacion/'
 

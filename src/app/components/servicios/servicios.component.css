@@ -27,3 +27,7 @@
     margin-top: 10px;
     /* Agrega más estilos según sea necesario */
 }
+
+.required-asterisk {
+  color: red;
+}

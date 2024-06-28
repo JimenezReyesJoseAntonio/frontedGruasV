@@ -127,7 +127,7 @@ export class ServiciosComponent implements OnInit {
       modelo: ['', Validators.required],
       placas: ['', Validators.required],
       serie: ['', Validators.required],
-      poliza: ['', Validators.required],
+      poliza: [''],
       color: ['', Validators.required],
       ano: ['', Validators.required],
     });
@@ -263,7 +263,7 @@ export class ServiciosComponent implements OnInit {
         // Limpiar el arreglo de operadores antes de cargar los nuevos datos
         this.marcas = data;
 
-        //this.clientes = this.clientes.filter(est => est.eliminado === 0);
+        this.marcas = this.marcas.filter(est => est.eliminado === 0);
         console.log(data);
       },
       (err) => {
@@ -516,7 +516,7 @@ export class ServiciosComponent implements OnInit {
         const idSer = data.id;
         console.log(idOpe);
         console.log(idGrua);
-        
+        // antes de guardar el kilometraje revisamos que sea mayor que el inicial
         if(data.grua.kilometraje<this.kilometrajeTermino){
           this.actualizarKmGrua(idGrua,'kilometraje',this.kilometrajeTermino);
           this.cambiarEstatusOperador(idOpe, 'Libre');
@@ -526,6 +526,7 @@ export class ServiciosComponent implements OnInit {
           this.kilometrajeTermino = null;
         }else{
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El kilometraje de termino debe ser mayor que el de inicio' });
+         //inabilita el boton hasta que sea mayor
           this.kilometrajeTermino = null;
         }
         //servicio.estadoServicio = 'Completado';
@@ -847,27 +848,27 @@ export class ServiciosComponent implements OnInit {
               },
               {
                 type: PARAMETER_TYPE.text,
-                text: servicio.vehiculo.marca.nombre
+                text: servicio.vehiculo?.marca?.nombre ?? ''
 
               },
               {
                 type: PARAMETER_TYPE.text,
-                text: servicio.vehiculo.modelo.nombre
+                text: servicio.vehiculo?.modelo?.nombre ?? ''
 
               },
               {
                 type: PARAMETER_TYPE.text,
-                text: servicio.vehiculo.serie
+                text: servicio.vehiculo.serie ?? ''
 
               },
               {
                 type: PARAMETER_TYPE.text,
-                text: servicio.vehiculo.placas
+                text: servicio.vehiculo.placas ?? ''
 
               },
               {
                 type: PARAMETER_TYPE.text,
-                text: servicio.vehiculo.color
+                text: servicio.vehiculo.color ?? ''
 
               },
               {
@@ -877,7 +878,7 @@ export class ServiciosComponent implements OnInit {
               },
               {
                 type: PARAMETER_TYPE.text,
-                text: servicio.observaciones
+                text: servicio.observaciones ?? ''
 
               },
             ]

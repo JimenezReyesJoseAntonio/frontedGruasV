@@ -26,11 +26,7 @@
     padding-right: 100px;
   }
   
-  .izquierdo {
-    /* Estilos adicionales para el div izquierdo si es necesario */
-  }
-  
-  .derecho {
-    /* Estilos adicionales para el div derecho si es necesario */
-  }
+  .required-asterisk {
+    color: red;
+}
   
