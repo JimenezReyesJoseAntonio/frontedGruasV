@@ -14,7 +14,10 @@
             (click)="closeSidebar()"></a>
         </li>
         <li>
-          <a pButton icon="pi pi-car" routerLink="/principal/grua" label="Gruas" (click)="closeSidebar()"></a>
+          <a pButton icon="pi pi-car" routerLink="/principal/grua" label="Grúas" (click)="closeSidebar()"></a>
+        </li>
+        <li *ngIf="isAdmin">
+          <a pButton icon="pi pi-user-plus " routerLink="/principal/usuarios" label="Usuarios" (click)="closeSidebar()"></a>
         </li>
         <li>
           <a pButton icon="pi pi-power-off " label="Salir" (click)="logout()"></a>

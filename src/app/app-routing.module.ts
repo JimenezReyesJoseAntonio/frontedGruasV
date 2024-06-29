@@ -13,6 +13,7 @@ import { VehiculoComponent } from './components/vehiculo/vehiculo.component';
 import { ExcelServiciosComponent } from './components/excel-servicios/excel-servicios.component';
 import { BusquedaServicioComponent } from './components/busqueda-servicio/busqueda-servicio.component';
 import { CotizacionesComponent } from './components/cotizaciones/cotizaciones.component';
+import { UsuariosComponent } from './components/usuarios/usuarios.component';
 
 
 const routes: Routes = [
@@ -41,6 +42,10 @@ const routes: Routes = [
     {
       path:'dashboard',
       component:DashboardComponent
+    },
+    {
+      path:'usuarios',
+      component:UsuariosComponent
     },
     {
       path: 'servicios',

@@ -22,6 +22,7 @@ import { DividerModule } from 'primeng/divider';
 import { MenuModule } from 'primeng/menu';
 import { ChartModule } from 'primeng/chart';
 import { SpeedDialModule } from 'primeng/speeddial';
+import { PasswordModule } from 'primeng/password';
 
 @NgModule({
   declarations: [],
@@ -54,7 +55,8 @@ import { SpeedDialModule } from 'primeng/speeddial';
     DividerModule,
     MenuModule,
     ChartModule,
-    SpeedDialModule
+    SpeedDialModule,
+    PasswordModule
   ]
 })
 export class SharedModule { }

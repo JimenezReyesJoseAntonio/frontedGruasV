@@ -1,0 +1,11 @@
+
+.car{
+  
+    margin-top: 40px;
+    display: flex;
+      justify-content: center;
+      
+  }
+  .required-asterisk {
+    color: red;
+}

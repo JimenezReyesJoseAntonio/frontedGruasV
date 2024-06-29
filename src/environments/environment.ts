@@ -21,6 +21,7 @@ export const environment = {
     excelServicios: 'http://localhost:8080/excel-servicios/servicios',
     pdfUrl: 'http://localhost:8080/pdf-carta/',
     cotizacionUrl:'http://localhost:8080/cotizaciones/',
-    pdfCotizacion: 'http://localhost:8080/pdf-cotizacion/'
+    pdfCotizacion: 'http://localhost:8080/pdf-cotizacion/',
+    usuarioUrl:'http://localhost:8080/usuario/'
 
   };

@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { LoginUsuarioDto } from '../models/login-usuario.dto';
 import { Observable } from 'rxjs';
+import { Usuario } from '../models/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,10 @@ export class AuthService {
   
   login(dto: LoginUsuarioDto): Observable<any> {
     return this.httpClient.post<any>(this.authURL + 'login', dto);
+  }
+
+  nuevo(dto: Usuario): Observable<any> {
+    return this.httpClient.post<any>(this.authURL + 'nuevo', dto);
   }
 
 }

@@ -31,6 +31,7 @@ import { ExcelServiciosModule } from './components/excel-servicios/excel-servici
 import { DashboardModule } from './components/dashboard/dashboard.module';
 import { BusquedaServicioModule } from './components/busqueda-servicio/busqueda-servicio.module';
 import { CotizacionesModule } from './components/cotizaciones/cotizaciones.module';
+import { UsuariosModule } from './components/usuarios/usuarios.module';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { CotizacionesModule } from './components/cotizaciones/cotizaciones.modul
     ExcelServiciosModule,
     DashboardModule,
     BusquedaServicioModule,
-    CotizacionesModule
+    CotizacionesModule,
+    UsuariosModule
   ],
   providers: [
 

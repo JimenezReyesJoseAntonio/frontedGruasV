@@ -1,0 +1,68 @@
+<div>
+    <div class="toolb">
+      
+        <p-toolbar styleClass="mb-1" [style]="{ 'height': '100px'}">
+          <button pButton pRipple label="Nuevo" icon="pi pi-plus"
+      (click)="nuevoDialog()"  class="p-button-success mr-2 "></button>
+  
+        </p-toolbar>
+    </div>
+
+    <p-card title="Vertical Grid Form" header="Lista de usuarios" [style]="{ width: '600px', height: '400px' }"
+        class="car">
+        <!-- Campo de búsqueda -->
+        <div class="p-inputgroup mb-3">
+          <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+          <input type="text" pInputText placeholder="Buscar usuario por nombre" (input)="applyFilterGlobal($event, dtUsuario )">
+        </div>
+        <p-table [value]="usuarios" #dtUsuario dataKey="id"  [globalFilterFields]="['nombreUsuario']"
+          [scrollable]="true" scrollHeight="250px" [tableStyle]="{ 'min-width': '30rem'}" [rows]="3">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>ID</th>
+              <th>Nombre usuario</th>
+              <th>Correo electrónico</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-usuario>
+            <tr>
+              <td>{{usuario.id}}</td>
+              <td>{{usuario.nombreUsuario}}</td>
+              <td>{{usuario.email}}</td>
+            </tr>
+          </ng-template>
+
+        </p-table>
+      </p-card>
+
+      <p-dialog [(visible)]="usuarioDialog" header="Nuevo usuario" [modal]="true" [style]="{  width: '400px', height: '500px' }" class="p-fluid">
+        <ng-template pTemplate="content">
+      
+          <form [formGroup]="usuarioForm" class="p-formgrid">
+            <div class="p-field">
+              <label for="name">Nombre<span class="required-asterisk">*</span></label>
+              <input type="text" formControlName="nombre" pInputText id="name" required />
+            </div>
+            <div class="p-field">
+                <label for="name">Nombre usuario<span class="required-asterisk">*</span></label>
+                <input type="text" formControlName="nombreUsuario" pInputText id="name" required />
+              </div>
+              <div class="p-field">
+                <label for="name">Correo electrónico<span class="required-asterisk">*</span></label>
+                <input type="email" formControlName="email" pInputText id="name" required />
+              </div>
+              <div class="p-field">
+                <label for="name">Contraseña<span class="required-asterisk">*</span></label>
+                <p-password formControlName="password" [toggleMask]="true" />
+              </div>
+          </form>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="usuarioDialog = false"></button>
+          <button pButton pRipple label="Registrar" icon="pi pi-check" class="p-button-text"
+            (click)="crearUsuario()"></button>
+        </ng-template>
+      </p-dialog>
+
+</div>
+<p-toast position="top-center"></p-toast>
