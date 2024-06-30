@@ -506,108 +506,119 @@ export class ServiciosComponent implements OnInit {
     const servicio = this.servicioFinalizado;
     const folio = servicio.id;
     console.log(folio);
-
-    //cambia el estatus del servicio a finalizado para liberar a los operadores y grua
+  
+    // Cambia el estatus del servicio a finalizado para liberar a los operadores y grua
     this.serviceService.detail(folio).subscribe(
-      (data) => {
-
+      async (data) => {
         const idOpe = data.operador.id;
         const idGrua = data.grua.noEco;
         const idSer = data.id;
-        console.log(idOpe);
-        console.log(idGrua);
-        // antes de guardar el kilometraje revisamos que sea mayor que el inicial
-        if(data.grua.kilometraje<this.kilometrajeTermino){
-          this.actualizarKmGrua(idGrua,'kilometraje',this.kilometrajeTermino);
-          this.cambiarEstatusOperador(idOpe, 'Libre');
-          this.cambiarEstatusGrua(idGrua, 'Libre');
-          this.cambiarEstatusServicio(idSer, 'estadoServicio', 'FINALIZADO');
-          this.actualizarKmServicio(idSer,'kmEntrada',this.kilometrajeTermino);
-          this.kilometrajeTermino = null;
-        }else{
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El kilometraje de termino debe ser mayor que el de inicio' });
-         //inabilita el boton hasta que sea mayor
-          this.kilometrajeTermino = null;
+        console.log(idOpe, idGrua);
+  
+        // Antes de guardar el kilometraje, revisamos que sea mayor que el inicial
+        if (data.grua.kilometraje < this.kilometrajeTermino) {
+          try {
+            await this.actualizarKmGrua(idGrua, 'kilometraje', this.kilometrajeTermino);
+            await this.cambiarEstatusOperador(idOpe, 'Libre');
+            await this.cambiarEstatusGrua(idGrua, 'Libre');
+            await this.cambiarEstatusServicio(idSer, 'estadoServicio', 'FINALIZADO');
+            await this.actualizarKmServicio(idSer, 'kmEntrada', this.kilometrajeTermino);
+            this.kilometrajeTermino = null;
+          } catch (error) {
+            console.error('Error al finalizar el servicio:', error);
+          }
+        } else {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El kilometraje de término debe ser mayor que el de inicio' });
+          this.kilometrajeTermino = null; // Reinicia el valor de kilometraje de término
         }
-        //servicio.estadoServicio = 'Completado';
-        console.log('llega aqui' + servicio);
-
+        console.log('Finalización del servicio:', servicio);
       },
       (err) => {
-        if (err && err.error && err.error.message) {
-          this.listaVacia = err.error.message;
-        } else {
-          this.listaVacia = 'Error al cargar el servicio';
+        const errorMessage = err?.error?.message || 'Error al cargar el servicio';
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: errorMessage });
+      }
+    );
+  }
+  
+  cambiarEstatusOperador(idOperador: number, valor: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.estatusOperador.asignarEstatusOperador(idOperador, valor).subscribe(
+        () => {
+          console.log('Estado asignado correctamente al operador');
+          resolve();
+        },
+        (error) => {
+          console.error('Error al asignar estado al operador:', error);
+          reject(error);
         }
-      }
-    );
-
-
+      );
+    });
   }
-
-  cambiarEstatusOperador(idOperador: number, valor: string) {
-    this.estatusOperador.asignarEstatusOperador(idOperador, valor).subscribe(
-      () => {
-        console.log('Estado asignado correctamente al operador');
-      },
-      (error) => {
-        console.error('Error al asignar estado al operador:', error);
-      }
-    );
+  
+  cambiarEstatusGrua(idGrua: number, valor: string): Promise<void> {
+    console.log('id' + idGrua + ' valor' + valor);
+    return new Promise((resolve, reject) => {
+      this.estatusGruaService.asignarEstatusGrua(idGrua, valor).subscribe(
+        () => {
+          console.log('Estado asignado correctamente a la grua');
+          resolve();
+        },
+        (error) => {
+          console.error('Error al asignar estado a la grua:', error);
+          reject(error);
+        }
+      );
+    });
   }
-
-  cambiarEstatusGrua(idGrua: number, valor: string) {
-    this.estatusGruaService.asignarEstatusGrua(idGrua, valor).subscribe(
-      () => {
-        console.log('Estado asignado correctamente a la grua');
-      },
-      (error) => {
-        console.error('Error al asignar estado a la grua:', error);
-      }
-    );
+  
+  cambiarEstatusServicio(id: number, campo: string, nuevoValor: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.serviceService.upadateEstatus(id, campo, nuevoValor).subscribe(
+        () => {
+          console.log('Estado asignado correctamente al servicio');
+          // Al finalizar un servicio cargamos nuevamente los servicios
+          this.cargarServicios();
+          this.deleteServicioDialog = false; // Mostrar el diálogo de edición
+          resolve();
+        },
+        (error) => {
+          console.error('Error al asignar estado al servicio:', error);
+          reject(error);
+        }
+      );
+    });
   }
-
-  cambiarEstatusServicio(id: number, campo: string, nuevoValor: any) {
-    this.serviceService.upadateEstatus(id, campo, nuevoValor).subscribe(
-      () => {
-        console.log('Estado asignado correctamente al servicio');
-        //al finalizar un servicio cargamos nuevamente los servicios
-        this.cargarServicios();
-        this.deleteServicioDialog = false; // Mostrar el diálogo de edición
-
-      },
-      (error) => {
-        console.error('Error al asignar estado al servicio:', error);
-      }
-    );
-
+  
+  actualizarKmGrua(id: number, campo: string, nuevoValor: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.gruaService.upadateKmGrua(id, campo, nuevoValor).subscribe(
+        () => {
+          console.log('Kilometraje asignado correctamente a la grua');
+          resolve();
+        },
+        (error) => {
+          console.error('Error al actualizar km a la grua:', error);
+          reject(error);
+        }
+      );
+    });
   }
-
-  actualizarKmGrua(id: number, campo: string, nuevoValor: any) {
-    this.gruaService.upadateKmGrua(id, campo, nuevoValor).subscribe(
-      () => {
-        console.log('Kilometraje asignado correctamente a la grua');
-
-      },
-      (error) => {
-        console.error('Error al actualizar km a la grua:', error);
-      }
-    );
-
+  
+  actualizarKmServicio(id: number, campo: string, nuevoValor: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.serviceService.upadatekmTermino(id, campo, nuevoValor).subscribe(
+        () => {
+          console.log('Kilometraje asignado correctamente al servicio');
+          resolve();
+        },
+        (error) => {
+          console.error('Error al asignar kilometraje al servicio:', error);
+          reject(error);
+        }
+      );
+    });
   }
-
-  actualizarKmServicio(id: number, campo: string, nuevoValor: any) {
-    this.serviceService.upadatekmTermino(id, campo, nuevoValor).subscribe(
-      () => {
-
-        console.log('Kilometraje asignado correctamente al servicio');
-      },
-      (error) => {
-        console.error('Error al asignar kilometraje al servicio:', error);
-      }
-    );
-
-  }
+  
 
   updateCliente() {
     console.log('up cli' + this.servEdit.cliente.id);

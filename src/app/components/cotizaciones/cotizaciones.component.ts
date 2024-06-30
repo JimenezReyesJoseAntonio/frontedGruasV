@@ -360,7 +360,7 @@ export class CotizacionesComponent implements OnInit {
           to: '52' + cotizacion.numTelefono,
           type: TEMPLATE_TYPE.type,
           template: {
-            name: TEMPLATE_NAME.operador,
+            name: TEMPLATE_NAME.cotizacionMessage,
             language: {
               code: TEMPLATE_LANGUAGE.es
             },

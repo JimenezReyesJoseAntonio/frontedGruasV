@@ -15,6 +15,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class UsuariosComponent implements OnInit {
   usuarios: Usuario[] = [];
+  usuario: Usuario | null = null;
   listaVacia: string | undefined;
   usuarioForm:FormGroup;
   usuarioDialog:boolean= false;
@@ -73,6 +74,7 @@ export class UsuariosComponent implements OnInit {
     console.log(this.usuarioForm.value);
     if(this.usuarioForm.valid){
       const formData = { ...this.usuarioForm.value }; // Clonar el objeto para no modificar el original
+      this.usuario = new Usuario(formData.nombre,formData.nombreUsuario,formData.email,formData.password);
 
       this.authService.nuevo(formData).subscribe(
         () => {
